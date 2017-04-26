@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ogrenci_deneme" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02fccf26-b634-4b99-9b4b-9679bc0711fc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ogrencino" class="java.lang.String">
+		<defaultValueExpression><![CDATA[017]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+   student_number,
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success,
+	ser.student_id
+FROM student_exam_answers sea
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id -- and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id --and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted = false
+inner join students std on std.id = ser.student_id and cls.id= std.class_id
+  where   sea.exam_lesson_booklet_id = 100
+ and student_number like  concat('%',$P{ogrencino},'%')
+  order by student_number, sea.question_number]]>
+	</queryString>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="studentanswer" class="java.lang.String"/>
+	<field name="trueanswer" class="java.lang.String"/>
+	<field name="is_success" class="java.lang.Boolean"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<variable name="variable1" class="java.lang.String"/>
+	<group name="ogrenci_no">
+		<groupExpression><![CDATA[$F{student_number}]]></groupExpression>
+		<groupHeader>
+			<band height="42">
+				<textField>
+					<reportElement x="70" y="0" width="100" height="20" uuid="8400d8aa-dc0a-4e2a-8113-a8488bd2f924"/>
+					<textFieldExpression><![CDATA[$F{student_number}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="70" height="20" uuid="0ecbbee8-fc86-48e7-9471-b80108d564b6"/>
+					<text><![CDATA[Öğrenci No : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="237" y="20" width="80" height="20" uuid="1051a47a-f673-4e78-8bc6-8f367c0031a8"/>
+					<text><![CDATA[Öğrenci Cevap :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="405" y="20" width="70" height="20" uuid="73555f86-3273-4a7c-a1c7-7143833f500f"/>
+					<text><![CDATA[Doğru Cevap :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="439" y="0" width="70" height="20" uuid="ba4a6921-2ba0-43d7-9f96-054e4234ee99"/>
+					<text><![CDATA[Soru Sayısı :]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="16" width="555" height="20" uuid="b3de21eb-77be-468e-a4d0-b63db28ac2bd"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deneme Rapor]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="133" y="0" width="32" height="20" uuid="bed2727f-52b8-45c1-9804-b8a6896f2053"/>
+				<textFieldExpression><![CDATA[$F{question_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="0" width="30" height="20" uuid="9752c193-ed0b-46e9-a090-0590c52b199f"/>
+				<textFieldExpression><![CDATA[$F{studentanswer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="421" y="2" width="43" height="20" uuid="7ff40000-c537-40e7-b12b-ab2fce2c6f79"/>
+				<textFieldExpression><![CDATA[$F{trueanswer}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="96" y="0" width="37" height="20" uuid="1166fd39-75bc-43c4-9067-01a0a57481cc"/>
+				<text><![CDATA[Soru :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="22" width="555" height="1" uuid="9a30dc62-a1c0-44aa-b982-66b8ced2af55"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="8dd590f1-ff38-41a3-b213-b7c6f568f4f2"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
