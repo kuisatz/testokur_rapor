@@ -3,31 +3,16 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="pRenk" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
-	</parameter>
-	<parameter name="pSinif" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
-	</parameter>
-	<parameter name="pSube" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
-	</parameter>
-	<parameter name="pReportTypes" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
-	</parameter>
-	<parameter name="pLesson" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[96]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT  row_number() over() as sirano,
 upper(llx.name) as ders,
    ccx.name as class_name,
 CASE
-  WHEN   $P{pSinif} >0  THEN cast(ccx.class_level as character varying(5))
+  WHEN   rp.class_level >0  THEN cast(ccx.class_level as character varying(5))
    ELSE     'HEPSİ'
   END  as sinif ,
  CASE
-  WHEN  $P{pSube} >0  THEN ccx.branch
+  WHEN  rp.branch_id >0  THEN ccx.branch
    ELSE     'HEPSİ'
   END as sube
        , replace(lower(exx.name),'İ','i') as exam_name
@@ -44,28 +29,30 @@ CASE
 ,serx.classroom_net_avg
      ,serx.classroom_score_avg
 ,cast(( serx.classroom_net_avg *100/ elbx.question_count) as numeric(18,1)) as basari
-, serx.exam_date, etx.id as exam_type_id
+, serx.exam_date, etx.id as exam_type_id, rp.color_type
   FROM student_exam_results serx
+  inner join reports_params rp on rp.id = (select max(id) from reports_params )
+  inner join reports rr on rr.id = rp.report_id
   inner join lessons  llx on
  	CASE
-  	WHEN   $P{pLesson} >0  THEN  llx.id =  $P{pLesson}
+  	WHEN  rp.lesson_id >0  THEN  llx.id = rp.lesson_id
   	 ELSE    1=2
   	END
   inner join exam_lessons elx on elx.lesson_id = llx.id
   inner join exams exx on exx.id = elx.exam_id and elx.exam_id = serx.exam_id
   inner join classes ccx on ccx.id = serx.class_id
   inner join exam_types etx on etx.id = exx.exam_type_id
-  inner join report_types rtx on rtx.id =  etx.id and rtx.id = $P{pReportTypes}
+  inner join report_types rtx on rtx.id =  etx.id and rtx.id = rp.report_type_id
   inner join exam_lesson_booklets elbx on elbx.exam_lesson_id= elx.id
   where
   -- and exx.id = 18 and
  CASE
-  WHEN  $P{pSube} >0  THEN   ccx.id = $P{pSube}
+  WHEN  rp.branch_id >0  THEN   ccx.id = rp.branch_id
    ELSE    1=1
   END
 and
  CASE
-  WHEN   $P{pSinif} >0  THEN   ccx.class_level =  $P{pSinif}
+  WHEN   rp.class_level>0  THEN   ccx.class_level =  rp.class_level
    ELSE    1=1
   END
 
@@ -76,7 +63,8 @@ serx.classroom_net_avg , llx.name
  , ccx.name
        , exx.name
        ,elbx.question_count ,ccx.class_level ,ccx.branch
-,serx.exam_date,  etx.id
+,serx.exam_date,  etx.id,
+rp.class_level, rp.branch_id,color_type
 order by  ccx.class_level, ccx.name ,exx.name]]>
 	</queryString>
 	<field name="sirano" class="java.lang.Long"/>
@@ -96,6 +84,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 	<field name="basari" class="java.math.BigDecimal"/>
 	<field name="exam_date" class="java.sql.Timestamp"/>
 	<field name="exam_type_id" class="java.lang.Integer"/>
+	<field name="color_type" class="java.lang.Boolean"/>
 	<variable name="vSoruSayisi" class="java.lang.Number" calculation="Average">
 		<variableExpression><![CDATA[$F{question_count}]]></variableExpression>
 	</variable>
@@ -177,7 +166,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 			</frame>
 			<frame>
 				<reportElement mode="Opaque" x="0" y="1" width="555" height="28" backcolor="#3399FF" uuid="297e4732-c83d-44aa-9a1d-717ab81db232">
-					<printWhenExpression><![CDATA[$P{pRenk}.booleanValue()]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 			</frame>
 			<staticText>
@@ -297,7 +286,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="554" height="18" backcolor="#D5E5F5" uuid="6542c46d-ec67-4e64-83c5-1f54827957db">
 					<printWhenExpression><![CDATA[(($V{REPORT_COUNT}.intValue() % 2) == 0 )&&
-($P{pRenk}.booleanValue())]]></printWhenExpression>
+($F{color_type}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</frame>
 			<textField>
@@ -409,7 +398,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 			</frame>
 			<frame>
 				<reportElement mode="Opaque" x="250" y="0" width="305" height="20" backcolor="#3399FF" uuid="be6f25eb-bbe9-452e-a466-34bd60599491">
-					<printWhenExpression><![CDATA[$P{pRenk}.booleanValue()]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 			</frame>
 			<staticText>
