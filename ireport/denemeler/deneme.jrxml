@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-23T00:27:53 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deneme" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="301"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="688"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[
+SELECT 
+	std.first_name, std.surname,std.student_number, 
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	cc.corparation_name, 
+	ci.name as city, 
+	di.name as district, 
+	ls.name as ders , 
+	cls.name as sinif, 
+	ee.name as sinav, 
+	elb.name as kitapcik,
+	sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id, 
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success, sea.lesson_classroom_score_avg, 
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg, 
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score, 
+	sea.lesson_net_count, sea.lesson_success_percentage,  
+	ser.student_id, ser.class_id ,
+	 cast(ser.exam_date as date) as exam_date
+FROM student_exam_answers sea  
+inner join customers cc on cc.id = 1 
+inner join city ci on ci.id = cc.city_id 
+inner join districts di on di.id = cc.district_id
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id 
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id 
+  where   sea.exam_lesson_booklet_id = 100
+ 
+  order by ser.point desc , std.student_number,sea.question_number
+
+ ]]>
+	</queryString>
+	<field name="first_name" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="corparation_name" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="district" class="java.lang.String"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinif" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="kitapcik" class="java.lang.String"/>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="studentanswer" class="java.lang.String"/>
+	<field name="trueanswer" class="java.lang.String"/>
+	<field name="is_success" class="java.lang.Boolean"/>
+	<field name="lesson_classroom_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_order" class="java.lang.Integer"/>
+	<field name="lesson_class_level_order" class="java.lang.Integer"/>
+	<field name="lesson_score" class="java.math.BigDecimal"/>
+	<field name="lesson_net_count" class="java.math.BigDecimal"/>
+	<field name="lesson_success_percentage" class="java.math.BigDecimal"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<group name="Group1" isStartNewPage="true">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement mode="Opaque" x="-21" y="7" width="843" height="24" forecolor="#B89F7D" backcolor="#F2EBDF" uuid="ff649bda-bbd1-4c2d-bd67-21f69ad64bbf"/>
+					<rectangle>
+						<reportElement mode="Opaque" x="21" y="0" width="36" height="24" backcolor="#736343" uuid="a7ae31ce-9474-4e4b-9627-eb9152ff7b80"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement style="SubTitle" x="57" y="-1" width="755" height="24" forecolor="#736343" uuid="b5a25815-f4ed-4382-9712-d113dc519d4e"/>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{student_id} ]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="193" y="1" width="100" height="21" uuid="b4db6717-0745-4b06-836d-c58bb91d69c9"/>
+						<textFieldExpression><![CDATA[$F{first_name}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="292" y="1" width="100" height="21" uuid="a16fa5e8-e15e-446c-bebd-c60e24ceece4"/>
+						<textFieldExpression><![CDATA[$F{surname}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="712" y="2" width="100" height="20" uuid="5ee5ed39-c147-4486-b530-14de2edf5f02"/>
+						<textFieldExpression><![CDATA[$F{exam_date}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="390" y="-1" width="100" height="21" uuid="808d2bde-6c9c-46c9-898d-d92ff6efcfd2"/>
+						<textFieldExpression><![CDATA[$F{point}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="500" y="-1" width="100" height="21" uuid="34e8954c-4c84-4124-9ae5-f5c0767ee5f7"/>
+						<textFieldExpression><![CDATA[$F{total_count}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="600" y="2" width="100" height="20" uuid="4a11a6df-a823-4f54-a7ca-fb6799b78e69"/>
+						<textFieldExpression><![CDATA[$F{success_count}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="164" height="126" uuid="1c003177-754c-448f-8ce1-16868856f545"/>
+				<imageExpression><![CDATA["coffee.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="270" y="0" width="263" height="62" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Coffee Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="303" y="62" width="196" height="22" uuid="f6a78448-8260-4445-a9e0-e3fb53b080d9"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Coffee SubTitle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="94" width="383" height="42" uuid="8240065e-64b6-4170-b5d9-6341598e7b35"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce auctor purus gravida arcu aliquam mattis. Donec et nulla libero, ut varius massa. Nulla sed turpis elit. Etiam aliquet mauris a ligula hendrerit in auctor leo lobortis.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="e9d2002a-c8ee-4649-a258-640dad29110c"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="49" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="fa5e88d5-a011-4e32-8f12-ce923f903111"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="-1" y="0" width="802" height="15" backcolor="#29E32F" uuid="fa7cec56-4ec1-48e6-a26e-7266a995d174"/>
+			</frame>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="e5e27efa-b599-499b-9ca3-848cb511cb7b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="18cfe1ca-f7d6-48b0-9827-28578b42a5e0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="fbce24bb-3cb1-44a3-8eec-8c067ddbe5b5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

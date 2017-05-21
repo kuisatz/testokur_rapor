@@ -1,0 +1,49 @@
+/*
+SELECT id, first_name, surname, class_id, student_number, note, is_archive, 
+       period_id, photo
+  FROM public.students;
+*/
+SELECT distinct 
+	std.first_name, std.surname,std.student_number, ls.name as ders , ee.name as sinav,  ee.id ,
+        elb.question_count,  cast(ser.exam_date as date) as exam_date,
+        ser.classroom_score_avg,  
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point, 
+	cast(( ser.classroom_net_avg *100/ elb.question_count) as numeric(18,1)) as basari, 
+	cls.class_level as sinif, 
+	cls.branch as sube, 
+	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.class_id = cls.id and ffx.exam_id = ee.id and  ffx.point > ser.point ) as sinif_sirasi,
+        (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = ee.id and  ffx.point > ser.point ) as okul_sirasi,
+	 
+	sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,  
+	sea.lesson_classroom_score_avg, 
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg, 
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score, 
+	sea.lesson_net_count, sea.lesson_success_percentage,  
+	ser.student_id, ser.class_id  
+	
+FROM student_exam_answers sea  
+ 
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id 
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id  -- and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id 
+ where --  sea.exam_lesson_booklet_id = 100 and
+   std.student_number = '0201' 
+  --   sea.student_exam_result_id = 14041
+ 
+  order by ls.name ,ee.name
+
+/*
+select * from student_exam_results 
+limit 55 
+
+
+select   ffx.point  from student_exam_results ffx where ffx.class_id = 19 and ffx.exam_id = 16 
+
+
+
+*/

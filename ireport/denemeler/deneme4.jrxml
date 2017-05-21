@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deneme4" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Okan\\JaspersoftWorkspace\\MyReports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT distinct
+	std.first_name, std.surname,std.student_number,
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	cc.corparation_name,
+	ci.name as city,
+	di.name as district,
+	ls.name as ders ,
+	cls.name as sinif,
+	ee.name as sinav,
+	elb.name as kitapcik,
+	ser.student_id, ser.class_id ,
+	 cast(ser.exam_date as date) as exam_date
+FROM student_exam_answers sea
+inner join customers cc on cc.id = 1
+inner join city ci on ci.id = cc.city_id
+inner join districts di on di.id = cc.district_id
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+  where   sea.exam_lesson_booklet_id = 100
+ --and sea.student_exam_result_id = 9498
+  order by ser.point desc , std.student_number]]>
+	</queryString>
+	<field name="first_name" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="corparation_name" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="district" class="java.lang.String"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinif" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="kitapcik" class="java.lang.String"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<variable name="student_id1" class="java.lang.Integer" resetType="Group" resetGroup="Group1" calculation="Count">
+		<variableExpression><![CDATA[$F{student_id}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{student_id}]]></groupExpression>
+		<groupHeader>
+			<band height="146">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="0" width="800" height="146" forecolor="#B89F7D" backcolor="#FFFFBA" uuid="0a5fc4ac-2e39-4b7a-8f96-59f8eb2df66d"/>
+					<rectangle>
+						<reportElement x="50" y="105" width="40" height="37" backcolor="#FFFFBA" uuid="9516cd9a-96f3-462e-b2ee-9376529ea977"/>
+					</rectangle>
+					<rectangle>
+						<reportElement x="8" y="105" width="40" height="37" backcolor="#B59EF7" uuid="46e88aa5-c196-46ec-bf41-159a0afb4f98"/>
+					</rectangle>
+					<rectangle>
+						<reportElement x="50" y="46" width="40" height="56" backcolor="#FFFFBA" uuid="020fee3f-862e-485e-8e68-e2b691f52360"/>
+					</rectangle>
+					<rectangle>
+						<reportElement x="8" y="46" width="40" height="56" backcolor="#B59EF7" uuid="9dcb92db-7277-40f6-8746-1995840e2c00"/>
+					</rectangle>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="28" height="24" forecolor="#FFFFBA" uuid="4fbebfd3-a184-45af-b7d9-5c3faaf087b5"/>
+						<textElement>
+							<font isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{student_id}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="3" y="3" width="170" height="18" uuid="6bb84b9b-ad1d-4831-bd95-8a5f2504fbb9"/>
+						<textElement textAlignment="Left">
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Sınıf/Şube : " + $F{sinif}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="360" y="3" width="120" height="18" uuid="d5540ee7-97c4-4159-8f7a-483e256eb01d"/>
+						<textElement textAlignment="Left">
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Kitapçık Türü: "+ $F{kitapcik}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="3" y="23" width="358" height="18" forecolor="#000000" backcolor="#FFE68C" uuid="69ab353b-5946-4327-a276-36f019d4723b"/>
+						<textElement>
+							<font size="10" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Öğrenci : "+ $F{student_number}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="53" y="46" width="30" height="18" uuid="f2808760-b457-477f-9939-d356e2d45258"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{success_count}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="53" y="64" width="30" height="18" uuid="fa9f3b78-9567-461e-b8e3-bc5f6a35add6"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{fail_count}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="53" y="81" width="30" height="18" uuid="628d9162-53af-489a-81e7-3e273e2200ea"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{empty_count}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="53" y="107" width="30" height="18" uuid="ab578477-6f26-4fc0-866f-0171c5cfa58c"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{total_net}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="53" y="125" width="30" height="18" uuid="9b08bea9-a233-4fe8-aebe-56a0bb2591f0"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{point}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="364" y="23" width="436" height="18" uuid="80bd2562-b647-4991-bb85-c8938dba5fcf"/>
+						<textElement textAlignment="Right">
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Okul : "+ $F{corparation_name}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="Detail" positionType="Float" x="500" y="3" width="296" height="18" uuid="bc74a46e-5f6d-4ef9-9386-85db2f8a2498"/>
+						<textElement textAlignment="Right">
+							<font size="10"/>
+						</textElement>
+						<textFieldExpression><![CDATA[(new SimpleDateFormat($R{DATEFORMAT}).format($F{exam_date}))]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="9" y="46" width="42" height="18" backcolor="#B59EF7" uuid="c782f59a-30de-497a-817e-733fc73bc917"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<text><![CDATA[Doğru :]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="9" y="64" width="42" height="18" backcolor="#B59EF7" uuid="dec7b080-3f03-4ee4-8696-504f9d945b68">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						</reportElement>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<text><![CDATA[Yanlış :]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="9" y="82" width="42" height="18" backcolor="#B59EF7" uuid="da7eca93-817d-4038-a5b0-d71b6848e5b1">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						</reportElement>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<text><![CDATA[Boş :]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="9" y="124" width="42" height="18" backcolor="#B59EF7" uuid="51fdbf3f-1360-43ee-a242-fcc0f862e09a">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						</reportElement>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<text><![CDATA[Puan :]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="9" y="105" width="42" height="18" backcolor="#B59EF7" uuid="ac7bdd14-7202-493a-993c-5cb7295caf9d"/>
+						<textElement>
+							<font size="10"/>
+						</textElement>
+						<text><![CDATA[Net :]]></text>
+					</staticText>
+					<subreport>
+						<reportElement x="106" y="49" width="690" height="50" uuid="9e2968b4-87bd-4c15-84d3-f2f4dd33a351"/>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "deneme4_subreport3.jasper"]]></subreportExpression>
+					</subreport>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="800" height="48" backcolor="#F2FCFF" uuid="6c6ca4e1-17cd-4913-93d6-5e670ea9ae8a"/>
+				<textField>
+					<reportElement x="0" y="0" width="800" height="30" uuid="919b51d4-0d67-4b16-8c66-d5fa44d15cca"/>
+					<textElement textAlignment="Center">
+						<font size="20"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ders}+ " DERSİ "+$F{sinav} + " ÖĞRENCİ KARNESİ "]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="47" width="723" height="18" forecolor="#000000" backcolor="#F6FCC5" uuid="e3c14156-5b51-4201-918b-97fdc012e5d4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="580" y="0" width="130" height="18" forecolor="#000000" uuid="5c3301e7-a737-4c59-8a2f-a6c79fd1adb8"/>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement mode="Transparent" x="723" y="48" width="77" height="20" uuid="2931c075-c497-42d6-9f15-3f03e5a732f2"/>
+				<imageExpression><![CDATA["C:/ozel/program/TestOkur-Setup/logo1.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="9" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="800" height="5" forecolor="#FFE8E8" backcolor="#FFDCDB" uuid="eb1e323c-b18c-40f5-9bc7-7411d656d800"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="2" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="800" height="4" forecolor="#FFE8E8" backcolor="#FFDCDB" uuid="1133a906-5b71-476e-9f3e-bc97c97058c1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="800" height="5" forecolor="#FFE8E8" backcolor="#FFDCDB" uuid="f7f37153-f9d3-41f9-92cd-b0d1ffdd397c"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="800" height="24" forecolor="#D0B48E" backcolor="#F6FCC5" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="760" y="2" width="40" height="20" forecolor="#000000" uuid="4834e99c-7f6c-485a-b098-50e5187f2ab4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="680" y="2" width="80" height="20" forecolor="#000000" uuid="9825b46e-76f1-469a-abb8-a1cc27aad685"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#000000" uuid="137d38c7-1a83-4fc5-b156-9d5f1b1a0ddc"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ogrenci_sinav_gecmisi_subreport2" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cb04e43b-2dcb-4637-ae26-53a7f1740a8c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select row_number() over() as sirano,  a.* from  (
+SELECT  distinct
+	 std.student_number, ls.name as ders , ee.name as sinav,  ee.id ,
+          ls.name ,ee.name,
+	cast(( ser.classroom_net_avg *100/ elb.question_count) as numeric(18,1)) as basari
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id  -- and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+ where --  sea.exam_lesson_booklet_id = 100 and
+   std.student_number = '0201'
+
+
+  order by ls.name ,ee.name
+  ) as a]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="basari" class="java.math.BigDecimal"/>
+	<group name="sirano">
+		<groupExpression><![CDATA[$F{sirano}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="19" y="11" width="532" height="19" uuid="a08f87c3-e89f-4776-b213-af8d17fe510a"/>
+					<chartTitle>
+						<font size="8"/>
+					</chartTitle>
+					<chartSubtitle>
+						<font size="8"/>
+					</chartSubtitle>
+					<chartLegend textColor="#FFFFFF">
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="Group" resetGroup="sirano" incrementType="Group" incrementGroup="sirano"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{sinav}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{basari}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true" isShowTickLabels="false" isShowTickMarks="false">
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat tickLabelMask="" verticalTickLabels="false">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat tickLabelMask="#.#' %'" verticalTickLabels="false">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
+			<textField>
+				<reportElement x="19" y="0" width="347" height="18" uuid="ed38e8d8-042d-4ca4-b471-53cda1273afc"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinav} ]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

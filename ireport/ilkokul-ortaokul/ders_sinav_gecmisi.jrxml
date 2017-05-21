@@ -402,7 +402,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 				</reportElement>
 			</frame>
 			<staticText>
-				<reportElement x="251" y="0" width="51" height="20" uuid="047c27a1-207d-4dbd-8428-2555238c9857"/>
+				<reportElement x="245" y="1" width="51" height="20" uuid="047c27a1-207d-4dbd-8428-2555238c9857"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>

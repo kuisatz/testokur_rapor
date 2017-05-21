@@ -58,7 +58,33 @@ inner join students std on std.id = ser.student_id and cls.id= std.class_id
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="18"/>
+			<band height="165">
+				<barChart>
+					<chart>
+						<reportElement x="54" y="37" width="200" height="100" uuid="5dde3ce1-337a-4d77-b363-bfbfd2cad43e"/>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend/>
+					</chart>
+					<categoryDataset>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{question_number}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{is_success}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot>
+						<plot orientation="Horizontal"/>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat/>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat/>
+						</valueAxisFormat>
+					</barPlot>
+				</barChart>
+			</band>
 		</groupFooter>
 	</group>
 	<background>

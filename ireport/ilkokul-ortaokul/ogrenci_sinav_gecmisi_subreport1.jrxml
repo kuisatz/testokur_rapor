@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ogrenci_sinav_gecmisi_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="527343d8-5b40-410a-9cd2-e399da3a7560">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select row_number() over() as sirano,  a.* from  (
+SELECT  distinct
+	std.first_name, std.surname,std.student_number, ls.name as ders , ee.name as sinav,  ee.id ,
+        elb.question_count,  cast(ser.exam_date as date) as exam_date,
+        ser.classroom_score_avg,
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	cast(( ser.classroom_net_avg *100/ elb.question_count) as numeric(18,1)) as basari,
+	cls.class_level as sinif,
+	cls.branch as sube,
+	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.class_id = cls.id and ffx.exam_id = ee.id and  ffx.point > ser.point ) as sinif_sirasi,
+        (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = ee.id and  ffx.point > ser.point ) as okul_sirasi,
+
+	sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,
+	sea.lesson_classroom_score_avg,
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg,
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score,
+	sea.lesson_net_count, sea.lesson_success_percentage,
+	ser.student_id, ser.class_id, rp.color_type
+
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id  -- and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+ where --  sea.exam_lesson_booklet_id = 100 and
+   std.student_number = '0201'
+
+
+  order by ls.name ,ee.name
+  ) as a]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="first_name" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="question_count" class="java.lang.Integer"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<field name="classroom_score_avg" class="java.math.BigDecimal"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="basari" class="java.math.BigDecimal"/>
+	<field name="sinif" class="java.lang.Integer"/>
+	<field name="sube" class="java.lang.String"/>
+	<field name="sinif_sirasi" class="java.lang.Long"/>
+	<field name="okul_sirasi" class="java.lang.Long"/>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="lesson_classroom_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_order" class="java.lang.Integer"/>
+	<field name="lesson_class_level_order" class="java.lang.Integer"/>
+	<field name="lesson_score" class="java.math.BigDecimal"/>
+	<field name="lesson_net_count" class="java.math.BigDecimal"/>
+	<field name="lesson_success_percentage" class="java.math.BigDecimal"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<group name="sirano">
+		<groupExpression><![CDATA[$F{sirano}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="14" y="2" width="100" height="20" uuid="cb712793-0952-4b14-9cdb-026cc8c67a02"/>
+				<text><![CDATA[sinav]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="65" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="144" height="19" uuid="5d8c69e3-d33b-4f33-93b4-3274b0857f2c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinav}]]></textFieldExpression>
+			</textField>
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="159" y="0" width="384" height="65" uuid="144430f9-e90a-4565-8f23-d56b587c402a"/>
+					<chartTitle position="Top" color="#000000">
+						<font size="8"/>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="Group" resetGroup="sirano"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["xxxxxx"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{first_name}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{basari}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true">
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="false"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,32 @@
+SELECT 
+	std.first_name, std.surname,std.student_number, 
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	cc.corparation_name, 
+	ci.name as city, 
+	di.name as district, 
+	ls.name as ders , 
+	cls.name as sinif, 
+	ee.name as sinav, 
+	elb.name as kitapcik,
+	sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id, 
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success, sea.lesson_classroom_score_avg, 
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg, 
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score, 
+	sea.lesson_net_count, sea.lesson_success_percentage,  
+	ser.student_id, ser.class_id ,
+	 cast(ser.exam_date as date) as exam_date
+FROM student_exam_answers sea  
+inner join customers cc on cc.id = 1 
+inner join city ci on ci.id = cc.city_id 
+inner join districts di on di.id = cc.district_id
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id 
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id 
+  where   sea.exam_lesson_booklet_id = 100
+ 
+  order by ser.point desc , std.student_number,sea.question_number
