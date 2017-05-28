@@ -23,7 +23,7 @@
 		<defaultValueExpression><![CDATA["C:\\projeler\\testokur_rapor\\ireport\\ilkokul-ortaokul\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[WITH regional_sales AS (
+		<![CDATA[WITH regi AS (
 select row_number() over() as sirano,  a.*  from  (
 SELECT  distinct
 	std.first_name, std.surname,std.student_number, ls.name as ders , ee.name as sinav,  ee.id ,
@@ -58,7 +58,7 @@ where
 order by ls.name ,ee.name
   ) as a
   )
-  select * , (select max(sirano) from regional_sales ) as kayit_sayisi   from regional_sales]]>
+  select * , (select max(sirano) from regi ) as kayit_sayisi   from regi]]>
 	</queryString>
 	<field name="sirano" class="java.lang.Long"/>
 	<field name="first_name" class="java.lang.String"/>
@@ -133,6 +133,13 @@ order by ls.name ,ee.name
 				</textElement>
 				<textFieldExpression><![CDATA["ÖĞRENCİ SINAV GEÇMİŞİ"]]></textFieldExpression>
 			</textField>
+			<textField pattern="dd.MM.yyyy">
+				<reportElement x="455" y="0" width="100" height="17" uuid="9560f22c-f39a-4f2e-bd8f-157b1ba98c82"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -200,12 +207,11 @@ order by ls.name ,ee.name
 					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 				<staticText>
-					<reportElement x="422" y="1" width="100" height="20" uuid="6543a2b6-8178-4f4f-abeb-e61b1f37a199"/>
-					<text><![CDATA[total_net]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="351" y="1" width="100" height="20" uuid="812b0ec5-f38e-4c81-a7fb-8a6cb719bf91"/>
-					<text><![CDATA[sirano]]></text>
+					<reportElement x="343" y="0" width="211" height="20" uuid="812b0ec5-f38e-4c81-a7fb-8a6cb719bf91"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Öğrenci Bilgileri]]></text>
 				</staticText>
 			</frame>
 			<staticText>

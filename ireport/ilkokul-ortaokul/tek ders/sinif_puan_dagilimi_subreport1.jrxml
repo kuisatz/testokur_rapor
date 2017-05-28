@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sinif_puan_dagilimi_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="54472e1f-00c2-4b44-a498-44bb0afcf99e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[WITH regi AS (
+SELECT  row_number() over() as sirano,
+upper(llx.name) as ders,cast(serx.exam_date as date) as exam_date ,
+   ccx.name as class_name,
+
+ replace(lower(exx.name),'İ','i') as exam_name,
+  serx.class_id, serx.exam_id,
+etx.id as exam_type_id,
+(select count(xser1.id) from student_exam_results xser1 where xser1.class_id = serx.class_id and xser1.exam_id = serx.exam_id
+  ) as ogr_sayisi,
+
+(select count(xser1.id) from student_exam_results xser1 where xser1.class_id = serx.class_id and xser1.exam_id = serx.exam_id and xser1.point between 0 and 44.99
+and cast( xser1.exam_date as date) = cast(serx.exam_date as date)   ) as "0-44",
+(select count(xser2.id) from student_exam_results xser2 where xser2.class_id = serx.class_id and xser2.exam_id = serx.exam_id and xser2.point between 45.00 and 54.99
+and cast( xser2.exam_date as date) = cast(serx.exam_date as date)   ) as "45-54",
+(select count(xser3.id) from student_exam_results xser3 where xser3.class_id = serx.class_id and xser3.exam_id = serx.exam_id and xser3.point between 55.00 and 69.99
+and cast( xser3.exam_date as date) = cast(serx.exam_date as date)   ) as "55-69",
+(select count(xser4.id) from student_exam_results xser4 where xser4.class_id = serx.class_id and xser4.exam_id = serx.exam_id and xser4.point between 70.00 and 84.99
+and cast( xser4.exam_date as date) = cast(serx.exam_date as date)   ) as "70-84",
+(select count(xser5.id) from student_exam_results xser5 where xser5.class_id = serx.class_id and xser5.exam_id = serx.exam_id and xser5.point between 85.00 and 100
+and cast( xser5.exam_date as date) = cast(serx.exam_date as date)   ) as "85-100"
+
+
+  FROM student_exam_results serx
+  inner join reports_params rp on rp.id = (select max(id) from reports_params )
+  inner join reports rr on rr.id = rp.report_id
+  inner join lessons  llx on
+ 	CASE
+  	WHEN  rp.lesson_id >0  THEN  llx.id = rp.lesson_id
+  	 ELSE    1=2
+  	END
+  inner join exam_lessons elx on elx.lesson_id = llx.id
+  inner join exams exx on exx.id = elx.exam_id and elx.exam_id = serx.exam_id  and exx.id = 18 --  rp.exam_id
+  inner join classes ccx on ccx.id = serx.class_id
+  inner join exam_types etx on etx.id = exx.exam_type_id
+  inner join report_types rtx on rtx.id =  etx.id and rtx.id = rp.report_type_id
+
+  where
+
+ CASE
+  WHEN  rp.branch_id >0  THEN   ccx.id = rp.branch_id
+   ELSE    1=1
+  END
+and
+ CASE
+  WHEN   rp.class_level>0  THEN   ccx.class_level =  rp.class_level
+   ELSE    1=1
+  END
+
+
+
+group by  serx.class_id, serx.exam_id, elx.exam_id ,
+ llx.name
+ , ccx.name
+       , exx.name
+     ,ccx.class_level ,ccx.branch
+,serx.exam_date,  etx.id,
+rp.class_level, rp.branch_id,color_type
+order by  ccx.class_level, ccx.name ,exx.name
+
+ ) ,
+  ogr_total AS (
+select sum(ogr_sayisi) as ogrtop from regi
+)
+
+
+select  cast(deger as numeric(10,1)) as deger, zzz,sutun, exam_name from (
+
+select sum("0-44")*100 / tt.ogrtop as deger , 1 as zzz ,'0-44' as sutun ,a.exam_name from regi a
+inner join ogr_total tt on 1=1
+group by tt.ogrtop,a.exam_name
+
+union
+
+select sum("45-54")*100 / tt.ogrtop , 2 as zzz  ,'45-54' as sutun,a.exam_name  from regi a
+inner join ogr_total tt on 1=1
+group by tt.ogrtop,a.exam_name
+
+union
+
+select sum("55-69")*100 / tt.ogrtop , 3 as zzz  ,'55-69' as sutun,exam_name  from regi a
+inner join ogr_total tt on 1=1
+group by tt.ogrtop,a.exam_name
+
+union
+
+select sum("70-84")*100 / tt.ogrtop , 4 as zzz ,'70-84' as sutun ,a.exam_name  from regi a
+inner join ogr_total tt on 1=1
+group by tt.ogrtop,a.exam_name
+
+union
+
+select sum("85-100")*100 / tt.ogrtop , 5 as zzz   ,'85-100' as sutun,a.exam_name from regi a
+inner join ogr_total tt on 1=1
+group by tt.ogrtop,a.exam_name
+
+) as ggg
+order by zzz]]>
+	</queryString>
+	<field name="deger" class="java.math.BigDecimal"/>
+	<field name="zzz" class="java.lang.Integer"/>
+	<field name="sutun" class="java.lang.String"/>
+	<field name="exam_name" class="java.lang.String"/>
+	<group name="kk">
+		<groupExpression><![CDATA[$F{exam_name}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="231">
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="0" y="11" width="316" height="213" uuid="223e9f92-6187-45d1-ab41-2d5f8e4c95b3"/>
+					<chartTitle>
+						<font size="8"/>
+					</chartTitle>
+					<chartSubtitle>
+						<font size="8"/>
+					</chartSubtitle>
+					<chartLegend position="Top">
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{sutun}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{deger}]]></valueExpression>
+						<labelExpression><![CDATA[$F{deger}.toString()+ '%']]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true" isShowTickLabels="true" isShowTickMarks="true">
+					<plot>
+						<seriesColor seriesOrder="0" color="#D5E5F5"/>
+						<seriesColor seriesOrder="1" color="#33FF33"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="true">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat verticalTickLabels="true">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>
