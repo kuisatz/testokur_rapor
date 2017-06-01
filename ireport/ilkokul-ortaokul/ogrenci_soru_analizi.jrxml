@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ogrenci_soru_analizi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7907a269-afb2-4c08-81d3-9c99bcd269c2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[WITH regi AS (
+select row_number() over() as sirano1,  a.*  from  (
+SELECT  distinct
+	std.first_name, std.surname,std.student_number, ls.name as ders , ee.name as sinav,  el.exam_id  ,
+        elb.question_count,
+	elb.name as kitapcik,
+        cast(ser.exam_date as date) as exam_date,
+
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	cls.class_level as sinif,
+	cls.branch as sube,  ser.class_id ,
+	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.class_id = cls.id and ffx.exam_id = ee.id and  ffx.point > ser.point ) as sinif_sirasi,
+        (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = ee.id and  ffx.point > ser.point ) as okul_sirasi,
+	sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,
+	ser.student_id, ser.class_id, rp.color_type
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+inner join classes cls on cls.id = ser.class_id
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+where
+   -- std.student_number = rp.student_no
+-- std.student_number = '0210'
+el.exam_id  = 16
+-- order by ls.name ,ee.name
+and ser.class_id = 19
+and cls.class_level= 8 --rp.class_level
+-- and ee.exam_type_id = rp.exam_type_id
+
+  ) as a
+  ),
+regi2 AS (
+  select   * , (select max(sirano1) from regi ) as kayit_sayisi   from regi
+order by sinif_sirasi , okul_sirasi ,first_name, surname
+)
+
+  select    row_number() over() as sirano,  *   from regi2]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="sirano1" class="java.lang.Long"/>
+	<field name="first_name" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="exam_id" class="java.lang.Integer"/>
+	<field name="question_count" class="java.lang.Integer"/>
+	<field name="kitapcik" class="java.lang.String"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="sinif" class="java.lang.Integer"/>
+	<field name="sube" class="java.lang.String"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="sinif_sirasi" class="java.lang.Long"/>
+	<field name="okul_sirasi" class="java.lang.Long"/>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="kayit_sayisi" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

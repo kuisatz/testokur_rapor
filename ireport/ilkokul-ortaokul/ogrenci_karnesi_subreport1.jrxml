@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ogrenci_karnesi_subreport1" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="404c22dd-529b-4023-bbd8-376b2add7727">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="New Dataset 1" uuid="b8650474-d8b4-4d75-a018-b1b1cf019d83">
+		<queryString language="SQL">
+			<![CDATA[
+WITH regi AS (
+select row_number() over() as sirano,  a.*  from  (
+SELECT
+    sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success, sea.lesson_classroom_score_avg,
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg,
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score,
+	sea.lesson_net_count, sea.lesson_success_percentage,
+	ser.student_id
+FROM student_exam_answers sea
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted = false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+  where   sea.exam_lesson_booklet_id = 100
+ and sea.student_exam_result_id =  9467
+  order by sea.question_number
+
+) as a
+  )
+
+
+
+
+  select * , (select max(sirano) from regi ) as kayit_sayisi   from regi]]>
+		</queryString>
+		<field name="sirano" class="java.lang.Long"/>
+		<field name="question_number" class="java.lang.Integer"/>
+		<field name="studentanswer" class="java.lang.String"/>
+		<field name="trueanswer" class="java.lang.String"/>
+		<field name="is_success" class="java.lang.Boolean"/>
+		<group name="sirano">
+			<groupExpression><![CDATA[$F{sirano}]]></groupExpression>
+		</group>
+	</subDataset>
+	<queryString>
+		<![CDATA[
+WITH regi AS (
+select row_number() over() as sirano,  a.*  from  (
+SELECT
+    sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success, sea.lesson_classroom_score_avg,
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg,
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score,
+	sea.lesson_net_count, sea.lesson_success_percentage,
+	ser.student_id
+FROM student_exam_answers sea
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted = false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+  where   sea.exam_lesson_booklet_id = 100
+ and sea.student_exam_result_id =  9467
+  order by sea.question_number
+
+) as a
+  )
+
+
+
+
+  select * , (select max(sirano) from regi ) as kayit_sayisi   from regi limit 1]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="studentanswer" class="java.lang.String"/>
+	<field name="trueanswer" class="java.lang.String"/>
+	<field name="is_success" class="java.lang.Boolean"/>
+	<field name="lesson_classroom_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_order" class="java.lang.Integer"/>
+	<field name="lesson_class_level_order" class="java.lang.Integer"/>
+	<field name="lesson_score" class="java.math.BigDecimal"/>
+	<field name="lesson_net_count" class="java.math.BigDecimal"/>
+	<field name="lesson_success_percentage" class="java.math.BigDecimal"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="kayit_sayisi" class="java.lang.Long"/>
+	<group name="student_id">
+		<groupExpression><![CDATA[$F{student_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="99" splitType="Stretch">
+			<rectangle>
+				<reportElement x="36" y="14" width="751" height="61" backcolor="#FF6699" uuid="1a3758d7-4377-47d0-8590-c239b4f1e6bb"/>
+			</rectangle>
+		</band>
+		<band height="90" splitType="Prevent">
+			<printWhenExpression><![CDATA[(($F{kayit_sayisi}.intValue()>25 )  )]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="36" y="15" width="751" height="61" backcolor="#00CC00" uuid="4efdd06e-a345-49e7-8d21-920779888f9a"/>
+			</rectangle>
+		</band>
+		<band height="91" splitType="Prevent">
+			<printWhenExpression><![CDATA[(($F{kayit_sayisi}.intValue()>50  )  )]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="36" y="18" width="751" height="61" backcolor="#FFCC66" uuid="104ef97d-0258-4404-9743-4ec818ac0030"/>
+			</rectangle>
+		</band>
+		<band height="87" splitType="Prevent">
+			<printWhenExpression><![CDATA[(($F{kayit_sayisi}.intValue()>75  )  )]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="36" y="11" width="751" height="61" backcolor="#9999FF" uuid="9e9b0328-9d43-476f-a603-e6e7cbac86fc"/>
+			</rectangle>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="32" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

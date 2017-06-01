@@ -12,10 +12,22 @@ SELECT  distinct
 	elb.name as kitapcik,
         cast(ser.exam_date as date) as exam_date,
 
+
+CASE
+  WHEN   rp.class_level >0  THEN cast(cls.class_level as character varying(5))
+   ELSE     'HEPSİ'
+  END  as sinif ,
+ CASE
+  WHEN  rp.branch_id >0  THEN cls.branch
+   ELSE     'HEPSİ'
+  END as sube,
+
+
 	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
-	cls.class_level as sinif,
-	cls.branch as sube,  ser.class_id ,
-	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.class_id = cls.id and ffx.exam_id = ee.id and  ffx.point > ser.point ) as sinif_sirasi,
+	-- cls.class_level as sinif,
+	-- cls.branch as sube,
+ ser.class_id ,
+	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id ) and ffx.exam_id = ee.id and  ffx.point > ser.point ) as sinif_sirasi,
         (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = ee.id and  ffx.point > ser.point ) as okul_sirasi,
 	sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,
 	ser.student_id, ser.class_id, rp.color_type
@@ -28,54 +40,66 @@ inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
 inner join classes cls on cls.id = ser.class_id
 inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
-inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+inner join students std on std.id = ser.student_id -- and cls.id= std.class_id
 where
    -- std.student_number = rp.student_no
 -- std.student_number = '0210'
 el.exam_id  = 16
--- order by ls.name ,ee.name
- and ser.class_id = 19
+
+ and  std.class_id = 17
 and cls.class_level= 8 --rp.class_level
 -- and ee.exam_type_id = rp.exam_type_id
+and
+CASE
+  WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
+   ELSE    1=1
+  END
+and
+ CASE
+  WHEN   rp.class_level>0  THEN   cls.class_level =  rp.class_level
+   ELSE    1=1
+  END
+
+
+
 
   ) as a
   ),
 regi2 AS (
   select   * , (select max(sirano1) from regi ) as kayit_sayisi   from regi
-order by sinif_sirasi , okul_sirasi ,first_name, surname
+order by  sinif_sirasi , okul_sirasi , first_name, surname
 )
 
-  select    row_number() over() as sirano,  *   from regi2
- ]]>
+  select    row_number() over() as sirano,  *   from regi2]]>
 	</queryString>
-	<field name="sirano1" class="java.lang.Long"/>
-	<field name="total_count" class="java.lang.Integer"/>
-	<field name="sube" class="java.lang.String"/>
-	<field name="exam_id" class="java.lang.Integer"/>
-	<field name="empty_count" class="java.lang.Integer"/>
 	<field name="sirano" class="java.lang.Long"/>
-	<field name="question_count" class="java.lang.Integer"/>
-	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="sirano1" class="java.lang.Long"/>
 	<field name="first_name" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="exam_id" class="java.lang.Integer"/>
+	<field name="question_count" class="java.lang.Integer"/>
+	<field name="kitapcik" class="java.lang.String"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<field name="sinif" class="java.lang.String"/>
+	<field name="sube" class="java.lang.String"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="class_id" class="java.lang.Integer"/>
 	<field name="sinif_sirasi" class="java.lang.Long"/>
 	<field name="okul_sirasi" class="java.lang.Long"/>
-	<field name="kitapcik" class="java.lang.String"/>
-	<field name="kayit_sayisi" class="java.lang.Long"/>
-	<field name="student_number" class="java.lang.String"/>
-	<field name="lesson_id" class="java.lang.Integer"/>
-	<field name="success_count" class="java.lang.Integer"/>
-	<field name="sinav" class="java.lang.String"/>
-	<field name="student_exam_result_id" class="java.lang.Integer"/>
-	<field name="sinif" class="java.lang.Integer"/>
-	<field name="ders" class="java.lang.String"/>
-	<field name="fail_count" class="java.lang.Integer"/>
-	<field name="total_net" class="java.math.BigDecimal"/>
-	<field name="student_id" class="java.lang.Integer"/>
-	<field name="surname" class="java.lang.String"/>
 	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
-	<field name="class_id" class="java.lang.Integer"/>
-	<field name="point" class="java.math.BigDecimal"/>
-	<field name="exam_date" class="java.sql.Date"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="kayit_sayisi" class="java.lang.Long"/>
 	<variable name="vdogruort" class="java.lang.Number" calculation="Average">
 		<variableExpression><![CDATA[$F{success_count}]]></variableExpression>
 	</variable>
@@ -261,7 +285,9 @@ order by sinif_sirasi , okul_sirasi ,first_name, surname
 				<reportElement mode="Opaque" x="1" y="1" width="555" height="47" backcolor="#CCCCCC" uuid="4a6c25d8-0fbf-4c98-b9d5-e879a476acdb"/>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="1" y="1" width="555" height="47" backcolor="#3399FF" uuid="980bfde1-9741-4a11-b85e-79f6a63c06e7"/>
+				<reportElement mode="Opaque" x="1" y="1" width="555" height="47" backcolor="#3399FF" uuid="980bfde1-9741-4a11-b85e-79f6a63c06e7">
+					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
+				</reportElement>
 			</frame>
 			<staticText>
 				<reportElement x="1" y="1" width="23" height="47" uuid="fa909033-ac2e-4679-a125-fb4a3acf566d">
@@ -432,7 +458,7 @@ order by sinif_sirasi , okul_sirasi ,first_name, surname
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sinif}  + " / " + $F{sube} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sinif}  + " / " + $F{sube}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="245" y="0" width="24" height="19" uuid="475dbe1c-3068-435e-bbb3-4e492edae03c"/>
