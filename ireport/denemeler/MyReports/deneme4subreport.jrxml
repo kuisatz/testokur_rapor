@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-25T15:53:42 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deneme4subreport" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cbda6f10-0c89-4341-9d25-c4038067e2b2">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="292"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="697"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#005FB3">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT    
+    sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id, 
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success, sea.lesson_classroom_score_avg, 
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg, 
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score, 
+	sea.lesson_net_count, sea.lesson_success_percentage,  
+	ser.student_id
+FROM student_exam_answers sea   
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id 
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted = false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id 
+  where   sea.exam_lesson_booklet_id = 100
+ and sea.student_exam_result_id = 9498
+  order by sea.question_number]]>
+	</queryString>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="studentanswer" class="java.lang.String"/>
+	<field name="trueanswer" class="java.lang.String"/>
+	<field name="is_success" class="java.lang.Boolean"/>
+	<field name="lesson_classroom_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_order" class="java.lang.Integer"/>
+	<field name="lesson_class_level_order" class="java.lang.Integer"/>
+	<field name="lesson_score" class="java.math.BigDecimal"/>
+	<field name="lesson_net_count" class="java.math.BigDecimal"/>
+	<field name="lesson_success_percentage" class="java.math.BigDecimal"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<sortField name="question_number"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

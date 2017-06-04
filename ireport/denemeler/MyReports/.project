@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>MyReports</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>net.sf.jasperreports.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.babel.editor.rbeBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>net.sf.jasperreports.nature</nature>
+		<nature>com.jaspersoft.studio.babel.editor.rbeNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>GuncelTapuKayitlari.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Tapu-Kadastro/GuncelTapuKayitlari.jrxml</location>
+		</link>
+		<link>
+			<name>HakDilekce.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/HakDilekce.jrxml</location>
+		</link>
+		<link>
+			<name>IlanIslemleriTutanak2.jasper</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Bölge ilanlar/Zorunlu Top İlanı/IlanIslemleriTutanak2.jasper</location>
+		</link>
+		<link>
+			<name>IlanIslemleriTutanak2.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Bölge ilanlar/Zorunlu Top İlanı/IlanIslemleriTutanak2.jrxml</location>
+		</link>
+		<link>
+			<name>IsciAlacak1.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/IsciAlacak1.jrxml</location>
+		</link>
+		<link>
+			<name>MuhtarlikBilgi.jasper</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Bölge ilanlar/Zorunlu Top İlanı/MuhtarlikBilgi.jasper</location>
+		</link>
+		<link>
+			<name>Odenek.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Odenek/Odenek.jrxml</location>
+		</link>
+		<link>
+			<name>TapuSerhi.jasper</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Tapu-Kadastro/TapuSerhi.jasper</location>
+		</link>
+		<link>
+			<name>TapuSerhi.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Tapu-Kadastro/TapuSerhi.jrxml</location>
+		</link>
+		<link>
+			<name>TespitTutanagi.jrxml</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TespitTutanagi.jrxml</location>
+		</link>
+		<link>
+			<name>ZorunluTopOluru.jasper</name>
+			<type>1</type>
+			<location>C:/projeler/jasper/Raporlar - Copy/TVK Ek Raporlar/Bölge ilanlar/Zorunlu Top İlanı/ZorunluTopOluru.jasper</location>
+		</link>
+		<link>
+			<name>ders_sinav_gecmisi.jasper</name>
+			<type>1</type>
+			<location>C:/projeler/testokur_rapor/testokur_rapor/ireport/ilkokul-ortaokul/ders_sinav_gecmisi.jasper</location>
+		</link>
+		<link>
+			<name>tumasKapak.jasper</name>
+			<type>1</type>
+			<location>C:/ozel/desktop/stvt/stvt raporlar/tumasKapak.jasper</location>
+		</link>
+	</linkedResources>
+</projectDescription>

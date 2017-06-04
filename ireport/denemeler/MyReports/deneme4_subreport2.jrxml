@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deneme4_subreport2" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d4a83ff2-ddb0-4dbb-8504-aa8a6921b5ff">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<queryString>
+		<![CDATA[SELECT
+    sea.exam_lesson_booklet_id, sea.lesson_id,  sea.student_exam_result_id,
+	sea.question_number, sea.value as studentanswer, answer.value as trueanswer , sea.is_success, sea.lesson_classroom_score_avg,
+	sea.lesson_class_level_score_avg , sea.lesson_classroom_net_avg, sea.lesson_class_level_net_avg,
+	sea.lesson_classroom_order, sea.lesson_class_level_order, sea.lesson_score,
+	sea.lesson_net_count, sea.lesson_success_percentage,
+	ser.student_id
+FROM student_exam_answers sea
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id and ser.exam_id = 92
+inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted = false
+inner join students std on std.id = ser.student_id  and cls.id= std.class_id
+  where   sea.exam_lesson_booklet_id = 100
+ and sea.student_exam_result_id = 9498  -- 9467
+  order by sea.question_number]]>
+	</queryString>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="lesson_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="studentanswer" class="java.lang.String"/>
+	<field name="trueanswer" class="java.lang.String"/>
+	<field name="is_success" class="java.lang.Boolean"/>
+	<field name="lesson_classroom_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_score_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_class_level_net_avg" class="java.math.BigDecimal"/>
+	<field name="lesson_classroom_order" class="java.lang.Integer"/>
+	<field name="lesson_class_level_order" class="java.lang.Integer"/>
+	<field name="lesson_score" class="java.math.BigDecimal"/>
+	<field name="lesson_net_count" class="java.math.BigDecimal"/>
+	<field name="lesson_success_percentage" class="java.math.BigDecimal"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<group name="question_number">
+		<groupExpression><![CDATA[$F{question_number}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="129" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="28" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="114" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="167" splitType="Stretch">
+			<crosstab>
+				<reportElement x="22" y="35" width="69" height="66" uuid="eba4a2f7-4920-4893-b000-11fd712c9c8c"/>
+				<rowGroup name="is_success" width="2">
+					<bucket class="java.lang.Boolean">
+						<bucketExpression><![CDATA[$F{is_success}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="studentanswer" width="3">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{studentanswer}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="question_number" height="30">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{question_number}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="1" y="0" width="128" height="30" uuid="fd96234f-80ee-4c26-b266-39a0604e703c"/>
+								<textFieldExpression><![CDATA[$V{question_number}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="trueanswer" height="48">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{trueanswer}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="1" y="0" width="128" height="24" uuid="c58cf099-a00d-4e4e-9784-a777d05e7384"/>
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid"/>
+									<topPen lineWidth="0.5" lineStyle="Solid"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid"/>
+								</box>
+								<textFieldExpression><![CDATA[$V{trueanswer}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="24" width="129" height="24" uuid="eaefa8c2-d94b-4762-8bb4-f026b61f9d61"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textFieldExpression><![CDATA[""+ $V{studentanswer}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="studentanswerMeasure" class="java.lang.String">
+					<measureExpression><![CDATA[$F{studentanswer}]]></measureExpression>
+				</measure>
+				<crosstabCell width="143" height="16">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="is_success">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="a7336060-09e9-47c4-b91d-60ce62466fa3"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="question_number">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="297c0743-1602-45d3-bb13-5474efd9bb84"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="is_success" columnTotalGroup="question_number">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="492f0086-c5e0-41d5-b247-aa4d46877ade"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="trueanswer">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="2cfce14e-9ec1-438c-8c66-e15a6177c7d1"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="is_success" columnTotalGroup="trueanswer">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="1433e69c-02da-4a31-8ea5-2d4dfd2eb3ab"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="studentanswer">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="1a2b4c5b-ae26-4c21-bab0-1b9ffeeeebdc"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="studentanswer" columnTotalGroup="question_number">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="3b5eeb37-ed1b-4a45-b7c9-bda763ff94c3"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="studentanswer" columnTotalGroup="trueanswer">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="976b4f80-657b-4ada-ab1b-2fb36f46733f"/>
+							<textFieldExpression><![CDATA[$V{studentanswerMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

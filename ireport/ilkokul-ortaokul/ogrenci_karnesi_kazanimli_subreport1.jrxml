@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ogrenci_karnesi_kazanimli_subreport1" language="groovy" pageWidth="380" pageHeight="500" columnWidth="380" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="15e35d57-69a7-4ff8-83ba-c20e3caf7e20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pqnumber1" class="java.lang.String">
+		<defaultValueExpression><![CDATA['0']]></defaultValueExpression>
+	</parameter>
+	<parameter name="pqnumber2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA['8']]></defaultValueExpression>
+	</parameter>
+	<parameter name="pstudent_exam_result_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[9471]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT sea.id, sea.question_number,ss.description,
+CASE sea.is_success
+  WHEN true THEN 'Doğru'
+  WHEN false THEN  'Yanlış'
+END as "sonuc",
+true as color_type
+  FROM public.student_exam_answers sea
+left join sorular ss on ss.question_number = sea.question_number
+where student_exam_result_id = $P{pstudent_exam_result_id}
+  and sea.question_number between cast ($P{pqnumber1} as integer)  and cast ($P{pqnumber2} as integer)]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="sonuc" class="java.lang.String"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="380" height="18" backcolor="#CCCCCC" uuid="ca66630e-e72a-4a01-b705-9973c7c119f3"/>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="380" height="18" backcolor="#3399FF" uuid="c5566020-c12c-4430-97bd-a51716ece36b">
+					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="0" width="34" height="18" uuid="def60e41-49ab-4b3c-b573-90181a3099aa"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Soru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="0" width="296" height="18" uuid="abd4a972-2acf-4e57-b65d-4353e10573cc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Konu /Kazanım]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="48" height="18" uuid="b64cf5ac-f01e-4c70-9305-e67baf33c472"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Sonuç]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="380" height="18" backcolor="#F6F4F4" uuid="223e1ee3-0ca0-405e-9ebf-fd789a04ca47">
+					<printWhenExpression><![CDATA[($V{REPORT_COUNT}.intValue() % 2) == 0]]></printWhenExpression>
+				</reportElement>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="380" height="18" backcolor="#D5E5F5" uuid="01e45b39-f826-4dea-a2dd-b10c599da25e">
+					<printWhenExpression><![CDATA[(($V{REPORT_COUNT}.intValue() % 2) == 0 )&&
+($F{color_type}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+			</frame>
+			<textField>
+				<reportElement x="0" y="0" width="34" height="18" uuid="e4450bf0-0799-4fdb-949e-aa3697363c6e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{question_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="34" y="0" width="296" height="18" uuid="bd5a99b8-0e37-436a-b3be-1f4484ff82eb"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="0" width="48" height="18" uuid="0e83715c-2cab-4d2e-ad7b-9adb947259c3"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new String($F{sonuc}).equals( "Yanlış" )? "<b><font size=\"8\" isBold=\"true\"/><style style=\"Crosstab Data Text\" mode=\"Opaque\" forecolor=\"#FF6666\">  "+ $F{sonuc}+"   </style></b>"  : $F{sonuc}   )]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

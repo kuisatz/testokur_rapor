@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BirinciAskiParselasyonIlaniMuhtaraYazi" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="455" leftMargin="70" rightMargin="70" topMargin="70" bottomMargin="70" uuid="cacaac17-f6c8-4bcb-b184-545060d762e7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="334"/>
+	<parameter name="sayi" class="java.lang.String">
+		<defaultValueExpression><![CDATA["B.12.1.TRG.0.11.02.00."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="koyAdi" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Bağlar, Şeyhbaba ve Çobanlı Mahalleleri"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="projeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["611"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ImzaUnvan1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Kont.Müh."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ImzaAdSoyad1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["İ. HOŞGÖREN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ImzaUnvan2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Koordinatör"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ImzaAdSoyad2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["M. TOSUN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BKKTarih" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["21.01.2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BKKSayi" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2010/99"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RGTarih" class="java.lang.String">
+		<defaultValueExpression><![CDATA["27.02.2010"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RGSayi" class="java.lang.String">
+		<defaultValueExpression><![CDATA["27506"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="GonderenUnvan" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Arazi Top.ve TİGH Dai.Bşk. V."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="GonderenAdSoyad" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Hacı Veli DEVECİ"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="GonderenUnvan2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Genel Müdür Yardımcısı V."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="GonderenAdSoyad2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Mehmet ÖZGÜN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="OnayAdSoyad" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Dr. Gürsel KÜSEK"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="OnayUnvan" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Genel Müdür V."]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  pk.[adi]
+      ,pk.[ilid]
+      ,pk.[iladi]
+      ,pk.[ilceid]
+      , ic.ilce_adi
+  FROM [TarimGIS].[dbo].[proje_karti] pk
+  inner join ilceler ic on ic.objectid = pk.[ilceid]
+WHERE pk.objectid = $P{projeId}]]>
+	</queryString>
+	<field name="adi" class="java.lang.String"/>
+	<field name="ilid" class="java.lang.Short"/>
+	<field name="iladi" class="java.lang.String"/>
+	<field name="ilceid" class="java.lang.Integer"/>
+	<field name="ilce_adi" class="java.lang.String"/>
+	<variable name="ilAdi" class="java.lang.String">
+		<initialValueExpression><![CDATA[(($F{iladi}.subSequence( 0, 1 )).toUpperCase()+($F{iladi}.substring( 1 )).toLowerCase())]]></initialValueExpression>
+	</variable>
+	<variable name="ilceAdi" class="java.lang.String">
+		<initialValueExpression><![CDATA[$F{ilce_adi}.toUpperCase()]]></initialValueExpression>
+	</variable>
+	<variable name="koyAdi" class="java.lang.String">
+		<initialValueExpression><![CDATA[($P{koyAdi}.subSequence( 0, 1 )).toUpperCase()+($P{koyAdi}.substring( 1 )).toLowerCase()]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="690" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="455" height="15" uuid="06a648cd-b5b4-4b10-806f-03e00ca1bad5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[T.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="75" width="30" height="15" uuid="0a65ea2c-d3d5-4bd4-a412-422a50687c61"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sayı]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="75" width="5" height="15" uuid="612de5c4-cd0e-41ba-a26d-a1785c5acae2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="35" y="75" width="175" height="15" uuid="023506dd-44af-4c36-95e1-89115705e106"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sayi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="35" y="105" width="175" height="15" uuid="77556045-d46b-4e56-a539-0785ecb0edda"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Zorunlu Toplulaştırma Hk.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="105" width="30" height="15" uuid="6d35b3c3-ef0c-48ca-8cfc-a67ac19ad280"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Konu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="105" width="5" height="15" uuid="63b64a57-9fe5-4086-8666-7acace5bd69a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="380" y="75" width="75" height="15" uuid="d6d3b01e-65c7-42a3-870c-a732e6074641"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="150" width="455" height="15" uuid="176ae93c-d0e3-4c9a-8819-7370f05451c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[GENEL MÜDÜRLÜK MAKAMINA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="180" width="455" height="210" uuid="c4acd0d6-b275-4bfa-b23a-681275b4789a"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+					<paragraph firstLineIndent="21"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<p>&emsp;"+$V{ilAdi}+" İli, "+$F{ilce_adi}+" İlçesi Bakanlar Kurulunun "+$P{BKKTarih}+" tarih ve "+$P{BKKSayi}+" sayılı kararının "+$P{RGTarih}+" tarihli "+$P{RGSayi}+" sayılı Resmi Gazetede yayımlanması ile Tarım Reformu Uygulama Alanı ilan edilmiştir.</p>"+
+"<p>&emsp;Uygulama Yönetmeliğinin 21. ve Teknik Talimatın 35. maddesi gereğince belirtilen hükümler doğrultusunda gerekli işlemler yapılmış, ancak, uygulama alanı kapsamında bulunan "+$F{ilce_adi}+" İlçesi, "+$P{koyAdi}+" arazi sahibi çiftçilerine imzalatılmak üzere düzenlenen muvafakatnamelerde çifte ekseriyet sağlanamadığı anlaşılmıştır.</p>"+
+"<p>&emsp;Bu sonuç itibarıyla İsteğe Bağlı Toplulaştırma mümkün olmadığından, Zorunlu Toplulaştırma kararı alınması gerekmektedir.</p>"+
+"<p>&emsp;"+$V{ilAdi}+" İli, "+$F{ilce_adi}+" İlçesi, "+$P{koyAdi}+" 3083 sayılı “Sulama Alanlarında Arazi Düzenlenmesine Dair Tarım Reformu Kanunu”nun 6. maddesi, Uygulama Yönetmeliğinin 22. maddesi ve Teknik Talimatın 35. maddesi gereğince “Zorunlu Toplulaştırma” kararı alınması hususunu;</p>"+
+"<p>&emsp;Olurlarınıza arz ederim.</p>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="420" width="200" height="15" uuid="883d8d4e-823a-40b6-bb95-93f1fb3240eb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GonderenAdSoyad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="660" width="75" height="15" uuid="cb2e5fa4-cef1-4608-a5e3-99bfd507d160"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="675" width="75" height="15" uuid="17450057-de35-479d-9205-f748c1562a22"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="660" width="100" height="15" uuid="72e69501-f55a-4533-8eb6-601b3edeb7f9"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ImzaUnvan1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="675" width="100" height="15" uuid="c8f0792a-4847-41f5-a772-5a68a6d999e7"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ImzaUnvan2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="175" y="675" width="5" height="15" uuid="15d97181-a8c7-4aad-9361-92aa4919ea58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="660" width="5" height="15" uuid="78e66c71-a93b-4d95-83d0-9af4463797b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="675" width="275" height="15" uuid="ac551111-efab-400d-ae03-0c86f500c82d"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ImzaAdSoyad2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="660" width="275" height="15" uuid="cd3364ae-6e6c-40cb-9679-96ca67a3b9a2"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ImzaAdSoyad1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="435" width="200" height="15" uuid="b586c828-0048-4e78-bb3f-aa7c212e7e68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GonderenUnvan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="510" width="165" height="15" uuid="a603fa74-743e-4794-917e-dd9a06293d77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" isUnderline="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GonderenAdSoyad2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="525" width="165" height="15" uuid="77e59360-0979-4f48-8e07-2d37ba04347a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GonderenUnvan2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="465" width="130" height="15" uuid="529202a2-b40c-4ddf-9ec9-8fd6addfce4b"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" isUnderline="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Uygun görüşle arz ederim.]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="480" width="130" height="15" uuid="1c0968da-8085-4121-9c4f-81e1252cd70d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="555" width="455" height="15" uuid="7b8b5cb2-ef8a-48eb-85dc-db3fdff0f382"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" isUnderline="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[O  L  U  R]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="570" width="455" height="15" uuid="b60e6de8-098c-48bf-8d7c-e53a31b9f2e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="615" width="455" height="15" uuid="3c7755cb-9dbf-4af9-ae03-8d15f470e965"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{OnayUnvan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="600" width="455" height="15" uuid="8ecfe15c-6b43-4f07-bc0c-3e9d547e5bfd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" isUnderline="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{OnayAdSoyad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="15" width="455" height="15" uuid="63c645c4-bf1b-4be9-aee0-a8ef00d58c7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[GIDA, TARIM VE HAYVANCILIK BAKANLIĞI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="455" height="15" uuid="4069191f-81e5-493a-a930-55d8a2349ccd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman" pdfEncoding="Cp1254" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tarım Reformu Genel Müdürlüğü
+]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>
