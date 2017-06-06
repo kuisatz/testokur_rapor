@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="madde_analizi_grafik_subreport1" language="groovy" pageWidth="180" pageHeight="250" columnWidth="180" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="837715d1-c969-4586-8ac0-d57717665c41">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pquestion_number" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parti" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH regi AS (
+select row_number() over() as sirano1,  a.*  from  (
+SELECT  distinct
+	 ls.name as ders , ee.name as sinav,  el.exam_id  ,
+        elb.question_count,
+	elb.name as kitapcik,
+        cast(ser.exam_date as date) as exam_date,
+CASE
+  WHEN   rp.class_level >0  THEN cast(cls.class_level as character varying(5))
+   ELSE     'HEPSİ'
+  END  as sinif ,
+ CASE
+  WHEN  rp.branch_id >0  THEN cls.branch
+   ELSE     'HEPSİ'
+  END as sube,
+	ser.class_id ,
+	rp.color_type
+,sea.question_number,
+answer.value as cevap,
+(Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.value = 'A'
+
+ ) as a,
+ (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.value = 'B'
+
+ ) as b,
+ (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.value = 'C'
+
+ ) as c ,
+ (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.value = 'D'
+
+ ) as d,
+ (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.value = 'E'
+
+ ) as e,
+ (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.is_success = true
+
+ ) as dogrucevap,
+  (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.is_success = false
+
+ ) as yanliscevap,
+   (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
+		 zsea.is_success is null
+
+ ) as boscevap,
+ ( select count( distinct  ffx.student_id ) from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) as ogr_sayisi
+
+
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+inner join classes cls on cls.id = ser.class_id
+inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
+inner join students std on std.id = ser.student_id -- and cls.id= std.class_id
+where
+   -- std.student_number = rp.student_no
+-- std.student_number = '0210'
+el.exam_id  = 16
+
+ and  std.class_id = 17
+and cls.class_level= 8 --rp.class_level
+-- and ee.exam_type_id = rp.exam_type_id
+and
+CASE
+  WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
+   ELSE    1=1
+  END
+and
+ CASE
+  WHEN   rp.class_level>0  THEN   cls.class_level =  rp.class_level
+   ELSE    1=1
+  END
+
+and  sea.question_number  =  $P{pquestion_number}
+limit 1
+  ) as a
+  ),
+regi2 AS (
+  select   * ,   cast(dogrucevap  *100 / (dogrucevap +yanliscevap + boscevap) as integer)  as basari,  (select max(sirano1) from regi ) as kayit_sayisi   from regi
+
+)
+
+select    row_number() over() as sirano,  rr.* , ss.description
+from  regi2 as rr
+left join sorular ss on ss.question_number = rr.question_number
+
+ order by question_number]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="sirano1" class="java.lang.Long"/>
+	<field name="ders" class="java.lang.String"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="exam_id" class="java.lang.Integer"/>
+	<field name="question_count" class="java.lang.Integer"/>
+	<field name="kitapcik" class="java.lang.String"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<field name="sinif" class="java.lang.String"/>
+	<field name="sube" class="java.lang.String"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="question_number" class="java.lang.Integer"/>
+	<field name="cevap" class="java.lang.String"/>
+	<field name="a" class="java.lang.Long"/>
+	<field name="b" class="java.lang.Long"/>
+	<field name="c" class="java.lang.Long"/>
+	<field name="d" class="java.lang.Long"/>
+	<field name="e" class="java.lang.Long"/>
+	<field name="dogrucevap" class="java.lang.Long"/>
+	<field name="yanliscevap" class="java.lang.Long"/>
+	<field name="boscevap" class="java.lang.Long"/>
+	<field name="ogr_sayisi" class="java.lang.Long"/>
+	<field name="basari" class="java.lang.Integer"/>
+	<field name="kayit_sayisi" class="java.lang.Long"/>
+	<field name="description" class="java.lang.String"/>
+	<group name="question_number">
+		<groupExpression><![CDATA[$F{question_number}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="250" splitType="Stretch">
+			<frame>
+				<reportElement x="6" y="5" width="167" height="237" uuid="646460b4-1d97-4f9f-861d-d5e41a5af0c6"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="-8" y="156" width="175" height="26" uuid="c774a1dd-d3b0-4313-b773-3b8663a553f4">
+							<printWhenExpression><![CDATA[$F{basari}.intValue() <50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{basari}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot orientation="Horizontal" foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#FF3333"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="-8" y="156" width="175" height="26" uuid="12c6003d-14dd-463d-b08a-e50f0b6dc600">
+							<printWhenExpression><![CDATA[$F{basari}.intValue() >=50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{basari}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot orientation="Horizontal" foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#33CC00"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<staticText>
+					<reportElement x="126" y="9" width="23" height="18" uuid="a2b9fd6d-e902-4fb7-a0a9-706eaf4cc032"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Boş]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="34" y="9" width="23" height="18" uuid="8947b29c-11ee-45a8-9443-4cac7365885d"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(new String($F{cevap}).equals( 'A' )? "<b><font size=\"8\" isBold=\"true\"/><style style=\"Crosstab Data Text\" mode=\"Opaque\" backcolor=\"#33CC00\">"+ $F{cevap}+"   </style></b>" :'A' )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="71" y="117" width="10" height="20" uuid="26bbaec8-8a5e-463a-9c9c-7438b7f2f024"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="2" y="9" width="32" height="108" uuid="15ebf85f-36d6-4b4d-b87b-09d49fb38310"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" SORU " + $F{question_number}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="34" y="137" width="23" height="22" uuid="92883b56-ac7d-4550-8fcb-62583f3db17b"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{a}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="57" y="137" width="23" height="22" uuid="f5661ab4-bc86-48e5-bda2-81ac47a88544"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{b}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="80" y="137" width="23" height="22" uuid="e2b02f6e-664d-4245-818f-3fc940905dcd"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{c}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="103" y="137" width="23" height="22" uuid="c30a5ed8-ed42-48d2-8126-afcb795b6f2c"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="126" y="137" width="23" height="22" uuid="31d2f9b6-af94-42ec-922e-ef0f4880425c"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{boscevap}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="36" y="158" width="114" height="20" uuid="8249542d-f9a4-4e37-a0fd-61d038a03a54"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{basari}+" %"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="180" width="167" height="46" uuid="a63a3f22-22f8-4673-ac19-5080e89cccd0"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="80" y="117" width="15" height="20" uuid="a369d644-8f18-4033-afdc-3eba71be0667"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{c}*100/$F{ogr_sayisi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="103" y="117" width="15" height="20" uuid="a44b6668-2463-4411-a392-2d114e58ecdf"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d}*100/$F{ogr_sayisi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="126" y="117" width="15" height="20" uuid="223e1230-70ab-4cd7-926c-12b278f7285c"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{boscevap}*100/$F{ogr_sayisi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="57" y="117" width="15" height="20" uuid="2a114704-41b0-4ed4-8ffb-b4f293f74958"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{b}*100/$F{ogr_sayisi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="34" y="117" width="15" height="20" uuid="a4386dc2-e4c3-4fe0-aad8-eac50d8c2a66"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{a}*100/$F{ogr_sayisi}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="47" y="117" width="10" height="20" uuid="7fc4dfe7-19a4-4ca7-8194-34199546c649"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="93" y="117" width="10" height="20" uuid="f1aebb77-97f2-4852-a695-9bf87546f6b4"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="116" y="117" width="10" height="20" uuid="298d43c9-e9d6-4f34-a008-7b526908884f"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="139" y="117" width="10" height="20" uuid="c195bfeb-b0d1-4a19-9a8f-8e6205e3c6ad"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="34" y="29" width="23" height="87" forecolor="#FFFFFF" uuid="036f4337-d53a-4baa-a598-a6d3c49aa728">
+							<printWhenExpression><![CDATA[$F{a}*100/$F{ogr_sayisi} >=50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{a}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#33CC00"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="58" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="c6215914-b163-4a1b-897f-9b80cb469b26">
+							<printWhenExpression><![CDATA[$F{b}*100/$F{ogr_sayisi} >=50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{b}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#33CC00"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="80" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="89d94586-dc21-444b-952c-4f5adf3a65f4">
+							<printWhenExpression><![CDATA[$F{c}*100/$F{ogr_sayisi} >=50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{c}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#33CC00"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="103" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="7bdbf2e1-ee3b-46c4-bff9-52a29b14c181">
+							<printWhenExpression><![CDATA[$F{d}*100/$F{ogr_sayisi} >=50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{d}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#33CC00"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="126" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="29e34930-b6b8-4b57-8c32-93a2f06d9af1">
+							<printWhenExpression><![CDATA[$F{basari}.intValue() >=50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{boscevap}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#6666FF"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<textField>
+					<reportElement x="57" y="9" width="23" height="18" uuid="9fc464dc-9ed9-49e4-8ff7-c5ffc04eab21"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(new String($F{cevap}).equals( 'B' )? "<b><font size=\"8\" isBold=\"true\"/><style style=\"Crosstab Data Text\" mode=\"Opaque\" backcolor=\"#33CC00\"> "+ $F{cevap}+"  </style></b>" :'B' )]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="80" y="9" width="23" height="18" uuid="f5885b9f-419a-465c-812a-ed5f5d0e567d"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(new String($F{cevap}).equals( 'C' )? "<b><font size=\"8\" isBold=\"true\"/><style style=\"Crosstab Data Text\" mode=\"Opaque\" backcolor=\"#33CC00\"> "+ $F{cevap}+"  </style></b>" :'C' )]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="103" y="9" width="23" height="18" uuid="7fd07ea2-09d6-4ed8-8f02-7556ad519d60"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(new String($F{cevap}).equals( 'D' )? "<b><font size=\"8\" isBold=\"true\"/><style style=\"Crosstab Data Text\" mode=\"Opaque\" backcolor=\"#33CC00\"> "+ $F{cevap}+"  </style></b>" :'D' )]]></textFieldExpression>
+				</textField>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="34" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="8c01418b-839a-441c-8e4c-9fb15d8299fd">
+							<printWhenExpression><![CDATA[$F{a}*100/$F{ogr_sayisi} < 50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{a}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#FF3333"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="58" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="adfbddb5-fc90-483e-802e-465057f4a808">
+							<printWhenExpression><![CDATA[$F{b}*100/$F{ogr_sayisi} < 50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{b}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#FF3333"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="80" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="f9e0e9af-1634-4d4b-9fe6-b344a7d91756">
+							<printWhenExpression><![CDATA[$F{c}*100/$F{ogr_sayisi} < 50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{c}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#FF3333"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<barChart>
+					<chart isShowLegend="false" renderType="draw">
+						<reportElement x="103" y="29" width="23" height="88" forecolor="#FFFFFF" uuid="861a1032-b127-4c9a-a5a4-54025c617d7f">
+							<printWhenExpression><![CDATA[$F{d}*100/$F{ogr_sayisi} < 50]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<pen lineColor="#003333"/>
+							<topPen lineWidth="1.0" lineColor="#003333"/>
+							<leftPen lineWidth="1.0" lineColor="#003333"/>
+							<bottomPen lineWidth="1.0" lineColor="#003333"/>
+							<rightPen lineWidth="1.0" lineColor="#003333"/>
+						</box>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Top">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="Group" resetGroup="question_number" incrementType="Group" incrementGroup="question_number"/>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{d}*100/$F{ogr_sayisi}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot foregroundAlpha="1.0">
+							<seriesColor seriesOrder="0" color="#FF3333"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+						<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<staticText>
+					<reportElement x="2" y="117" width="32" height="20" uuid="a6d35f3a-b6c9-4044-aa3f-f4d9bd0a238e"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Yüzde]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="2" y="137" width="32" height="22" uuid="329cc4e7-e427-4244-9a83-fa92939f0aad"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfEncoding="Cp1254" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Öğrenci]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

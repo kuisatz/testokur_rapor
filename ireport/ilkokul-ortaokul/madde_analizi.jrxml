@@ -65,6 +65,15 @@ answer.value as cevap,
 			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
 			and ffx.exam_id = ee.id ) and
 		 zsea.question_number =  sea.question_number and
+		 zsea.value = 'E'
+
+ ) as e,
+ (Select count( zsea.id) from student_exam_answers  zsea
+	where 	zsea.student_exam_result_id in
+			(select distinct  ffx.id from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) and
+		 zsea.question_number =  sea.question_number and
 		 zsea.is_success = true
 
  ) as dogrucevap,
@@ -85,7 +94,10 @@ answer.value as cevap,
 		 zsea.question_number =  sea.question_number and
 		 zsea.is_success is null
 
- ) as boscevap
+ ) as boscevap,
+ ( select count( distinct  ffx.student_id ) from student_exam_results ffx
+			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
+			and ffx.exam_id = ee.id ) as ogr_sayisi
 
 
 FROM student_exam_answers sea
@@ -148,9 +160,11 @@ left join sorular ss on ss.question_number = rr.question_number
 	<field name="b" class="java.lang.Long"/>
 	<field name="c" class="java.lang.Long"/>
 	<field name="d" class="java.lang.Long"/>
+	<field name="e" class="java.lang.Long"/>
 	<field name="dogrucevap" class="java.lang.Long"/>
 	<field name="yanliscevap" class="java.lang.Long"/>
 	<field name="boscevap" class="java.lang.Long"/>
+	<field name="ogr_sayisi" class="java.lang.Long"/>
 	<field name="basari" class="java.lang.Integer"/>
 	<field name="kayit_sayisi" class="java.lang.Long"/>
 	<field name="description" class="java.lang.String"/>
@@ -275,14 +289,14 @@ left join sorular ss on ss.question_number = rr.question_number
 				<textFieldExpression><![CDATA[$F{sube}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="734" y="47" width="45" height="18" uuid="73cb4c3f-2cad-46a1-b44c-b6e303129870"/>
+				<reportElement x="734" y="47" width="46" height="18" uuid="73cb4c3f-2cad-46a1-b44c-b6e303129870"/>
 				<textElement>
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{question_count}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="648" y="47" width="77" height="18" uuid="e2862e19-f7ef-4435-a98e-c5cd7c2fa517"/>
+				<reportElement x="657" y="47" width="68" height="18" uuid="e2862e19-f7ef-4435-a98e-c5cd7c2fa517"/>
 				<textElement>
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
@@ -324,12 +338,33 @@ left join sorular ss on ss.question_number = rr.question_number
 				<textFieldExpression><![CDATA[$F{kitapcik}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="648" y="29" width="78" height="18" uuid="32da8248-eb9d-416d-9e15-77d4f081d45b"/>
+				<reportElement x="657" y="29" width="69" height="18" uuid="32da8248-eb9d-416d-9e15-77d4f081d45b"/>
 				<textElement>
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Kitapçık Türü]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="603" y="46" width="9" height="18" uuid="f25f33d0-eb33-4ed6-8d90-700b51b73f6b"/>
+				<textElement>
+					<font pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="544" y="46" width="59" height="18" uuid="fe67b1bb-4861-4eef-8a85-83d3b90d42a0"/>
+				<textElement>
+					<font pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Öğr. Sayısı]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="612" y="46" width="45" height="18" uuid="928133e2-05b7-47f8-9d64-4a6a2d0c2a3f"/>
+				<textElement>
+					<font pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ogr_sayisi}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -636,6 +671,63 @@ left join sorular ss on ss.question_number = rr.question_number
 ($F{color_type}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</frame>
+			<barChart>
+				<chart isShowLegend="false" renderType="draw">
+					<reportElement x="459" y="0" width="100" height="26" uuid="208c4761-eb87-4395-ac1a-ed793017967a">
+						<printWhenExpression><![CDATA[$F{basari}.intValue() < 50]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<chartTitle position="Top">
+						<font size="8"/>
+					</chartTitle>
+					<chartSubtitle>
+						<font size="8"/>
+					</chartSubtitle>
+					<chartLegend position="Top">
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="Group" resetGroup="soruno" incrementType="Group" incrementGroup="soruno"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{cevap}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{basari}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+					<plot orientation="Horizontal" foregroundAlpha="1.0">
+						<seriesColor seriesOrder="0" color="#FF3333"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="false">
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat verticalTickLabels="false">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+					<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+					<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="27" height="26" uuid="9cd70e84-d1c4-4ecd-9040-0263217f907c"/>
 				<box>
@@ -714,57 +806,53 @@ left join sorular ss on ss.question_number = rr.question_number
 				</textElement>
 				<textFieldExpression><![CDATA[$F{d}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="100" y="0" width="27" height="26" uuid="7c1a58be-b915-44e5-bcdb-135cfc4c5cca"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="101" y="0" width="16" height="26" uuid="7c1a58be-b915-44e5-bcdb-135cfc4c5cca"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{a}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{a}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="157" y="0" width="27" height="26" uuid="68e27476-0fbc-4f0c-88bd-a69e62c47ac8"/>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="158" y="0" width="16" height="26" uuid="68e27476-0fbc-4f0c-88bd-a69e62c47ac8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{b}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{b}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="214" y="0" width="27" height="26" uuid="6f580045-0526-483c-aaf7-a3078c663e33"/>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="215" y="0" width="16" height="26" uuid="6f580045-0526-483c-aaf7-a3078c663e33"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{c}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{c}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="271" y="0" width="27" height="26" uuid="2106530f-dbbc-4fd6-904f-b20ef848bdd0"/>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="16" height="26" uuid="2106530f-dbbc-4fd6-904f-b20ef848bdd0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{d}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{d}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="298" y="0" width="30" height="26" uuid="e5133bea-1a8e-4eea-8942-1fdbab77f4ec"/>
@@ -805,44 +893,41 @@ left join sorular ss on ss.question_number = rr.question_number
 				</textElement>
 				<textFieldExpression><![CDATA[$F{boscevap}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="328" y="0" width="27" height="26" uuid="95720696-b514-49fe-9a83-a7570d1dab00"/>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="329" y="0" width="16" height="26" uuid="95720696-b514-49fe-9a83-a7570d1dab00"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{dogrucevap}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{dogrucevap}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="385" y="0" width="27" height="26" uuid="13212ef9-3590-40c5-8fb6-8a6d040f753a"/>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="386" y="0" width="16" height="26" uuid="13212ef9-3590-40c5-8fb6-8a6d040f753a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{yanliscevap}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{yanliscevap}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="442" y="0" width="27" height="26" uuid="f3e27bc3-dbd8-4421-86e5-465b10e329f9"/>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="443" y="0" width="16" height="26" uuid="f3e27bc3-dbd8-4421-86e5-465b10e329f9"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{boscevap}*100/$F{question_count}+ "%"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{boscevap}*100/$F{ogr_sayisi}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="555" y="0" width="247" height="26" uuid="ccac5285-e437-4b6b-ad25-6db933cd7b65"/>
@@ -859,7 +944,9 @@ left join sorular ss on ss.question_number = rr.question_number
 			</textField>
 			<barChart>
 				<chart isShowLegend="false" renderType="draw">
-					<reportElement x="459" y="0" width="100" height="26" uuid="f055539c-84d3-4726-8d9f-c3e155da9a4a"/>
+					<reportElement x="459" y="0" width="100" height="26" uuid="f055539c-84d3-4726-8d9f-c3e155da9a4a">
+						<printWhenExpression><![CDATA[$F{basari}.intValue() >=50]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.0"/>
@@ -886,7 +973,7 @@ left join sorular ss on ss.question_number = rr.question_number
 				</categoryDataset>
 				<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
 					<plot orientation="Horizontal" foregroundAlpha="1.0">
-						<seriesColor seriesOrder="0" color="#3399FF"/>
+						<seriesColor seriesOrder="0" color="#33CC00"/>
 					</plot>
 					<itemLabel/>
 					<categoryAxisFormat>
@@ -919,6 +1006,97 @@ left join sorular ss on ss.question_number = rr.question_number
 				</textElement>
 				<textFieldExpression><![CDATA[$F{basari}+" %"]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="117" y="0" width="10" height="26" uuid="e32a5aba-9abd-49ac-9d7d-5735f58ea39a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="0" width="10" height="26" uuid="f34f086c-7596-4c43-8de6-4d2e8175af76"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="231" y="0" width="10" height="26" uuid="6babd057-9e70-4724-a1d5-e113976378a2"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="0" width="10" height="26" uuid="db3a7a5c-d6b7-4ec4-afe9-9669792ada84"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="0" width="10" height="26" uuid="9c927df3-3d1f-42a7-a77a-710a973bf5c0"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="0" width="10" height="26" uuid="308915dd-8074-4058-9eac-7bdeb00c81b8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="0" width="10" height="26" uuid="c3466657-32ba-4f9d-8058-5cf0cd9293e1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>
