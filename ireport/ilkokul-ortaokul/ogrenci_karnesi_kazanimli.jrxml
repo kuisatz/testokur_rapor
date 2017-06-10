@@ -49,16 +49,15 @@ inner join lessons ls on ls.id = sea.lesson_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-inner join classes cls on cls.class_level= 8
+inner join classes cls on cls.class_level= rp.class_level
 inner join students std on std.id = ser.student_id and cls.id= std.class_id
 inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
 
 
-  where   sea.exam_lesson_booklet_id = 100
-	and ser.exam_id = 92
-	and ee.exam_type_id = 1
-   and  std.class_id = 17
-and
+  where
+	  ser.exam_id = rp.exam_id and
+	  ee.exam_type_id = rp.exam_type_id and
+            std.class_id = rp.branch_id and
 CASE
   WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
    ELSE    1=1
@@ -580,7 +579,7 @@ order by  sinif_sirasi , okul_sirasi , first_name, surname
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="19" splitType="Stretch"/>
+		<band height="13" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="10" splitType="Stretch"/>

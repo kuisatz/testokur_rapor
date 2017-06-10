@@ -13,22 +13,28 @@
 		<defaultValueExpression><![CDATA[9471]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT sea.id, sea.question_number,ss.description,
+		<![CDATA[SELECT sea.id, sea.question_number,
 CASE sea.is_success
   WHEN true THEN 'Doğru'
   WHEN false THEN  'Yanlış'
 END as "sonuc",
-true as color_type
-  FROM public.student_exam_answers sea
-left join sorular ss on ss.question_number = sea.question_number
-where student_exam_result_id = $P{pstudent_exam_result_id}
+rp.color_type as color_type,
+sea.exam_lesson_booklet_id,
+su.name as description
+ FROM public.student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+
+inner join answerkeys ans on ans.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number= ans.question_number
+left join subjects su on su.id = ans.subject_no
+where student_exam_result_id =  $P{pstudent_exam_result_id}
   and sea.question_number between cast ($P{pqnumber1} as integer)  and cast ($P{pqnumber2} as integer)]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="question_number" class="java.lang.Integer"/>
-	<field name="description" class="java.lang.String"/>
 	<field name="sonuc" class="java.lang.String"/>
 	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="exam_lesson_booklet_id" class="java.lang.Integer"/>
+	<field name="description" class="java.lang.String"/>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<frame>

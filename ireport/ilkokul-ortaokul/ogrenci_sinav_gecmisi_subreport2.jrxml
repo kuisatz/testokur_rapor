@@ -3,6 +3,9 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="pstudent_number" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0201]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select row_number() over() as sirano,  a.* from  (
 SELECT  distinct
@@ -14,15 +17,14 @@ inner join reports_params rp on rp.id = (select max(id) from reports_params )
 inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join lessons ls on ls.id = sea.lesson_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
-inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id  -- and ser.exam_id = 92
-inner join classes cls on cls.id = ser.class_id and cls.class_level= 8
+inner join classes cls on cls.id = ser.class_id
 inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
 inner join students std on std.id = ser.student_id  and cls.id= std.class_id
- where --  sea.exam_lesson_booklet_id = 100 and
-   std.student_number = '0201'
-
-
+ where
+   std.student_number = $P{pstudent_number}
+   and ee.exam_type_id = rp.exam_type_id
   order by ls.name ,ee.name
   ) as a]]>
 	</queryString>
@@ -66,7 +68,7 @@ inner join students std on std.id = ser.student_id  and cls.id= std.class_id
 					<plot orientation="Horizontal"/>
 					<itemLabel/>
 					<categoryAxisFormat>
-						<axisFormat tickLabelMask="" verticalTickLabels="false">
+						<axisFormat verticalTickLabels="false">
 							<labelFont>
 								<font size="8"/>
 							</labelFont>
@@ -94,7 +96,7 @@ inner join students std on std.id = ser.student_id  and cls.id= std.class_id
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sinav} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sinav}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

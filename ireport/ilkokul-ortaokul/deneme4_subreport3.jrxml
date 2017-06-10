@@ -22,12 +22,13 @@ FROM student_exam_answers sea
 inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join lessons ls on ls.id = sea.lesson_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
-inner join exams ee on ee.id = el.exam_id and ee.exam_type_id = 1
+inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
 inner join classes cls on cls.id = ser.class_id
 inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted = false
 inner join students std on std.id = ser.student_id  and cls.id= std.class_id
-  where   sea.exam_lesson_booklet_id =  $P{pexam_lesson_booklet_id}
+  where
+  sea.exam_lesson_booklet_id =  $P{pexam_lesson_booklet_id}
  and sea.student_exam_result_id =  $P{pstudent_exam_result_id}
   order by sea.question_number]]>
 	</queryString>
