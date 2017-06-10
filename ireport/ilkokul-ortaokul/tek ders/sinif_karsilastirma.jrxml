@@ -43,11 +43,12 @@ SELECT
   inner join exams exx on exx.id = elx.exam_id and elx.exam_id = serx.exam_id
   inner join classes ccx on ccx.id = serx.class_id
   inner join exam_types etx on etx.id = exx.exam_type_id
-  inner join report_types rtx on rtx.id =  etx.id and rtx.id = rp.report_type_id
+  inner join report_types rtx on rtx.id =  etx.id
   inner join exam_lesson_booklets elbx on elbx.exam_lesson_id= elx.id
   where
-   exx.id = 18 and
-   ccx.class_level = 8
+  rtx.id = rp.report_type_id and
+   exx.id = rp.exam_id and
+   ccx.class_level = rp.class_level
 
 
 group by  serx.class_id, serx.exam_id, elx.exam_id ,serx.booklet_type, elbx.question_count,serx.classroom_score_avg ,

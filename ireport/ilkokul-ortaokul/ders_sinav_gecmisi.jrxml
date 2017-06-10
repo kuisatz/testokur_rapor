@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ders_sinav_gecmisi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="87bd8adc-7e56-4613-a03d-0bf03ba84429">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="56"/>
+	<property name="ireport.x" value="35"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[SELECT  row_number() over() as sirano,
@@ -42,10 +42,11 @@ CASE
   inner join exams exx on exx.id = elx.exam_id and elx.exam_id = serx.exam_id
   inner join classes ccx on ccx.id = serx.class_id
   inner join exam_types etx on etx.id = exx.exam_type_id
-  inner join report_types rtx on rtx.id =  etx.id and rtx.id = rp.report_type_id
+  inner join report_types rtx on rtx.id =  etx.id
   inner join exam_lesson_booklets elbx on elbx.exam_lesson_id= elx.id
   where
-  -- and exx.id = 18 and
+   rtx.id = rp.report_type_id and
+   exx.id = rp.exam_id and
  CASE
   WHEN  rp.branch_id >0  THEN   ccx.id = rp.branch_id
    ELSE    1=1

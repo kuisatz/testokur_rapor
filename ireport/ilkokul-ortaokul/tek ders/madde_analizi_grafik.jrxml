@@ -7,7 +7,14 @@
 		<defaultValueExpression><![CDATA["C:\\projeler\\testokur_rapor\\ireport\\ilkokul-ortaokul\\tek ders\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[WITH regi AS (
+		<![CDATA[/*
+SELECT id, memo1, memo2, memo3, exam_type_id, report_type_id, is_high_school,
+       exam_id, lesson_id, class_level, branch_id, student_id, student_no,
+       just_date, start_date, end_date, color_type, report_id, order_id
+  FROM public.reports_params;
+
+  */
+WITH regi AS (
 select row_number() over() as sirano1,  a.*  from  (
 SELECT  distinct
 	 ls.name as ders , ee.name as sinav,  el.exam_id  ,
@@ -25,7 +32,8 @@ CASE
 	ser.class_id ,
 	rp.color_type
 ,sea.question_number,
-answer.value as cevap,
+answer.value as cevap,  ee.exam_type_id ,
+-- and ee
  ( select count( distinct  ffx.student_id ) from student_exam_results ffx
 			where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = std.class_id )
 			and ffx.exam_id = ee.id ) as ogr_sayisi
@@ -38,15 +46,14 @@ inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
 inner join classes cls on cls.id = ser.class_id
 inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
-inner join students std on std.id = ser.student_id -- and cls.id= std.class_id
+inner join students std on std.id = ser.student_id
 where
-   -- std.student_number = rp.student_no
--- std.student_number = '0210'
-el.exam_id  = 16
 
- and  std.class_id = 17
-and cls.class_level= 8 --rp.class_level
--- and ee.exam_type_id = rp.exam_type_id
+ el.exam_id  =   rp.exam_id
+
+ and  std.class_id = rp.branch_id
+ and cls.class_level=  rp.class_level
+ and ee.exam_type_id = rp.exam_type_id
 and
 CASE
   WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
@@ -85,6 +92,7 @@ left join sorular ss on ss.question_number = rr.question_number
 	<field name="color_type" class="java.lang.Boolean"/>
 	<field name="question_number" class="java.lang.Integer"/>
 	<field name="cevap" class="java.lang.String"/>
+	<field name="exam_type_id" class="java.lang.Integer"/>
 	<field name="ogr_sayisi" class="java.lang.Long"/>
 	<field name="kayit_sayisi" class="java.lang.Long"/>
 	<field name="description" class="java.lang.String"/>
