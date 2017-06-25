@@ -196,12 +196,12 @@ order by  ccx.class_level, ccx.name ,exx.name
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="29" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="1" y="0" width="555" height="28" backcolor="#CCCCCC" uuid="3686b06a-b89a-4f6b-ac73-43fdb2e4fac3"/>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="1" y="1" width="555" height="28" backcolor="#3399FF" uuid="6762acf8-2fae-4982-ab86-91752744e93f">
+				<reportElement mode="Opaque" x="1" y="0" width="555" height="28" backcolor="#3399FF" uuid="6762acf8-2fae-4982-ab86-91752744e93f">
 					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 			</frame>
@@ -229,7 +229,7 @@ order by  ccx.class_level, ccx.name ,exx.name
 				<text><![CDATA[Tarih]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="197" y="1" width="59" height="28" uuid="7ba1d0d0-12e3-42c5-a65f-d21a3f791df5"/>
+				<reportElement x="197" y="0" width="59" height="28" uuid="7ba1d0d0-12e3-42c5-a65f-d21a3f791df5"/>
 				<textElement textAlignment="Center">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
@@ -257,14 +257,14 @@ order by  ccx.class_level, ccx.name ,exx.name
 				<text><![CDATA[Başarı (%)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="265" y="1" width="56" height="28" uuid="48d8e23a-e87a-4ee5-8dc5-f6f25dd22d6b"/>
+				<reportElement x="265" y="0" width="56" height="28" uuid="48d8e23a-e87a-4ee5-8dc5-f6f25dd22d6b"/>
 				<textElement textAlignment="Center">
 					<font size="9" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exam_type_id}.intValue()==3?"En Düşük Net":"En Düşük Puan"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="335" y="1" width="62" height="28" uuid="82fe38f0-a520-4f14-af8a-f70adbe3ff7f"/>
+				<reportElement x="335" y="0" width="62" height="28" uuid="82fe38f0-a520-4f14-af8a-f70adbe3ff7f"/>
 				<textElement textAlignment="Center">
 					<font size="9" pdfEncoding="Cp1254"/>
 				</textElement>
@@ -316,21 +316,39 @@ order by  ccx.class_level, ccx.name ,exx.name
 				</reportElement>
 			</frame>
 			<textField>
-				<reportElement x="5" y="0" width="26" height="18" uuid="a8e3e0d8-3099-4683-9409-a4ef2fdcfc28"/>
+				<reportElement x="1" y="0" width="29" height="18" uuid="a8e3e0d8-3099-4683-9409-a4ef2fdcfc28"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement>
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sirano}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="0" width="77" height="18" uuid="2bc2acab-25d3-4c48-ad6e-16e26985afa8"/>
+				<reportElement x="31" y="0" width="81" height="18" uuid="2bc2acab-25d3-4c48-ad6e-16e26985afa8"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{class_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd.MM.yyyy">
-				<reportElement x="114" y="0" width="82" height="18" uuid="608f05eb-6a57-4f7a-9fae-b2d64be5a90c"/>
+				<reportElement x="112" y="0" width="84" height="18" uuid="608f05eb-6a57-4f7a-9fae-b2d64be5a90c"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" pdfEncoding="Cp1254"/>
 				</textElement>
@@ -338,6 +356,12 @@ order by  ccx.class_level, ccx.name ,exx.name
 			</textField>
 			<textField>
 				<reportElement x="197" y="0" width="67" height="18" uuid="b68e2f00-337f-406f-ad8f-8d8841ab4fe5"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
@@ -345,72 +369,69 @@ order by  ccx.class_level, ccx.name ,exx.name
 			</textField>
 			<textField>
 				<reportElement x="265" y="0" width="68" height="18" uuid="56e2a1d9-3a96-454c-b25c-bfc2f14de616"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{min}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="333" y="0" width="64" height="18" uuid="9356628b-86b2-4302-864e-2a71f811ff4f"/>
+				<reportElement x="333" y="0" width="70" height="18" uuid="9356628b-86b2-4302-864e-2a71f811ff4f"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{max}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="404" y="0" width="56" height="18" uuid="d3c9f8f7-0829-4dc1-9ae2-ac5fe3a283bf"/>
+				<reportElement x="404" y="0" width="60" height="18" uuid="d3c9f8f7-0829-4dc1-9ae2-ac5fe3a283bf"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{classroom_net_avg}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="468" y="0" width="41" height="18" uuid="f8e9ff45-21cc-44c7-8735-dfab93b877ba"/>
+				<reportElement x="464" y="0" width="49" height="18" uuid="f8e9ff45-21cc-44c7-8735-dfab93b877ba"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{classroom_score_avg}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="515" y="0" width="37" height="18" uuid="e96544b1-97ab-4c45-8388-45064875e034"/>
+				<reportElement x="514" y="0" width="42" height="18" uuid="e96544b1-97ab-4c45-8388-45064875e034"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{basari} + " %"]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="1" y="18" width="555" height="1" uuid="8e54283f-7428-4590-b3d4-dfbb375ab406"/>
-			</line>
-			<line>
-				<reportElement x="1" y="0" width="1" height="18" uuid="e1b2956a-71ae-4c08-a69f-7fc315f17493"/>
-			</line>
-			<line>
-				<reportElement x="30" y="0" width="1" height="18" uuid="dbe0dbba-65bb-4ac9-afb9-7cab1a98f22a"/>
-			</line>
-			<line>
-				<reportElement x="112" y="0" width="1" height="18" uuid="085914fb-006c-4b08-afdd-51fbdfe8f05d"/>
-			</line>
-			<line>
-				<reportElement x="196" y="0" width="1" height="18" uuid="3bbbba3a-b02c-4036-afa4-475e57b5cffc"/>
-			</line>
-			<line>
-				<reportElement x="264" y="0" width="1" height="18" uuid="4ce7972a-728d-4fec-8c8f-d2ec6c6e24fe"/>
-			</line>
-			<line>
-				<reportElement x="333" y="0" width="1" height="18" uuid="e760f6a1-59eb-47a2-adb9-ab307c193c09"/>
-			</line>
-			<line>
-				<reportElement x="403" y="0" width="1" height="18" uuid="52be3363-0bd1-4255-8edc-42b0e37943f4"/>
-			</line>
-			<line>
-				<reportElement x="464" y="0" width="1" height="18" uuid="3e81d7e0-3c80-47de-975c-36a438dae55d"/>
-			</line>
-			<line>
-				<reportElement x="513" y="0" width="1" height="18" uuid="20a14ecd-1a19-4db2-852e-f9a95f25a5d9"/>
-			</line>
-			<line>
-				<reportElement x="555" y="0" width="1" height="18" uuid="c833463d-5344-4e2b-9b1d-ca676f3674b8"/>
-			</line>
 		</band>
 		<band height="27">
 			<printWhenExpression><![CDATA[(($F{kayit_sayisi}.intValue() - $F{sirano}) == 0 )]]></printWhenExpression>
