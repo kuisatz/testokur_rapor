@@ -2710,9 +2710,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb1d}/($V{vcbb1d}+$V{vcbb1y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb1d}/($V{vcbb1d}+$V{vcbb1y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="204" y="71" width="18" height="20" uuid="85edd7e6-1037-4215-9cb9-23c55b8e7ec4"/>
@@ -2725,9 +2723,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb2d}/($V{vcbb2d}+$V{vcbb2y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb2d}/($V{vcbb2d}+$V{vcbb2y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="222" y="71" width="18" height="20" uuid="969da361-525c-4a98-9818-d6eac3ddefca"/>
@@ -2740,9 +2736,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb3d}/($V{vcbb3d}+$V{vcbb3y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb3d}/($V{vcbb3d}+$V{vcbb3y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="240" y="71" width="18" height="20" uuid="0ea827a0-481f-4e61-997a-5c455661e3c7"/>
@@ -2755,9 +2749,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb4d}/($V{vcbb4d}+$V{vcbb4y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb4d}/($V{vcbb4d}+$V{vcbb4y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="258" y="71" width="18" height="20" uuid="ea9e4849-a823-4dbe-a758-d2efa8652a71"/>
@@ -2770,9 +2762,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb5d}/($V{vcbb5d}+$V{vcbb5y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb5d}/($V{vcbb5d}+$V{vcbb5y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="276" y="71" width="18" height="20" uuid="9b961b4e-0392-4fdb-af73-0896cb136f8e"/>
@@ -2785,9 +2775,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb6d}/($V{vcbb6d}+$V{vcbb6y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb6d}/($V{vcbb6d}+$V{vcbb6y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="294" y="71" width="18" height="20" uuid="0b151171-b6a8-4415-ae20-220c0db26df1"/>
@@ -2800,9 +2788,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb7d}/($V{vcbb7d}+$V{vcbb7y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb7d}/($V{vcbb7d}+$V{vcbb7y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="312" y="71" width="18" height="20" uuid="e7433afc-8ce7-4e37-9ad4-5043da51372f"/>
@@ -2815,9 +2801,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb8d}/($V{vcbb8d}+$V{vcbb8y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb8d}/($V{vcbb8d}+$V{vcbb8y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="330" y="71" width="18" height="20" uuid="b2490dbe-ee21-40ab-9a38-b1fafcf2a65b"/>
@@ -2830,9 +2814,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb9d}/($V{vcbb9d}+$V{vcbb9y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb9d}/($V{vcbb9d}+$V{vcbb9y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="348" y="71" width="18" height="20" uuid="1e4d8472-64a5-4c4b-a776-22d778d834b4"/>
@@ -2845,9 +2827,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb10d}/($V{vcbb10d}+$V{vcbb10y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb10d}/($V{vcbb10d}+$V{vcbb10y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="366" y="71" width="18" height="20" uuid="f9da7264-903a-4407-ad38-510ebcbc0eaa"/>
@@ -2860,9 +2840,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb11d}/($V{vcbb11d}+$V{vcbb11y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb11d}/($V{vcbb11d}+$V{vcbb11y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="384" y="71" width="18" height="20" uuid="9f807eb4-bbf8-46d7-8c1f-cf2f4bf33243"/>
@@ -2875,9 +2853,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb12d}/($V{vcbb12d}+$V{vcbb12y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb12d}/($V{vcbb12d}+$V{vcbb12y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="402" y="71" width="18" height="20" uuid="a4683987-9e04-4c3d-bbf2-d3daab86de58"/>
@@ -2890,9 +2866,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb13d}/($V{vcbb13d}+$V{vcbb13y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb13d}/($V{vcbb13d}+$V{vcbb13y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="420" y="71" width="18" height="20" uuid="2459055d-c355-45e0-9ced-45701407e1fd"/>
@@ -2905,9 +2879,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb14d}/($V{vcbb14d}+$V{vcbb14y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb14d}/($V{vcbb14d}+$V{vcbb14y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="438" y="71" width="18" height="20" uuid="81207928-44d9-4d04-8c7d-33c87f55700e"/>
@@ -2920,9 +2892,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb15d}/($V{vcbb15d}+$V{vcbb15y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb15d}/($V{vcbb15d}+$V{vcbb15y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="456" y="71" width="18" height="20" uuid="4831cee9-36bc-4a0c-8415-098271524e87"/>
@@ -2935,9 +2905,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb16d}/($V{vcbb16d}+$V{vcbb16y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb16d}/($V{vcbb16d}+$V{vcbb16y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="474" y="71" width="18" height="20" uuid="90d15fd3-6ac7-479b-a632-c9fd64e0d972"/>
@@ -2950,9 +2918,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb17d}/($V{vcbb17d}+$V{vcbb17y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb17d}/($V{vcbb17d}+$V{vcbb17y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="510" y="71" width="18" height="20" uuid="1eea1c8e-0ec7-4b77-b99c-9d885383c790"/>
@@ -2965,9 +2931,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb19d}/($V{vcbb19d}+$V{vcbb19y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb19d}/($V{vcbb19d}+$V{vcbb19y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="492" y="71" width="18" height="20" uuid="d0341be7-45eb-4ee1-9134-cec2f8c527c7"/>
@@ -2980,9 +2944,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb18d}/($V{vcbb18d}+$V{vcbb18y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb18d}/($V{vcbb18d}+$V{vcbb18y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="528" y="71" width="18" height="20" uuid="b3ef1e13-55f3-43d6-b930-59f3f7a2118b"/>
@@ -2995,9 +2957,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb20d}/($V{vcbb20d}+$V{vcbb20y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb20d}/($V{vcbb20d}+$V{vcbb20y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="546" y="71" width="18" height="20" uuid="f5f3b0e5-067d-43f5-b72f-4237aed0bfb1"/>
@@ -3010,9 +2970,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb21d}/($V{vcbb21d}+$V{vcbb21y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb21d}/($V{vcbb21d}+$V{vcbb21y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="564" y="71" width="18" height="20" uuid="1ecb160a-e0d8-4d38-a24f-bb4ded4a40c7"/>
@@ -3025,9 +2983,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb22d}/($V{vcbb22d}+$V{vcbb22y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb22d}/($V{vcbb22d}+$V{vcbb22y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="582" y="71" width="18" height="20" uuid="dfc1301a-1153-4165-b7ca-aa612c86561e"/>
@@ -3040,9 +2996,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb23d}/($V{vcbb23d}+$V{vcbb23y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb23d}/($V{vcbb23d}+$V{vcbb23y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="600" y="71" width="18" height="20" uuid="cca85f85-0777-4f3e-b804-fba4bee9a6bf"/>
@@ -3055,9 +3009,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb24d}/($V{vcbb24d}+$V{vcbb24y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb24d}/($V{vcbb24d}+$V{vcbb24y}))*100]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
 					<reportElement x="618" y="71" width="18" height="20" uuid="2388e704-f78f-4d65-bc36-ab411562ee2f"/>
@@ -3070,9 +3022,7 @@ order by  output_type , sinif_sirasi , okul_sirasi , first_name, surname]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{vcbb25d}/($V{vcbb25d}+$V{vcbb25y}))*100
-
- ]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{vcbb25d}/($V{vcbb25d}+$V{vcbb25y}))*100]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="148" y="71" width="38" height="20" uuid="ec3854a7-2e80-4e14-974c-5136564959cc"/>
