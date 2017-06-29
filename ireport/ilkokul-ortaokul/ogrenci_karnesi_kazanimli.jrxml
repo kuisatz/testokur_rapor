@@ -12,9 +12,7 @@ select row_number() over() as sirano1,  a.*  from  (
 SELECT distinct
 	std.first_name, std.surname,std.student_number,elb.question_count,
 	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
-	cc.corparation_name,
-	ci.name as city,
-	di.name as district,
+
 	ls.name as ders ,
 	cls.name as sinif,
  	cls.branch as sube,
@@ -41,9 +39,7 @@ sea.exam_lesson_booklet_id,
 
 FROM student_exam_answers sea
 inner join reports_params rp on rp.id = (select max(id) from reports_params )
-inner join customers cc on cc.id = 1
-inner join city ci on ci.id = cc.city_id
-inner join districts di on di.id = cc.district_id
+
 inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join lessons ls on ls.id = sea.lesson_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
@@ -73,7 +69,13 @@ and
  ) as a
   ),
 regi2 AS (
-  select   * , (select max(sirano1) from regi ) as kayit_sayisi   from regi
+  select   rrgi.* , cc.corparation_name,
+	ci.name as city,
+	di.name as district,
+        (select max(rrgix.sirano1) from regi rrgix ) as kayit_sayisi   from regi rrgi
+	inner join customers cc on cc.id = 1
+	inner join city ci on ci.id = cc.city_id
+	inner join districts di on di.id = cc.district_id
 order by  sinif_sirasi , okul_sirasi , first_name, surname
 )
 
@@ -91,9 +93,6 @@ order by  sinif_sirasi , okul_sirasi , first_name, surname
 	<field name="total_count" class="java.lang.Integer"/>
 	<field name="total_net" class="java.math.BigDecimal"/>
 	<field name="point" class="java.math.BigDecimal"/>
-	<field name="corparation_name" class="java.lang.String"/>
-	<field name="city" class="java.lang.String"/>
-	<field name="district" class="java.lang.String"/>
 	<field name="ders" class="java.lang.String"/>
 	<field name="sinif" class="java.lang.String"/>
 	<field name="sube" class="java.lang.String"/>
@@ -111,6 +110,9 @@ order by  sinif_sirasi , okul_sirasi , first_name, surname
 	<field name="sinifx" class="java.lang.String"/>
 	<field name="subex" class="java.lang.String"/>
 	<field name="classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="corparation_name" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="district" class="java.lang.String"/>
 	<field name="kayit_sayisi" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>

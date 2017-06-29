@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="ogrid" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[81]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[64]]></defaultValueExpression>
 	</parameter>
 	<parameter name="examid" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[105]]></defaultValueExpression>
