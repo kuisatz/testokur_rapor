@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_ogrenci_karnesi_2_8_subreport1" language="groovy" pageWidth="370" pageHeight="200" columnWidth="370" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cc67ee5f-d039-4533-950f-2d1990d3bab6">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_ogrenci_karnesi_2_8_subreport1" language="groovy" pageWidth="332" pageHeight="100" columnWidth="332" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cc67ee5f-d039-4533-950f-2d1990d3bab6">
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="ogrid" class="java.lang.Integer">
@@ -197,18 +197,18 @@ from regi2]]>
 	<group name="exam_lesson_booklet_id" keepTogether="true">
 		<groupExpression><![CDATA[$F{exam_lesson_booklet_id}]]></groupExpression>
 		<groupFooter>
-			<band height="20">
+			<band height="14" splitType="Stretch">
 				<printWhenExpression><![CDATA[(($F{kayit_sayisi}.intValue() -$F{sirano}) == 0 )]]></printWhenExpression>
 				<frame>
-					<reportElement mode="Opaque" x="0" y="0" width="370" height="20" backcolor="#CCCCCC" uuid="b6fd208a-0051-4df9-9e06-bc64ce3a024f"/>
+					<reportElement mode="Opaque" x="0" y="0" width="332" height="12" backcolor="#CCCCCC" uuid="b6fd208a-0051-4df9-9e06-bc64ce3a024f"/>
 				</frame>
 				<frame>
-					<reportElement mode="Opaque" x="0" y="0" width="370" height="20" backcolor="#3399FF" uuid="d5633bc0-0d4d-4da1-b4f2-ae3b6a36b7d3">
+					<reportElement mode="Opaque" x="0" y="0" width="332" height="12" backcolor="#3399FF" uuid="d5633bc0-0d4d-4da1-b4f2-ae3b6a36b7d3">
 						<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 					</reportElement>
 				</frame>
 				<staticText>
-					<reportElement x="0" y="0" width="76" height="20" uuid="29715d74-af63-467e-bce8-610d63cf170a">
+					<reportElement x="0" y="0" width="60" height="12" uuid="29715d74-af63-467e-bce8-610d63cf170a">
 						<property name="Backcolor" value=""/>
 					</reportElement>
 					<box>
@@ -218,12 +218,12 @@ from regi2]]>
 						<rightPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
+						<font size="8" pdfEncoding="Cp1254"/>
 					</textElement>
 					<text><![CDATA[Toplam]]></text>
 				</staticText>
 				<textField pattern="###0">
-					<reportElement x="76" y="0" width="26" height="20" uuid="7d562016-f11e-42d3-94f6-32b8ce87a11c"/>
+					<reportElement x="60" y="0" width="20" height="12" uuid="7d562016-f11e-42d3-94f6-32b8ce87a11c"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -236,7 +236,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$V{v_soruadet}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
-					<reportElement x="102" y="0" width="26" height="20" uuid="5099d63f-a81c-466e-9cbc-14d5e495382a"/>
+					<reportElement x="80" y="0" width="24" height="12" uuid="5099d63f-a81c-466e-9cbc-14d5e495382a"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -249,7 +249,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$F{success_count}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
-					<reportElement x="128" y="0" width="26" height="20" uuid="b14f456d-e18d-461b-95e0-b96601b0e798"/>
+					<reportElement x="104" y="0" width="26" height="12" uuid="b14f456d-e18d-461b-95e0-b96601b0e798"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -262,7 +262,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$V{v_yanlis}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
-					<reportElement x="154" y="0" width="26" height="20" uuid="c0953da2-d7bb-4c95-9fe3-cadff199f628"/>
+					<reportElement x="130" y="0" width="20" height="12" uuid="c0953da2-d7bb-4c95-9fe3-cadff199f628"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -275,7 +275,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$V{v_soruadet}-$V{v_dogru}-$V{v_yanlis}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
-					<reportElement x="180" y="0" width="30" height="20" uuid="64c2d065-dc12-4be3-be21-c572704caba3"/>
+					<reportElement x="150" y="0" width="26" height="12" uuid="64c2d065-dc12-4be3-be21-c572704caba3"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -288,7 +288,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$V{v_net}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
-					<reportElement x="210" y="0" width="19" height="20" uuid="9d82eaf3-c6ce-453a-bc43-478c02b79b8c"/>
+					<reportElement x="176" y="0" width="15" height="12" uuid="9d82eaf3-c6ce-453a-bc43-478c02b79b8c"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -301,7 +301,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$V{v_basari}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0">
-					<reportElement x="228" y="0" width="12" height="20" uuid="dde130c6-e6cb-4015-9d30-e393d37a677d"/>
+					<reportElement x="190" y="0" width="12" height="12" uuid="dde130c6-e6cb-4015-9d30-e393d37a677d"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.0"/>
@@ -314,7 +314,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA['%']]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00">
-					<reportElement x="240" y="0" width="67" height="20" uuid="2a897a03-3fac-41de-8ab1-e021351cc549"/>
+					<reportElement x="202" y="0" width="68" height="12" uuid="2a897a03-3fac-41de-8ab1-e021351cc549"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -327,7 +327,7 @@ from regi2]]>
 					<textFieldExpression><![CDATA[$V{v_sinifort}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00">
-					<reportElement x="308" y="0" width="62" height="20" uuid="0ccd990d-60f1-47b9-a591-2ca2be1bd7c4"/>
+					<reportElement x="270" y="0" width="62" height="12" uuid="0ccd990d-60f1-47b9-a591-2ca2be1bd7c4"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -346,17 +346,17 @@ from regi2]]>
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="47" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="370" height="47" backcolor="#CCCCCC" uuid="ed2207de-d91c-4935-91b8-85cef297e7cb"/>
+				<reportElement mode="Opaque" x="0" y="0" width="332" height="28" backcolor="#CCCCCC" uuid="ed2207de-d91c-4935-91b8-85cef297e7cb"/>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="370" height="47" backcolor="#3399FF" uuid="cbe6bb9b-29f4-4414-abd4-9cc9d8a39fe6">
+				<reportElement mode="Opaque" x="0" y="0" width="332" height="28" backcolor="#3399FF" uuid="cbe6bb9b-29f4-4414-abd4-9cc9d8a39fe6">
 					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 			</frame>
 			<staticText>
-				<reportElement x="102" y="22" width="26" height="25" uuid="908e2fcd-b872-43ac-b660-2c7ec6f948b9"/>
+				<reportElement x="80" y="14" width="24" height="14" uuid="908e2fcd-b872-43ac-b660-2c7ec6f948b9"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -364,12 +364,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Doğru]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="0" width="130" height="22" uuid="6f563f83-8f3d-4ca4-b731-7f2c5e6b2c77"/>
+				<reportElement x="202" y="0" width="130" height="14" uuid="6f563f83-8f3d-4ca4-b731-7f2c5e6b2c77"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -377,12 +377,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Ortalama Bilgileri]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="76" height="47" uuid="02376e3f-41bc-4f51-bf76-46f008389745">
+				<reportElement x="0" y="0" width="60" height="28" uuid="02376e3f-41bc-4f51-bf76-46f008389745">
 					<property name="Backcolor" value=""/>
 				</reportElement>
 				<box>
@@ -392,12 +392,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Dersler]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="76" y="22" width="26" height="25" uuid="dce47d1b-cc38-4930-8305-e2002e06d4d4"/>
+				<reportElement x="60" y="14" width="20" height="14" uuid="dce47d1b-cc38-4930-8305-e2002e06d4d4"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -405,12 +405,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Soru]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="210" y="22" width="30" height="25" uuid="7a6f633c-69b8-4195-b045-4fca18ed552e"/>
+				<reportElement x="176" y="14" width="26" height="14" uuid="7a6f633c-69b8-4195-b045-4fca18ed552e"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -418,12 +418,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Başarı]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="22" width="30" height="25" uuid="a3da9bee-c54d-445f-99b9-98b2c7494efd"/>
+				<reportElement x="150" y="14" width="26" height="14" uuid="a3da9bee-c54d-445f-99b9-98b2c7494efd"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -431,12 +431,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Net]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="22" width="68" height="25" uuid="437ad290-575b-4ae6-aeeb-55cb002562f6"/>
+				<reportElement x="202" y="14" width="68" height="14" uuid="437ad290-575b-4ae6-aeeb-55cb002562f6"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -444,12 +444,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Sınıf]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="22" width="26" height="25" uuid="43aa3bab-3e5c-4ca0-8e9c-863b6bcb188d"/>
+				<reportElement x="104" y="14" width="26" height="14" uuid="43aa3bab-3e5c-4ca0-8e9c-863b6bcb188d"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -457,12 +457,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Yanlış]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="76" y="0" width="164" height="22" uuid="c3d3519e-35e1-40f2-a3c2-f4b945dcd189"/>
+				<reportElement x="60" y="0" width="142" height="14" uuid="c3d3519e-35e1-40f2-a3c2-f4b945dcd189"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -470,12 +470,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Sınav Bilgileri]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="308" y="22" width="62" height="25" uuid="fea9cacd-b744-4c41-af58-9388428ea5be"/>
+				<reportElement x="270" y="14" width="62" height="14" uuid="fea9cacd-b744-4c41-af58-9388428ea5be"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -483,12 +483,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Okul]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="154" y="22" width="26" height="25" uuid="5aee6030-437e-4c07-a25c-dd0ea27aff1f"/>
+				<reportElement x="130" y="14" width="20" height="14" uuid="5aee6030-437e-4c07-a25c-dd0ea27aff1f"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -496,16 +496,16 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Boş]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<textField>
-				<reportElement x="240" y="0" width="68" height="18" uuid="43cb4290-edc6-4b4e-9d26-863f21510dd0"/>
+				<reportElement x="202" y="0" width="68" height="12" uuid="43cb4290-edc6-4b4e-9d26-863f21510dd0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -513,12 +513,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{lesson_classroom_net_avg}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="76" y="0" width="26" height="18" uuid="db49f197-e939-4043-abab-e4536dc3ab45"/>
+				<reportElement x="60" y="0" width="20" height="12" uuid="db49f197-e939-4043-abab-e4536dc3ab45"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -526,12 +526,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{question_count}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="308" y="0" width="62" height="18" uuid="6f8a38a3-2246-4425-b626-cbae88cfd300"/>
+				<reportElement x="270" y="0" width="62" height="12" uuid="6f8a38a3-2246-4425-b626-cbae88cfd300"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -539,12 +539,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{lesson_class_level_net_avg}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="102" y="0" width="26" height="18" uuid="eb8a895b-9f89-47a2-b1f9-4d6efeed20a2"/>
+				<reportElement x="80" y="0" width="24" height="12" uuid="eb8a895b-9f89-47a2-b1f9-4d6efeed20a2"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -552,12 +552,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ders_success_count}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="76" height="18" uuid="023f6167-9758-4742-9f25-3ec58a19e257"/>
+				<reportElement x="0" y="0" width="60" height="12" uuid="023f6167-9758-4742-9f25-3ec58a19e257"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -565,12 +565,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ders}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="128" y="0" width="26" height="18" uuid="29ecdb39-4d2b-4103-bc25-0b523e597e93"/>
+				<reportElement x="104" y="0" width="26" height="12" uuid="29ecdb39-4d2b-4103-bc25-0b523e597e93"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -578,12 +578,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ders_fail_count}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="154" y="0" width="26" height="18" uuid="c4bac818-9586-48a5-9c62-6dcc29a79662"/>
+				<reportElement x="130" y="0" width="20" height="12" uuid="c4bac818-9586-48a5-9c62-6dcc29a79662"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -591,12 +591,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{question_count}-$F{ders_success_count}-$F{ders_fail_count}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="210" y="0" width="30" height="18" uuid="40936177-597f-450b-96aa-ed1605f8e39e"/>
+				<reportElement x="176" y="0" width="26" height="12" uuid="40936177-597f-450b-96aa-ed1605f8e39e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -604,12 +604,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{lesson_success_percentage}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="180" y="0" width="30" height="18" uuid="0028458e-8d6a-4c95-b24c-23d304121509"/>
+				<reportElement x="150" y="0" width="26" height="12" uuid="0028458e-8d6a-4c95-b24c-23d304121509"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -617,7 +617,7 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{lesson_net_count}]]></textFieldExpression>
 			</textField>

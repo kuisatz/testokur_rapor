@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_ogrenci_karnesi_2_8_subreport3" language="groovy" pageWidth="230" pageHeight="200" whenNoDataType="BlankPage" columnWidth="230" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="75c83f4f-a409-4381-947c-ef8254029d76">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pstudent_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[64]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pclass_level" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[5]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pexam_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[105]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH regi AS (
+select   a.*  from  (
+SELECT distinct
+
+	 ser.point,
+	cls.class_level  ,
+	ser.student_id,
+	ser.class_id ,
+	ee.id as exam_id,
+	sea.student_exam_result_id,
+	sea.exam_lesson_booklet_id
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join lessons ls on ls.id = sea.lesson_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+inner join classes cls on cls.class_level=  $P{pclass_level}
+inner join students std on std.id = ser.student_id and cls.id= std.class_id
+  where
+      ser.exam_id =  $P{pexam_id} and
+CASE
+  WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
+   ELSE    1=1
+  END
+ ) as a
+  ),
+
+
+sinif_ortalamasi AS (
+select sum(point) as sinif_ortalamasi_sum from  (
+Select distinct  stuanwq.point ,stuanwq.id  from student_exam_results stuanwq
+where stuanwq.id in (select distinct rgxx.student_exam_result_id from regi rgxx )
+) as hhh
+),
+okul_ortalamasi AS (
+select sum(point) as okul_ortalamasi_sum from (
+Select distinct  stuanwqq.point ,stuanwqq.exam_id  from student_exam_results stuanwqq
+where stuanwqq.exam_id  in (select distinct rgxx.exam_id   from regi rgxx )
+) as rrtt
+),
+
+
+
+
+
+regi22 AS (
+select   regi.*  ,
+	(select count(distinct student_id)  from student_exam_results ffx where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = regi.class_id ) and ffx.exam_id = regi.exam_id   ) as ogr_sayisi
+
+from regi
+),
+ regi23 AS (
+
+ select     student_id, point ,
+	  cast(sinif_ortalamasi_sum / ogr_sayisi as numeric(18,3))  as sinif_ortalamasi ,
+	  cast(okul_ortalamasi_sum / clslvl_ogrsayisi as numeric(18,3)) as okul_ortalamasi from (
+
+ select    distinct student_id,  point ,  ogr_sayisi ,
+	(select count(distinct ser.student_id) FROM student_exam_answers sea
+		inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+		inner join exams ee on ee.id = ser.exam_id and ee.id = regi22.exam_id
+		inner join classes cls on cls.class_level=  $P{pclass_level}
+		inner join students std on std.id = ser.student_id and cls.id= std.class_id
+	) as clslvl_ogrsayisi ,
+	(select sinif_ortalamasi_sum from sinif_ortalamasi  ) as sinif_ortalamasi_sum ,
+	(select okul_ortalamasi_sum from okul_ortalamasi  ) as okul_ortalamasi_sum
+
+
+from regi22
+ Where  student_id =  $P{pstudent_id}
+) as ssddsss
+)
+
+select * from (
+select student_id,point , 'Öğrenci' as tt , 1 as ord from regi23
+union
+select student_id,sinif_ortalamasi as point, 'Sınıf' as tt, 2 as ord from regi23
+union
+select student_id,okul_ortalamasi as point, 'Okul' as tt , 3 as ord from regi23
+) as fggg
+order by ord]]>
+	</queryString>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="tt" class="java.lang.String"/>
+	<field name="ord" class="java.lang.Integer"/>
+	<group name="student_id">
+		<groupExpression><![CDATA[$F{student_id}]]></groupExpression>
+		<groupFooter>
+			<band height="156">
+				<barChart>
+					<chart isShowLegend="false">
+						<reportElement x="31" y="0" width="199" height="140" forecolor="#000000" uuid="23983012-5678-4ba3-924d-075807153614"/>
+						<chartTitle color="#FFFFFF"/>
+						<chartSubtitle color="#FFFFFF"/>
+						<chartLegend textColor="#FFFFFF"/>
+					</chart>
+					<categoryDataset>
+						<categorySeries>
+							<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{tt}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{point}]]></valueExpression>
+							<labelExpression><![CDATA[$F{point}.toString()]]></labelExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot isShowLabels="true" isShowTickLabels="false" isShowTickMarks="false">
+						<plot>
+							<seriesColor seriesOrder="0" color="#FFFFFF"/>
+						</plot>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat labelColor="#FFFFFF" tickLabelColor="#FFFFFF" verticalTickLabels="false" axisLineColor="#FFFFFF">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat labelColor="#FFFFFF" tickLabelColor="#FFFFFF" verticalTickLabels="false" axisLineColor="#FFFFFF"/>
+						</valueAxisFormat>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[1000]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</barChart>
+				<bar3DChart>
+					<chart isShowLegend="false">
+						<reportElement x="1" y="14" width="199" height="140" uuid="cf89ed1d-bb5d-4ab6-a3ec-37c9d8941c7d"/>
+						<chartTitle position="Top">
+							<font size="8"/>
+						</chartTitle>
+						<chartSubtitle>
+							<font size="8"/>
+						</chartSubtitle>
+						<chartLegend position="Bottom">
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<categoryDataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{ord}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{tt}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{point}]]></valueExpression>
+							<labelExpression><![CDATA[$F{point}.toString()]]></labelExpression>
+						</categorySeries>
+					</categoryDataset>
+					<bar3DPlot isShowLabels="false" xOffset="15.0">
+						<plot/>
+						<itemLabel>
+							<font size="8" pdfEncoding="Cp1254"/>
+						</itemLabel>
+						<categoryAxisFormat>
+							<axisFormat verticalTickLabels="true">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat verticalTickLabels="false">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[1000]]></rangeAxisMaxValueExpression>
+					</bar3DPlot>
+				</bar3DChart>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

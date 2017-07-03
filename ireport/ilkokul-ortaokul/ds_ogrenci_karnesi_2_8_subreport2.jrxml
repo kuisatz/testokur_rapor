@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_ogrenci_karnesi_2_8_subreport2" language="groovy" pageWidth="370" pageHeight="300" whenNoDataType="BlankPage" columnWidth="370" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c53a0c27-affb-4d99-8758-bb840a3ca826">
-	<property name="ireport.zoom" value="1.331000000000001"/>
-	<property name="ireport.x" value="0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_ogrenci_karnesi_2_8_subreport2" language="groovy" pageWidth="332" pageHeight="150" whenNoDataType="BlankPage" columnWidth="332" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c53a0c27-affb-4d99-8758-bb840a3ca826">
+	<property name="ireport.zoom" value="2.143588810000005"/>
+	<property name="ireport.x" value="87"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="examid" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[105]]></defaultValueExpression>
@@ -220,17 +220,17 @@ from regi2]]>
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
-		<band height="25" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="370" height="25" backcolor="#CCCCCC" uuid="e9918819-f828-4129-9d35-dff8c3f7d058"/>
+				<reportElement mode="Opaque" x="0" y="0" width="332" height="12" backcolor="#CCCCCC" uuid="e9918819-f828-4129-9d35-dff8c3f7d058"/>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="370" height="25" backcolor="#3399FF" uuid="5091657f-5c22-4149-80b0-b46d5dc9bd84">
+				<reportElement mode="Opaque" x="0" y="0" width="332" height="12" backcolor="#3399FF" uuid="5091657f-5c22-4149-80b0-b46d5dc9bd84">
 					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 			</frame>
 			<staticText>
-				<reportElement x="69" y="0" width="15" height="25" uuid="01c0a804-2304-4bd1-ad53-fbd9f23ffdc6"/>
+				<reportElement x="308" y="0" width="12" height="12" uuid="dc270f93-c12a-44b2-a29b-bb4f586d931b"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -238,12 +238,38 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[19]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="12" height="12" uuid="e5efdadb-6616-422b-8700-c3642c85018d"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[20]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="0" width="12" height="12" uuid="01c0a804-2304-4bd1-ad53-fbd9f23ffdc6"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[1]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="69" height="25" uuid="28ff4839-cd12-4892-a763-cff47c68f608">
+				<reportElement x="0" y="0" width="92" height="12" uuid="28ff4839-cd12-4892-a763-cff47c68f608">
 					<property name="Backcolor" value=""/>
 				</reportElement>
 				<box>
@@ -253,12 +279,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Sorular]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="84" y="0" width="15" height="25" uuid="e47807bb-eb4c-490a-b92b-e5a0927ffeb4"/>
+				<reportElement x="104" y="0" width="12" height="12" uuid="e47807bb-eb4c-490a-b92b-e5a0927ffeb4"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -266,12 +292,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="99" y="0" width="15" height="25" uuid="d8a92865-9265-4cb0-817d-41f3ccdd8614"/>
+				<reportElement x="116" y="0" width="12" height="12" uuid="d8a92865-9265-4cb0-817d-41f3ccdd8614"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -279,12 +305,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[3]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="114" y="0" width="15" height="25" uuid="c573c644-ea18-43fd-8860-5164de72869d"/>
+				<reportElement x="128" y="0" width="12" height="12" uuid="c573c644-ea18-43fd-8860-5164de72869d"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -292,12 +318,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[4]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="129" y="0" width="15" height="25" uuid="ce0f11d6-4888-4e3c-b41b-5f3dbc8841b8"/>
+				<reportElement x="140" y="0" width="12" height="12" uuid="ce0f11d6-4888-4e3c-b41b-5f3dbc8841b8"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -305,12 +331,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[5]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="144" y="0" width="15" height="25" uuid="b424c616-210d-4291-9698-cae28e107237"/>
+				<reportElement x="152" y="0" width="12" height="12" uuid="b424c616-210d-4291-9698-cae28e107237"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -318,12 +344,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[6]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="189" y="0" width="15" height="25" uuid="44a2496d-7494-4cdf-98d1-ddcbfe14c628"/>
+				<reportElement x="188" y="0" width="12" height="12" uuid="44a2496d-7494-4cdf-98d1-ddcbfe14c628"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -331,12 +357,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[9]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="174" y="0" width="15" height="25" uuid="900bf327-fd70-48ff-806c-d01f5e3c3a19"/>
+				<reportElement x="176" y="0" width="12" height="12" uuid="900bf327-fd70-48ff-806c-d01f5e3c3a19"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -344,12 +370,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[8]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="159" y="0" width="15" height="25" uuid="34114863-1a0a-47c4-8b49-821e16d26f54"/>
+				<reportElement x="164" y="0" width="12" height="12" uuid="34114863-1a0a-47c4-8b49-821e16d26f54"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -357,12 +383,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[7]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="204" y="0" width="15" height="25" uuid="ccbc4a66-463d-41ae-8b85-d1032ba365a3"/>
+				<reportElement x="200" y="0" width="12" height="12" uuid="ccbc4a66-463d-41ae-8b85-d1032ba365a3"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -370,12 +396,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[10]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="219" y="0" width="15" height="25" uuid="c1e053d7-0011-4e64-abcc-73d68f96b980"/>
+				<reportElement x="212" y="0" width="12" height="12" uuid="c1e053d7-0011-4e64-abcc-73d68f96b980"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -383,12 +409,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[11]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="339" y="0" width="15" height="25" uuid="dc270f93-c12a-44b2-a29b-bb4f586d931b"/>
+				<reportElement x="272" y="0" width="12" height="12" uuid="4164ca7d-9c54-4817-a959-3a6874063f76"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -396,25 +422,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
-				</textElement>
-				<text><![CDATA[19]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="294" y="0" width="15" height="25" uuid="4164ca7d-9c54-4817-a959-3a6874063f76"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[16]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="264" y="0" width="15" height="25" uuid="7025d917-5ba3-460f-aa94-22b6bfe98406"/>
+				<reportElement x="248" y="0" width="12" height="12" uuid="7025d917-5ba3-460f-aa94-22b6bfe98406"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -422,12 +435,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[14]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="249" y="0" width="15" height="25" uuid="ca02014a-4b04-41ba-b2b7-45bd09e5f221"/>
+				<reportElement x="236" y="0" width="12" height="12" uuid="ca02014a-4b04-41ba-b2b7-45bd09e5f221"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -435,12 +448,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[13]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="234" y="0" width="15" height="25" uuid="f309244a-017e-4668-9327-56ab66a9a2f6"/>
+				<reportElement x="224" y="0" width="12" height="12" uuid="f309244a-017e-4668-9327-56ab66a9a2f6"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -448,12 +461,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[12]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="354" y="0" width="16" height="25" uuid="e5efdadb-6616-422b-8700-c3642c85018d"/>
+				<reportElement x="296" y="0" width="12" height="12" uuid="de77294c-8cb7-4284-98ff-89e737140045"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -461,25 +474,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
-				</textElement>
-				<text><![CDATA[20]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="324" y="0" width="15" height="25" uuid="de77294c-8cb7-4284-98ff-89e737140045"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[18]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="309" y="0" width="15" height="25" uuid="3d845107-a403-45dd-b018-181ab9d871ea"/>
+				<reportElement x="284" y="0" width="12" height="12" uuid="3d845107-a403-45dd-b018-181ab9d871ea"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -487,12 +487,12 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[17]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="279" y="0" width="15" height="25" uuid="d3faef84-814c-4986-9c0d-bdde5f7394e6"/>
+				<reportElement x="260" y="0" width="12" height="12" uuid="d3faef84-814c-4986-9c0d-bdde5f7394e6"/>
 				<box>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
@@ -500,456 +500,536 @@ from regi2]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[15]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="40" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="69" y="0" width="15" height="20" backcolor="#FF0033" uuid="721fe483-d6e7-4f19-87d0-a862096c737e"/>
+				<reportElement mode="Opaque" x="92" y="0" width="12" height="12" backcolor="#FF0033" uuid="721fe483-d6e7-4f19-87d0-a862096c737e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="84" y="0" width="15" height="20" backcolor="#FF0033" uuid="bc3fdf41-b561-499d-9eda-d426f68fe692"/>
+				<reportElement mode="Opaque" x="104" y="0" width="12" height="12" backcolor="#FF0033" uuid="bc3fdf41-b561-499d-9eda-d426f68fe692"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="99" y="0" width="15" height="20" backcolor="#FF0033" uuid="b6d66496-a20b-4576-9e5c-60f5cb66a743"/>
+				<reportElement mode="Opaque" x="116" y="0" width="12" height="12" backcolor="#FF0033" uuid="b6d66496-a20b-4576-9e5c-60f5cb66a743"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="114" y="0" width="15" height="20" backcolor="#FF0033" uuid="d7323199-d123-4baf-bb00-9a1028b6d5d0"/>
+				<reportElement mode="Opaque" x="128" y="0" width="12" height="12" backcolor="#FF0033" uuid="d7323199-d123-4baf-bb00-9a1028b6d5d0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="129" y="0" width="15" height="20" backcolor="#FF0033" uuid="eb1ee756-b26b-4aef-8001-c0127af2bfb3"/>
+				<reportElement mode="Opaque" x="140" y="0" width="12" height="12" backcolor="#FF0033" uuid="eb1ee756-b26b-4aef-8001-c0127af2bfb3"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="144" y="0" width="15" height="20" backcolor="#FF0033" uuid="27c5937f-0d72-46b8-b7ae-9f31f5f39227"/>
+				<reportElement mode="Opaque" x="152" y="0" width="12" height="12" backcolor="#FF0033" uuid="27c5937f-0d72-46b8-b7ae-9f31f5f39227"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="159" y="0" width="15" height="20" backcolor="#FF0033" uuid="8e4bf6a6-e7e2-4868-8c77-4bed4e43c946"/>
+				<reportElement mode="Opaque" x="164" y="0" width="12" height="12" backcolor="#FF0033" uuid="8e4bf6a6-e7e2-4868-8c77-4bed4e43c946"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="174" y="0" width="15" height="20" backcolor="#FF0033" uuid="f348c41d-f2e7-48ad-8f61-b2705d809b6e"/>
+				<reportElement mode="Opaque" x="176" y="0" width="12" height="12" backcolor="#FF0033" uuid="f348c41d-f2e7-48ad-8f61-b2705d809b6e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="189" y="0" width="15" height="20" backcolor="#FF0033" uuid="3d9eb57f-f83a-40c7-9eac-98b8fe63cb04"/>
+				<reportElement mode="Opaque" x="188" y="0" width="12" height="12" backcolor="#FF0033" uuid="3d9eb57f-f83a-40c7-9eac-98b8fe63cb04"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb9}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="204" y="0" width="15" height="20" backcolor="#FF0033" uuid="8e65d104-86a0-4df4-9330-b9606dab1377"/>
+				<reportElement mode="Opaque" x="200" y="0" width="12" height="12" backcolor="#FF0033" uuid="8e65d104-86a0-4df4-9330-b9606dab1377"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb10}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="219" y="0" width="15" height="20" backcolor="#FF0033" uuid="b79314c9-4848-4327-aa7c-557654c4882e"/>
+				<reportElement mode="Opaque" x="212" y="0" width="12" height="12" backcolor="#FF0033" uuid="b79314c9-4848-4327-aa7c-557654c4882e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb11}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="234" y="0" width="15" height="20" backcolor="#FF0033" uuid="064a3058-6b8a-49b1-9bb6-260c9dc76b22"/>
+				<reportElement mode="Opaque" x="224" y="0" width="12" height="12" backcolor="#FF0033" uuid="064a3058-6b8a-49b1-9bb6-260c9dc76b22"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb12}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="249" y="0" width="15" height="20" backcolor="#FF0033" uuid="f3893eeb-d193-4f02-9c38-b76db8c756f6"/>
+				<reportElement mode="Opaque" x="236" y="0" width="12" height="12" backcolor="#FF0033" uuid="f3893eeb-d193-4f02-9c38-b76db8c756f6"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb13}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="264" y="0" width="15" height="20" backcolor="#FF0033" uuid="37080154-eefb-421c-8dc7-3e49843100b1"/>
+				<reportElement mode="Opaque" x="248" y="0" width="12" height="12" backcolor="#FF0033" uuid="37080154-eefb-421c-8dc7-3e49843100b1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb14}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="279" y="0" width="15" height="20" backcolor="#FF0033" uuid="210e73f3-a5d6-42b6-9e46-2e8561a908f7"/>
+				<reportElement mode="Opaque" x="260" y="0" width="12" height="12" backcolor="#FF0033" uuid="210e73f3-a5d6-42b6-9e46-2e8561a908f7"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb15}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="294" y="0" width="15" height="20" backcolor="#FF0033" uuid="b810efbc-a03d-4792-ba7f-f2306c49d5ab"/>
+				<reportElement mode="Opaque" x="272" y="0" width="12" height="12" backcolor="#FF0033" uuid="b810efbc-a03d-4792-ba7f-f2306c49d5ab"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb16}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="309" y="0" width="15" height="20" backcolor="#FF0033" uuid="d50c2978-affe-4593-8e03-112958c7e421"/>
+				<reportElement mode="Opaque" x="284" y="0" width="12" height="12" backcolor="#FF0033" uuid="d50c2978-affe-4593-8e03-112958c7e421"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb17}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="324" y="0" width="15" height="20" backcolor="#FF0033" uuid="48e1e9ad-e7b0-486d-b7dd-47a0fa207b1d"/>
+				<reportElement mode="Opaque" x="296" y="0" width="12" height="12" backcolor="#FF0033" uuid="48e1e9ad-e7b0-486d-b7dd-47a0fa207b1d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb18}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="339" y="0" width="15" height="20" backcolor="#FF0033" uuid="7a5ccf9f-5fa1-4324-9a98-10c38931c1dd"/>
+				<reportElement mode="Opaque" x="308" y="0" width="12" height="12" backcolor="#FF0033" uuid="7a5ccf9f-5fa1-4324-9a98-10c38931c1dd"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb19}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="354" y="0" width="15" height="20" backcolor="#FF0033" uuid="8ccf2985-7186-415a-8ccb-db708c060308"/>
+				<reportElement mode="Opaque" x="320" y="0" width="12" height="12" backcolor="#FF0033" uuid="8ccf2985-7186-415a-8ccb-db708c060308"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb20}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="309" y="20" width="15" height="20" backcolor="#FF0033" uuid="319e76af-92ea-4d38-b174-d9452d3dddf8"/>
+				<reportElement mode="Opaque" x="284" y="11" width="12" height="12" backcolor="#FF0033" uuid="319e76af-92ea-4d38-b174-d9452d3dddf8"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb17}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="144" y="20" width="15" height="20" backcolor="#FF0033" uuid="34fc15d1-f066-47aa-8e95-414980344814"/>
+				<reportElement mode="Opaque" x="152" y="11" width="12" height="12" backcolor="#FF0033" uuid="34fc15d1-f066-47aa-8e95-414980344814"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="84" y="20" width="15" height="20" backcolor="#FF0033" uuid="27b77841-e63c-4b17-b241-08bc46d255e5"/>
+				<reportElement mode="Opaque" x="104" y="11" width="12" height="12" backcolor="#FF0033" uuid="27b77841-e63c-4b17-b241-08bc46d255e5"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="354" y="20" width="15" height="20" backcolor="#FF0033" uuid="3b69d5a2-9112-4532-b424-110b95d4e1f6"/>
+				<reportElement mode="Opaque" x="320" y="11" width="12" height="12" backcolor="#FF0033" uuid="3b69d5a2-9112-4532-b424-110b95d4e1f6"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb20}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="294" y="20" width="15" height="20" backcolor="#FF0033" uuid="1d4f1438-b0fe-4963-8e40-f23460ce7fa5"/>
+				<reportElement mode="Opaque" x="272" y="11" width="12" height="12" backcolor="#FF0033" uuid="1d4f1438-b0fe-4963-8e40-f23460ce7fa5"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb16}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="264" y="20" width="15" height="20" backcolor="#FF0033" uuid="ebd3d292-03dc-452a-ad86-9a5251f577f2"/>
+				<reportElement mode="Opaque" x="248" y="11" width="12" height="12" backcolor="#FF0033" uuid="ebd3d292-03dc-452a-ad86-9a5251f577f2"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb14}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="279" y="20" width="15" height="20" backcolor="#FF0033" uuid="a1c8c887-dc96-4d61-8a99-bddae29c9fc0"/>
+				<reportElement mode="Opaque" x="260" y="11" width="12" height="12" backcolor="#FF0033" uuid="a1c8c887-dc96-4d61-8a99-bddae29c9fc0"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb15}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="129" y="20" width="15" height="20" backcolor="#FF0033" uuid="72980877-efff-4da4-96fd-c12021a9a3df"/>
+				<reportElement mode="Opaque" x="140" y="11" width="12" height="12" backcolor="#FF0033" uuid="72980877-efff-4da4-96fd-c12021a9a3df"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="339" y="20" width="15" height="20" backcolor="#FF0033" uuid="d3ad6ad6-40f3-4cae-ae99-1c358ebc375a"/>
+				<reportElement mode="Opaque" x="308" y="11" width="12" height="12" backcolor="#FF0033" uuid="d3ad6ad6-40f3-4cae-ae99-1c358ebc375a"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb19}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="114" y="20" width="15" height="20" backcolor="#FF0033" uuid="adc322c5-9346-4f98-af78-86742332d012"/>
+				<reportElement mode="Opaque" x="128" y="11" width="12" height="12" backcolor="#FF0033" uuid="adc322c5-9346-4f98-af78-86742332d012"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="99" y="20" width="15" height="20" backcolor="#FF0033" uuid="6d35966f-9396-40bf-88db-6bd08865f46d"/>
+				<reportElement mode="Opaque" x="116" y="11" width="12" height="12" backcolor="#FF0033" uuid="6d35966f-9396-40bf-88db-6bd08865f46d"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="159" y="20" width="15" height="20" backcolor="#FF0033" uuid="977a7b1f-1b08-41ab-8efb-a4c17f2399c9"/>
+				<reportElement mode="Opaque" x="164" y="11" width="12" height="12" backcolor="#FF0033" uuid="977a7b1f-1b08-41ab-8efb-a4c17f2399c9"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="189" y="20" width="15" height="20" backcolor="#FF0033" uuid="8dca0607-bbc3-4668-873e-16f871832272"/>
+				<reportElement mode="Opaque" x="188" y="11" width="12" height="12" backcolor="#FF0033" uuid="8dca0607-bbc3-4668-873e-16f871832272"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb9}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="174" y="20" width="15" height="20" backcolor="#FF0033" uuid="ab98f4e4-0da5-48fe-8f7a-6eca60657942"/>
+				<reportElement mode="Opaque" x="176" y="11" width="12" height="12" backcolor="#FF0033" uuid="ab98f4e4-0da5-48fe-8f7a-6eca60657942"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="324" y="20" width="15" height="20" backcolor="#FF0033" uuid="12ae0ae2-dd56-46d2-8b0b-89eb62043479"/>
+				<reportElement mode="Opaque" x="296" y="11" width="12" height="12" backcolor="#FF0033" uuid="12ae0ae2-dd56-46d2-8b0b-89eb62043479"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb18}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="219" y="20" width="15" height="20" backcolor="#FF0033" uuid="6551ccb6-3f62-4d50-904e-c122c72223eb"/>
+				<reportElement mode="Opaque" x="212" y="11" width="12" height="12" backcolor="#FF0033" uuid="6551ccb6-3f62-4d50-904e-c122c72223eb"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb11}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="249" y="20" width="15" height="20" backcolor="#FF0033" uuid="1916715e-9cb6-44a8-867a-1869a9081204"/>
+				<reportElement mode="Opaque" x="236" y="11" width="12" height="12" backcolor="#FF0033" uuid="1916715e-9cb6-44a8-867a-1869a9081204"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb13}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="234" y="20" width="15" height="20" backcolor="#FF0033" uuid="8d9f9f21-53ba-4f53-bc30-c463b666f192"/>
+				<reportElement mode="Opaque" x="224" y="11" width="12" height="12" backcolor="#FF0033" uuid="8d9f9f21-53ba-4f53-bc30-c463b666f192"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb12}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="69" y="20" width="15" height="20" backcolor="#FF0033" uuid="d5f3a89a-5128-4037-815a-673753f160c9"/>
+				<reportElement mode="Opaque" x="92" y="11" width="12" height="12" backcolor="#FF0033" uuid="d5f3a89a-5128-4037-815a-673753f160c9"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="204" y="20" width="15" height="20" backcolor="#FF0033" uuid="a229c1e5-4644-488e-a358-05deb0348767"/>
+				<reportElement mode="Opaque" x="200" y="11" width="12" height="12" backcolor="#FF0033" uuid="a229c1e5-4644-488e-a358-05deb0348767"/>
 				<box>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<leftPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb10}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="70" height="20" uuid="03311d63-1d76-44ed-bad7-85ce6af78a04"/>
+				<reportElement x="0" y="0" width="92" height="12" uuid="03311d63-1d76-44ed-bad7-85ce6af78a04"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -957,12 +1037,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ders}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="20" width="69" height="20" uuid="6c802a66-1763-4106-80d5-d6dc670208a1"/>
+				<reportElement x="0" y="12" width="92" height="11" uuid="6c802a66-1763-4106-80d5-d6dc670208a1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -970,12 +1050,12 @@ from regi2]]>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="9" pdfEncoding="Cp1254"/>
+					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<text><![CDATA[Öğr. Cevapları]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="69" y="20" width="16" height="20" backcolor="#FFFFFF" uuid="21f27d68-daab-4d09-a30b-2f3b960fbabf">
+				<reportElement mode="Opaque" x="92" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="21f27d68-daab-4d09-a30b-2f3b960fbabf">
 					<printWhenExpression><![CDATA[($F{bb1}).equals( $F{cbb1})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -984,11 +1064,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="144" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="d2928035-5ae3-4367-9d58-efc475645e58">
+				<reportElement mode="Opaque" x="152" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="d2928035-5ae3-4367-9d58-efc475645e58">
 					<printWhenExpression><![CDATA[($F{bb6}).equals( $F{cbb6})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -997,11 +1079,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="249" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="069f06f2-03a4-4451-ba0d-c268b5f4639d">
+				<reportElement mode="Opaque" x="236" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="069f06f2-03a4-4451-ba0d-c268b5f4639d">
 					<printWhenExpression><![CDATA[($F{bb13}).equals( $F{cbb13})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1010,11 +1094,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb13}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="84" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="d0ca3b7b-1045-458c-8f3d-a06a36b90c5a">
+				<reportElement mode="Opaque" x="104" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="d0ca3b7b-1045-458c-8f3d-a06a36b90c5a">
 					<printWhenExpression><![CDATA[($F{bb2}).equals( $F{cbb2})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1023,11 +1109,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="294" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="c328e351-c96a-491c-a0de-7710247fe433">
+				<reportElement mode="Opaque" x="272" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="c328e351-c96a-491c-a0de-7710247fe433">
 					<printWhenExpression><![CDATA[($F{bb16}).equals( $F{cbb16})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1036,11 +1124,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb16}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="294" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="9d0432ee-19e0-4861-90dc-ba86ea722a6f">
+				<reportElement mode="Opaque" x="272" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="9d0432ee-19e0-4861-90dc-ba86ea722a6f">
 					<printWhenExpression><![CDATA[($F{bb16}).equals( $F{cbb16})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1049,11 +1139,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb16}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="279" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="0e393930-09b4-4abc-9731-49378cefabbe">
+				<reportElement mode="Opaque" x="260" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="0e393930-09b4-4abc-9731-49378cefabbe">
 					<printWhenExpression><![CDATA[($F{bb15}).equals( $F{cbb15})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1062,11 +1154,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb15}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="129" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="ca1d5711-c5b0-4fdb-9f3d-a184752bbf13">
+				<reportElement mode="Opaque" x="140" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="ca1d5711-c5b0-4fdb-9f3d-a184752bbf13">
 					<printWhenExpression><![CDATA[($F{bb5}).equals( $F{cbb5})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1075,11 +1169,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="159" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="670f553a-1955-4f8a-9720-237aeedc5575">
+				<reportElement mode="Opaque" x="164" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="670f553a-1955-4f8a-9720-237aeedc5575">
 					<printWhenExpression><![CDATA[($F{bb7}).equals( $F{cbb7})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1088,11 +1184,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="279" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="c390e1aa-193b-4172-8862-1a7ea440bee1">
+				<reportElement mode="Opaque" x="260" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="c390e1aa-193b-4172-8862-1a7ea440bee1">
 					<printWhenExpression><![CDATA[($F{bb15}).equals( $F{cbb15})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1101,11 +1199,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb15}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="99" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="f3426948-ef89-4bdb-9b31-1525d87d229b">
+				<reportElement mode="Opaque" x="116" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="f3426948-ef89-4bdb-9b31-1525d87d229b">
 					<printWhenExpression><![CDATA[($F{bb3}).equals( $F{cbb3})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1114,11 +1214,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="99" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="3795b0d3-fdd6-4502-8aca-a2b861f08264">
+				<reportElement mode="Opaque" x="116" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="3795b0d3-fdd6-4502-8aca-a2b861f08264">
 					<printWhenExpression><![CDATA[($F{bb3}).equals( $F{cbb3})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1127,11 +1229,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb3}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="144" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="39ef61e8-1442-4323-bc18-9cb6d63afa51">
+				<reportElement mode="Opaque" x="152" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="39ef61e8-1442-4323-bc18-9cb6d63afa51">
 					<printWhenExpression><![CDATA[($F{bb6}).equals( $F{cbb6})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1140,11 +1244,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb6}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="159" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="82c46030-606c-4d7e-955f-6fd0f45a7c29">
+				<reportElement mode="Opaque" x="164" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="82c46030-606c-4d7e-955f-6fd0f45a7c29">
 					<printWhenExpression><![CDATA[($F{bb7}).equals( $F{cbb7})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1153,11 +1259,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb7}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="189" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="833927e2-b980-43dc-baa0-6cb95b9b4ecb">
+				<reportElement mode="Opaque" x="188" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="833927e2-b980-43dc-baa0-6cb95b9b4ecb">
 					<printWhenExpression><![CDATA[($F{bb9}).equals( $F{cbb9})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1166,22 +1274,26 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb9}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="354" y="20" width="16" height="20" backcolor="#FFFFFF" uuid="568df598-04d9-4373-badb-accf324f7e5c"/>
+				<reportElement mode="Opaque" x="320" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="568df598-04d9-4373-badb-accf324f7e5c"/>
 				<box>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb20}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="324" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="f319111b-6488-4fe4-8251-1a8acc8d9828">
+				<reportElement mode="Opaque" x="296" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="f319111b-6488-4fe4-8251-1a8acc8d9828">
 					<printWhenExpression><![CDATA[($F{bb18}).equals( $F{cbb18})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1190,11 +1302,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb18}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="264" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="1bfb1db6-1056-4e65-806b-96679b6d5341">
+				<reportElement mode="Opaque" x="248" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="1bfb1db6-1056-4e65-806b-96679b6d5341">
 					<printWhenExpression><![CDATA[($F{bb14}).equals( $F{cbb14})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1203,11 +1317,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb14}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="249" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="859c0a7f-2f4d-4b4a-b292-6f6543f22f2c">
+				<reportElement mode="Opaque" x="236" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="859c0a7f-2f4d-4b4a-b292-6f6543f22f2c">
 					<printWhenExpression><![CDATA[($F{bb13}).equals( $F{cbb13})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1216,11 +1332,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb13}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="324" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="6c39571f-c179-40f2-949f-2a8ba5f973bf">
+				<reportElement mode="Opaque" x="296" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="6c39571f-c179-40f2-949f-2a8ba5f973bf">
 					<printWhenExpression><![CDATA[($F{bb18}).equals( $F{cbb18})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1229,11 +1347,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb18}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="309" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="524fc01c-66a0-48af-bbda-586e90df803b">
+				<reportElement mode="Opaque" x="284" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="524fc01c-66a0-48af-bbda-586e90df803b">
 					<printWhenExpression><![CDATA[($F{bb17}).equals( $F{cbb17})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1242,11 +1362,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb17}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="69" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="40515b3b-a1c7-4a52-8888-4726f6ec6e8b">
+				<reportElement mode="Opaque" x="92" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="40515b3b-a1c7-4a52-8888-4726f6ec6e8b">
 					<printWhenExpression><![CDATA[($F{bb1}).equals( $F{cbb1})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1255,11 +1377,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="234" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="7c1402f7-840f-4c43-8a3a-6a4f6517ecca">
+				<reportElement mode="Opaque" x="224" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="7c1402f7-840f-4c43-8a3a-6a4f6517ecca">
 					<printWhenExpression><![CDATA[($F{bb12}).equals( $F{cbb12})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1268,11 +1392,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb12}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="354" y="0" width="16" height="20" backcolor="#FFFFFF" uuid="cd6df5ee-e165-412b-abca-2713e8f61ab9">
+				<reportElement mode="Opaque" x="320" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="cd6df5ee-e165-412b-abca-2713e8f61ab9">
 					<printWhenExpression><![CDATA[($F{bb20}).equals( $F{cbb20})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1281,11 +1407,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb20}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="309" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="f4983f0f-ec76-4009-a546-4b4218bf6632">
+				<reportElement mode="Opaque" x="284" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="f4983f0f-ec76-4009-a546-4b4218bf6632">
 					<printWhenExpression><![CDATA[($F{bb17}).equals( $F{cbb17})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1294,11 +1422,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb17}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="264" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="2a3dcac9-1530-4b68-a3fd-0a3ffd0137ea">
+				<reportElement mode="Opaque" x="248" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="2a3dcac9-1530-4b68-a3fd-0a3ffd0137ea">
 					<printWhenExpression><![CDATA[($F{bb14}).equals( $F{cbb14})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1307,11 +1437,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb14}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="339" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="466c18c5-85bb-400d-aff8-927515ab5f39">
+				<reportElement mode="Opaque" x="308" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="466c18c5-85bb-400d-aff8-927515ab5f39">
 					<printWhenExpression><![CDATA[($F{bb19}).equals( $F{cbb19})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1320,11 +1452,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb19}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="204" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="5092cf4f-4757-4969-b0aa-9cf742ea44c7">
+				<reportElement mode="Opaque" x="200" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="5092cf4f-4757-4969-b0aa-9cf742ea44c7">
 					<printWhenExpression><![CDATA[($F{bb10}).equals( $F{cbb10})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1333,11 +1467,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb10}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="339" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="29efa53e-e9c7-4875-91e2-772bcc4daa27">
+				<reportElement mode="Opaque" x="308" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="29efa53e-e9c7-4875-91e2-772bcc4daa27">
 					<printWhenExpression><![CDATA[($F{bb19}).equals( $F{cbb19})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1346,11 +1482,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb19}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="114" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="236738ca-5f5c-4a89-86d0-68f4e2128aa7">
+				<reportElement mode="Opaque" x="128" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="236738ca-5f5c-4a89-86d0-68f4e2128aa7">
 					<printWhenExpression><![CDATA[($F{bb4}).equals( $F{cbb4})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1359,11 +1497,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="129" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="7bba7268-8944-4369-88d5-33f6e91b5377">
+				<reportElement mode="Opaque" x="140" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="7bba7268-8944-4369-88d5-33f6e91b5377">
 					<printWhenExpression><![CDATA[($F{bb5}).equals( $F{cbb5})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1372,11 +1512,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb5}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="84" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="ecb3c0a2-e6d7-4f8f-9dfb-4bf4fd3c78ce">
+				<reportElement mode="Opaque" x="104" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="ecb3c0a2-e6d7-4f8f-9dfb-4bf4fd3c78ce">
 					<printWhenExpression><![CDATA[($F{bb2}).equals( $F{cbb2})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1385,11 +1527,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="189" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="a94e2743-c53b-4d21-a0a9-3c72465734dd">
+				<reportElement mode="Opaque" x="188" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="a94e2743-c53b-4d21-a0a9-3c72465734dd">
 					<printWhenExpression><![CDATA[($F{bb9}).equals( $F{cbb9})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1398,11 +1542,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb9}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="114" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="0e7cb1d4-5220-4670-a8a0-b086b215817d">
+				<reportElement mode="Opaque" x="128" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="0e7cb1d4-5220-4670-a8a0-b086b215817d">
 					<printWhenExpression><![CDATA[($F{bb4}).equals( $F{cbb4})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1411,11 +1557,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb4}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="174" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="94e34acc-14e0-4d62-9e98-5188ac339468">
+				<reportElement mode="Opaque" x="176" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="94e34acc-14e0-4d62-9e98-5188ac339468">
 					<printWhenExpression><![CDATA[($F{bb8}).equals( $F{cbb8})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1424,11 +1572,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb8}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="219" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="57c363da-cc70-4bbf-a865-712387022bce">
+				<reportElement mode="Opaque" x="212" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="57c363da-cc70-4bbf-a865-712387022bce">
 					<printWhenExpression><![CDATA[($F{bb11}).equals( $F{cbb11})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1437,11 +1587,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb11}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="219" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="c6b74771-a4cb-42ee-ad06-5eb22581fd1e">
+				<reportElement mode="Opaque" x="212" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="c6b74771-a4cb-42ee-ad06-5eb22581fd1e">
 					<printWhenExpression><![CDATA[($F{bb11}).equals( $F{cbb11})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1450,11 +1602,13 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb11}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="204" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="5e5cc5c5-560c-4dbf-bee1-99359d250a08">
+				<reportElement mode="Opaque" x="200" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="5e5cc5c5-560c-4dbf-bee1-99359d250a08">
 					<printWhenExpression><![CDATA[($F{bb10}).equals( $F{cbb10})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1463,11 +1617,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb10}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="234" y="0" width="15" height="20" backcolor="#FFFFFF" uuid="8bfc6969-63af-4004-b3fb-bff4ba77cac8">
+				<reportElement mode="Opaque" x="224" y="0" width="12" height="12" backcolor="#FFFFFF" uuid="8bfc6969-63af-4004-b3fb-bff4ba77cac8">
 					<printWhenExpression><![CDATA[($F{bb12}).equals( $F{cbb12})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1476,11 +1632,13 @@ from regi2]]>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bb12}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="174" y="20" width="15" height="20" backcolor="#FFFFFF" uuid="374d9472-d91c-418c-9856-cb54d4aa2ddd">
+				<reportElement mode="Opaque" x="176" y="12" width="12" height="11" backcolor="#FFFFFF" uuid="374d9472-d91c-418c-9856-cb54d4aa2ddd">
 					<printWhenExpression><![CDATA[($F{bb8}).equals( $F{cbb8})]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -1489,7 +1647,9 @@ from regi2]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="0.25" lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cbb8}]]></textFieldExpression>
 			</textField>
 		</band>
