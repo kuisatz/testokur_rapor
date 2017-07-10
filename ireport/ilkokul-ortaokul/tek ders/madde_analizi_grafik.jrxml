@@ -73,9 +73,9 @@ regi2 AS (
 
 )
 
-select    row_number() over() as sirano,  rr.* , ss.description
+select    row_number() over() as sirano,  rr.*
 from  regi2 as rr
-left join sorular ss on ss.question_number = rr.question_number
+
  order by question_number]]>
 	</queryString>
 	<field name="sirano" class="java.lang.Long"/>
@@ -95,7 +95,6 @@ left join sorular ss on ss.question_number = rr.question_number
 	<field name="exam_type_id" class="java.lang.Integer"/>
 	<field name="ogr_sayisi" class="java.lang.Long"/>
 	<field name="kayit_sayisi" class="java.lang.Long"/>
-	<field name="description" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

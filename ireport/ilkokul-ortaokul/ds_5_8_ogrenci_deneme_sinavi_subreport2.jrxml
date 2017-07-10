@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_5_8_ogrenci_deneme_sinavi_subreport2" language="groovy" pageWidth="600" pageHeight="50" whenNoDataType="AllSectionsNoDetail" columnWidth="600" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dc34bdc7-a6eb-4c85-ac03-a39345b97055">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pclass_level" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[5]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pexam_type_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pstudent_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[74]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH regi AS (
+select row_number() over() as sirano1,  a.*  from  (
+SELECT distinct
+	 std.student_number,
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	ee.name as sinav,
+	ser.student_id,
+	ser.class_id ,
+	rp.color_type,
+	ee.id as exam_id,
+	sea.student_exam_result_id,
+        ser.classroom_net_avg
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+inner join classes cls on cls.class_level=  $P{pclass_level}
+inner join students std on std.id = ser.student_id and cls.id= std.class_id
+
+where
+ ee.exam_type_id = $P{pexam_type_id} and
+
+ std.id =  $P{pstudent_id}
+ ) as a
+  )
+
+ select    row_number() over() as sirano,  *   from regi]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="sirano1" class="java.lang.Long"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="exam_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="classroom_net_avg" class="java.math.BigDecimal"/>
+	<group name="sirano">
+		<groupExpression><![CDATA[$F{sirano}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="4" width="347" height="18" uuid="785a8a1d-e727-46f1-8535-a4cef1610418"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinav}]]></textFieldExpression>
+			</textField>
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="0" y="15" width="587" height="17" uuid="f2fff3a2-bac1-4f01-92a6-8e2ee7b52d70"/>
+					<chartTitle>
+						<font size="8"/>
+					</chartTitle>
+					<chartSubtitle>
+						<font size="8"/>
+					</chartSubtitle>
+					<chartLegend textColor="#FFFFFF">
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="None"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{sinav}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{point}]]></valueExpression>
+						<labelExpression><![CDATA[$F{point}.toString()]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true" isShowTickLabels="false" isShowTickMarks="true">
+					<plot orientation="Horizontal">
+						<seriesColor seriesOrder="0" color="#D5E5F5"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="true">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat verticalTickLabels="true">
+							<labelFont>
+								<font size="8"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+					<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[1000]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
+		</band>
+	</detail>
+</jasperReport>

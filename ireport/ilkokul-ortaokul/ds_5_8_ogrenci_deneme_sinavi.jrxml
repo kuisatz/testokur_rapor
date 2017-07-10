@@ -1,0 +1,1661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_5_8_ogrenci_deneme_sinavi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c0cede-3b4d-4add-80b8-137ef7006254">
+	<property name="ireport.zoom" value="1.1000000000000032"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\projeler\\testokur_rapor\\ireport\\ilkokul-ortaokul\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH regi AS (
+select row_number() over() as sirano1,  a.*  from  (
+SELECT distinct
+	std.first_name, std.surname,std.student_number,
+	ser.success_count, ser.fail_count, ser.empty_count, ser.total_count, ser.total_net,ser.point,
+	cls.name as sinif,
+ 	cls.branch as sube,
+	cls.class_level  ,
+	ee.name as sinav,
+	elb.name as kitapcik,
+	ser.student_id,
+	std.class_id ,
+	cast(ser.exam_date as date) as exam_date,
+	rp.color_type,
+	ee.id as exam_id,
+	sea.student_exam_result_id,
+	ee.exam_type_id,
+        CASE
+	  WHEN   rp.class_level >0  THEN cast(cls.class_level as character varying(5))
+	   ELSE     'HEPSİ'
+	  END  as sinifx ,
+	 CASE
+	  WHEN  rp.branch_id >0  THEN cls.branch
+	   ELSE     'HEPSİ'
+	  END as subex,
+	  ser.classroom_net_avg
+
+FROM student_exam_answers sea
+inner join reports_params rp on rp.id = (select max(id) from reports_params )
+
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join students std on std.id = ser.student_id and cls.id= std.class_id
+
+  where
+ ee.exam_type_id = 3 and
+-- ser.exam_id = 105 and --  rp.exam_id and
+   /*
+CASE
+  WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
+   ELSE    1=1
+  END
+and
+ CASE
+  WHEN   rp.class_level>0  THEN   cls.class_level =  rp.class_level
+   ELSE    1=1
+  END
+  */
+   cls.class_level = 5
+ --and sea.student_exam_result_id = 9498
+ -- AND std.id =  74
+
+
+ ) as a
+  ),
+student_answers AS (
+Select stuanw.* from student_exam_answers stuanw
+where stuanw.student_exam_result_id in (select distinct rgxx.student_exam_result_id from regi rgxx )
+
+),
+sinif_ortalamasi AS (
+select sum(point) as sinif_ortalamasi_sum from  (
+Select distinct  stuanwq.point ,stuanwq.id  from student_exam_results stuanwq
+where stuanwq.id in (select distinct rgxx.student_exam_result_id from regi rgxx )
+) as hhh
+),
+okul_ortalamasi AS (
+select sum(point) as okul_ortalamasi_sum from (
+Select distinct  stuanwqq.point ,stuanwqq.exam_id  from student_exam_results stuanwqq
+where stuanwqq.exam_id  in (select distinct rgxx.exam_id   from regi rgxx )
+) as rrtt
+),
+sinav_dersleri as (
+SELECT distinct
+        sea.lesson_id ,
+	ls.name as ders ,
+	sea.exam_lesson_booklet_id,
+	elb.question_count as question_count,
+       ls.sort
+FROM student_exam_answers sea
+inner join lessons ls on ls.id = sea.lesson_id
+inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
+inner join exam_lessons el on el.id = elb.exam_lesson_id
+inner join exams ee on ee.id = el.exam_id
+inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join students std on std.id = ser.student_id  and  std.class_id= cls.id
+   where   -- ser.exam_id = 105
+       ee.exam_type_id = 3
+ORDER BY sort
+),
+answer_box AS (
+Select count(answerb.id) as adet  from answerkeys answerb
+where answerb.exam_lesson_booklet_id  in (Select distinct rgx.exam_lesson_booklet_id from sinav_dersleri rgx     ) and answerb.deleted=false
+),
+
+
+regi22 AS (
+select   regi.* ,cc.corparation_name,
+	ci.name as city,di.name as district,
+	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.student_id in (Select distinct sstt.id from students sstt where  sstt.class_id = regi.class_id ) and ffx.exam_id = regi.exam_id and  ffx.point > regi.point ) as sinif_sirasi,
+        (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = regi.exam_id and  ffx.point > regi.point ) as okul_sirasi ,
+	(select max(sirano1) from regi ) as kayit_sayisi
+from regi
+inner join customers cc on cc.id = 1
+inner join city ci on ci.id = cc.city_id
+inner join districts di on di.id = cc.district_id
+order by  first_name, surname ,sinav
+),
+regi33 AS (
+
+
+
+ select    row_number() over() as sirano,  * ,
+	  cast(sinif_ortalamasi_sum / ogr_sayisi as numeric(18,3))  as sinif_ortalamasi ,
+	  cast(okul_ortalamasi_sum / clslvl_ogrsayisi as numeric(18,3)) as okul_ortalamasi from (
+
+ select       * ,
+	(select count(distinct student_id) from regi  where class_id = regi22.class_id  ) as ogr_sayisi ,
+	(select count(distinct ser.student_id) FROM student_exam_answers sea
+	inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+	inner join exams ee on ee.id = ser.exam_id and ee.id = 105 --  rp.exam_id
+	inner join classes cls on cls.class_level= 5 -- rp.class_level
+	inner join students std on std.id = ser.student_id and cls.id= std.class_id
+
+	) as clslvl_ogrsayisi ,
+	(select sinif_ortalamasi_sum from sinif_ortalamasi  ) as sinif_ortalamasi_sum ,
+	(select okul_ortalamasi_sum from okul_ortalamasi  ) as okul_ortalamasi_sum,
+        (select adet from answer_box ) as soru_adedi,
+
+
+	(select  sd1.ders  from sinav_dersleri sd1 where sd1.sort = 1  limit 1 ) as d1,
+	(select  sd2.ders  from sinav_dersleri sd2 where sd2.sort = 2  limit 1 ) as d2,
+	(select  sd3.ders  from sinav_dersleri sd3 where sd3.sort = 3  limit 1 ) as d3,
+	(select  sd4.ders  from sinav_dersleri sd4 where sd4.sort = 4  limit 1 ) as d4,
+	(select  sd5.ders  from sinav_dersleri sd5 where sd5.sort = 5  limit 1 ) as d5,
+	(select  sd6.ders  from sinav_dersleri sd6 where sd6.sort = 6  limit 1 ) as d6 ,
+
+
+COALESCE(NULLIF((select  count(cab1.is_success) from student_answers cab1 inner join sinav_dersleri sd1x on sd1x.sort = 1
+where  cab1.student_exam_result_id = regi22.student_exam_result_id  and cab1.exam_lesson_booklet_id = sd1x.exam_lesson_booklet_id and cab1.is_success is true limit 1 ),null),0) as d1_cis_success ,
+
+COALESCE(NULLIF((select question_count from student_answers cab1 inner join sinav_dersleri sd1y on sd1y.sort = 1
+where  cab1.student_exam_result_id = regi22.student_exam_result_id  and cab1.exam_lesson_booklet_id = sd1y.exam_lesson_booklet_id  limit 1 ) ,null),0)  as d1_cis_gc,
+
+COALESCE(NULLIF((select count(cab1.id)  from student_answers cab1 inner join sinav_dersleri sd1z on sd1z.sort = 1
+where  cab1.student_exam_result_id = regi22.student_exam_result_id  and cab1.exam_lesson_booklet_id = sd1z.exam_lesson_booklet_id and cab1.value is null limit 1 ),null),0) as d1_cis_empty,
+
+COALESCE(NULLIF((select lesson_net_count  from student_answers cab1 inner join sinav_dersleri sd1z on sd1z.sort = 1
+where  cab1.student_exam_result_id = regi22.student_exam_result_id  and cab1.exam_lesson_booklet_id = sd1z.exam_lesson_booklet_id  limit 1 ),null),0) as d1_cis_net,
+
+COALESCE(NULLIF( (select count(cab2.is_success) from student_answers cab2 inner join sinav_dersleri sd2x on sd2x.sort = 2
+where  cab2.student_exam_result_id = regi22.student_exam_result_id  and cab2.exam_lesson_booklet_id = sd2x.exam_lesson_booklet_id and cab2.is_success is true limit 1 ),null),0) as d2_cis_success ,
+
+COALESCE(NULLIF((select question_count from student_answers cab2 inner join sinav_dersleri sd2y on sd2y.sort = 2
+where  cab2.student_exam_result_id = regi22.student_exam_result_id  and cab2.exam_lesson_booklet_id = sd2y.exam_lesson_booklet_id  limit 1 ) ,null),0) as d2_cis_gc,
+
+COALESCE(NULLIF((select count(cab2.id)   from student_answers cab2 inner join sinav_dersleri sd2z on sd2z.sort = 2
+where  cab2.student_exam_result_id = regi22.student_exam_result_id  and cab2.exam_lesson_booklet_id = sd2z.exam_lesson_booklet_id and cab2.value is null limit 1 ),null),0) as d2_cis_empty ,
+
+COALESCE(NULLIF((select lesson_net_count  from student_answers cab2 inner join sinav_dersleri sd2z on sd2z.sort = 2
+where  cab2.student_exam_result_id = regi22.student_exam_result_id  and cab2.exam_lesson_booklet_id = sd2z.exam_lesson_booklet_id  limit 1 ),null),0) as d2_cis_net,
+
+ COALESCE(NULLIF((select count(cab3.is_success) from student_answers cab3 inner join sinav_dersleri sd3x on sd3x.sort = 3
+where  cab3.student_exam_result_id = regi22.student_exam_result_id  and cab3.exam_lesson_booklet_id = sd3x.exam_lesson_booklet_id and cab3.is_success is true limit 1 ),null),0) as d3_cis_success ,
+
+COALESCE(NULLIF((select question_count from student_answers cab3 inner join sinav_dersleri sd3y on sd3y.sort = 3
+where  cab3.student_exam_result_id = regi22.student_exam_result_id  and cab3.exam_lesson_booklet_id = sd3y.exam_lesson_booklet_id  limit 1 ) ,null),0) as d3_cis_gc,
+
+COALESCE(NULLIF((select count(cab3.id)  from student_answers cab3 inner join sinav_dersleri sd3z on sd3z.sort =3
+where  cab3.student_exam_result_id = regi22.student_exam_result_id  and cab3.exam_lesson_booklet_id = sd3z.exam_lesson_booklet_id and cab3.value is null limit 1 ),null),0)  as d3_cis_empty ,
+
+COALESCE(NULLIF((select lesson_net_count  from student_answers cab3 inner join sinav_dersleri sd3z on sd3z.sort = 3
+where  cab3.student_exam_result_id = regi22.student_exam_result_id  and cab3.exam_lesson_booklet_id = sd3z.exam_lesson_booklet_id  limit 1 ),null),0) as d3_cis_net,
+
+ COALESCE(NULLIF((select count(cab4.is_success) from student_answers cab4 inner join sinav_dersleri sd4x on sd4x.sort = 4
+where  cab4.student_exam_result_id = regi22.student_exam_result_id  and cab4.exam_lesson_booklet_id = sd4x.exam_lesson_booklet_id and cab4.is_success is true limit 1 ),null),0) as d4_cis_success ,
+
+COALESCE(NULLIF((select question_count  from student_answers cab4 inner join sinav_dersleri sd4y on sd4y.sort = 4
+where  cab4.student_exam_result_id = regi22.student_exam_result_id  and cab4.exam_lesson_booklet_id = sd4y.exam_lesson_booklet_id  limit 1 ),null),0) as d4_cis_gc,
+
+COALESCE(NULLIF((select count(cab4.id)   from student_answers cab4 inner join sinav_dersleri sd4z on sd4z.sort =4
+where  cab4.student_exam_result_id = regi22.student_exam_result_id  and cab4.exam_lesson_booklet_id = sd4z.exam_lesson_booklet_id and cab4.value is null limit 1 ),null),0) as d4_cis_empty ,
+
+COALESCE(NULLIF((select lesson_net_count  from student_answers cab4 inner join sinav_dersleri sd4z on sd4z.sort = 4
+where  cab4.student_exam_result_id = regi22.student_exam_result_id  and cab4.exam_lesson_booklet_id = sd4z.exam_lesson_booklet_id  limit 1 ),null),0) as d4_cis_net,
+
+ COALESCE(NULLIF((select count(cab5.is_success) from student_answers cab5 inner join sinav_dersleri sd5x on sd5x.sort = 5
+where  cab5.student_exam_result_id = regi22.student_exam_result_id  and cab5.exam_lesson_booklet_id = sd5x.exam_lesson_booklet_id and cab5.is_success is true limit 1 ),null),0) as d5_cis_success ,
+
+COALESCE(NULLIF((select question_count from student_answers cab5 inner join sinav_dersleri sd5y on sd5y.sort =5
+where  cab5.student_exam_result_id = regi22.student_exam_result_id  and cab5.exam_lesson_booklet_id = sd5y.exam_lesson_booklet_id  limit 1 ) ,null),0)  as d5_cis_gc,
+
+(select COALESCE(NULLIF(count(cab5.id),null),0)  from student_answers cab5 inner join sinav_dersleri sd5z on sd5z.sort =5
+where  cab5.student_exam_result_id = regi22.student_exam_result_id  and cab5.exam_lesson_booklet_id = sd5z.exam_lesson_booklet_id and cab5.value is null limit 1 ) as d5_cis_empty ,
+
+COALESCE(NULLIF((select lesson_net_count  from student_answers cab5 inner join sinav_dersleri sd5z on sd5z.sort = 5
+where  cab5.student_exam_result_id = regi22.student_exam_result_id  and cab5.exam_lesson_booklet_id = sd5z.exam_lesson_booklet_id  limit 1 ),null),0) as d5_cis_net,
+
+ COALESCE(NULLIF( (select count(cab6.is_success)from student_answers cab6 inner join sinav_dersleri sd6x on sd6x.sort = 6
+where  cab6.student_exam_result_id = regi22.student_exam_result_id  and cab6.exam_lesson_booklet_id = sd6x.exam_lesson_booklet_id and cab6.is_success is true limit 1 ) ,null),0) as d6_cis_success ,
+
+COALESCE(NULLIF((select question_count from student_answers cab6 inner join sinav_dersleri sd6y on sd6y.sort = 6
+where  cab6.student_exam_result_id = regi22.student_exam_result_id  and cab6.exam_lesson_booklet_id = sd6y.exam_lesson_booklet_id  limit 1 ) ,null),0) as d6_cis_gc,
+
+COALESCE(NULLIF((select count(cab6.id)   from student_answers cab6 inner join sinav_dersleri sd6z on sd6z.sort =6
+where  cab6.student_exam_result_id = regi22.student_exam_result_id  and cab6.exam_lesson_booklet_id = sd6z.exam_lesson_booklet_id and cab6.value is null limit 1 ),null),0) as d6_cis_empty ,
+
+COALESCE(NULLIF((select lesson_net_count  from student_answers cab6 inner join sinav_dersleri sd6z on sd6z.sort = 6
+where  cab6.student_exam_result_id = regi22.student_exam_result_id  and cab6.exam_lesson_booklet_id = sd6z.exam_lesson_booklet_id  limit 1 ),null),0) as d6_cis_net
+
+
+
+
+
+
+
+
+/*
+
+
+(select  ab1.value  from answer_box ab1 where ab1.question_number = 1 and ab1.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id  limit 1 ) as bb1,
+(select  ab2.value  from answer_box ab2 where ab2.question_number = 2 and ab2.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id  limit 1 ) as bb2,
+(select  ab3.value  from answer_box ab3 where ab3.question_number = 3 and ab3.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb3,
+(select  ab4.value  from answer_box ab4 where ab4.question_number = 4 and ab4.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb4,
+(select  ab5.value  from answer_box ab5 where ab5.question_number = 5 and ab5.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb5 ,
+
+(select  ab6.value  from answer_box ab6 where ab6.question_number = 6 and ab6.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb6,
+(select  ab7.value  from answer_box ab7 where ab7.question_number = 7 and ab7.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb7,
+(select  ab8.value  from answer_box ab8 where ab8.question_number = 8 and ab8.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb8,
+(select  ab9.value  from answer_box ab9 where ab9.question_number = 9 and ab9.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb9,
+(select  ab10.value  from answer_box ab10 where ab10.question_number = 10 and ab10.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb10 ,
+
+(select  ab11.value  from answer_box ab11 where ab11.question_number = 11 and ab11.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb11,
+(select  ab12.value  from answer_box ab12 where ab12.question_number = 12 and ab12.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb12,
+(select  ab13.value  from answer_box ab13 where ab13.question_number = 13 and ab13.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb13,
+(select  ab14.value  from answer_box ab14 where ab14.question_number = 14 and ab14.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb14,
+(select  ab15.value  from answer_box ab15 where ab15.question_number = 15 and ab15.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb15 ,
+
+(select  ab16.value  from answer_box ab16 where ab16.question_number = 16 and ab16.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb16,
+(select  ab17.value  from answer_box ab17 where ab17.question_number = 17 and ab17.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb17,
+(select  ab18.value  from answer_box ab18 where ab18.question_number = 18 and ab18.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb18,
+(select  ab19.value  from answer_box ab19 where ab19.question_number = 19 and ab19.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb19,
+(select  ab20.value  from answer_box ab20 where ab20.question_number = 20 and ab20.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as bb20,
+
+
+(select  cab1.value  from student_answers cab1 where cab1.question_number = 1 and cab1.student_exam_result_id = regi2.student_exam_result_id  and cab1.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id  limit 1 ) as cbb1,
+(select  cab2.value  from student_answers cab2 where cab2.question_number = 2 and cab2.student_exam_result_id = regi2.student_exam_result_id  and cab2.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb2,
+(select  cab3.value  from student_answers cab3 where cab3.question_number = 3 and cab3.student_exam_result_id = regi2.student_exam_result_id  and cab3.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb3,
+(select  cab4.value  from student_answers cab4 where cab4.question_number = 4 and cab4.student_exam_result_id = regi2.student_exam_result_id  and cab4.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb4,
+(select  cab5.value  from student_answers cab5 where cab5.question_number = 5 and cab5.student_exam_result_id = regi2.student_exam_result_id  and cab5.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb5,
+
+(select  cab6.value  from student_answers cab6 where cab6.question_number = 6 and cab6.student_exam_result_id = regi2.student_exam_result_id  and cab6.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb6,
+(select  cab7.value  from student_answers cab7 where cab7.question_number = 7 and cab7.student_exam_result_id = regi2.student_exam_result_id  and cab7.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb7,
+(select  cab8.value  from student_answers cab8 where cab8.question_number = 8 and cab8.student_exam_result_id = regi2.student_exam_result_id  and cab8.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb8,
+(select  cab9.value  from student_answers cab9 where cab9.question_number = 9 and cab9.student_exam_result_id = regi2.student_exam_result_id  and cab9.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb9,
+(select  cab10.value  from student_answers cab10 where cab10.question_number = 10 and cab10.student_exam_result_id = regi2.student_exam_result_id  and cab10.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb10,
+
+(select  cab11.value  from student_answers cab11 where cab11.question_number = 11 and cab11.student_exam_result_id = regi2.student_exam_result_id  and cab11.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb11,
+(select  cab12.value  from student_answers cab12 where cab12.question_number = 12 and cab12.student_exam_result_id = regi2.student_exam_result_id  and cab12.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb12,
+(select  cab13.value  from student_answers cab13 where cab13.question_number = 13 and cab13.student_exam_result_id = regi2.student_exam_result_id  and cab13.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb13,
+(select  cab14.value  from student_answers cab14 where cab14.question_number = 14 and cab14.student_exam_result_id = regi2.student_exam_result_id  and cab14.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb14,
+(select  cab15.value  from student_answers cab15 where cab15.question_number = 15 and cab15.student_exam_result_id = regi2.student_exam_result_id  and cab15.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb15,
+
+
+(select  cab16.value  from student_answers cab16 where cab16.question_number = 16 and cab16.student_exam_result_id = regi2.student_exam_result_id  and cab16.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb16,
+(select  cab17.value  from student_answers cab17 where cab17.question_number = 17 and cab17.student_exam_result_id = regi2.student_exam_result_id  and cab17.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb17,
+(select  cab18.value  from student_answers cab18 where cab18.question_number = 18 and cab18.student_exam_result_id = regi2.student_exam_result_id  and cab18.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb18,
+(select  cab19.value  from student_answers cab19 where cab19.question_number = 19 and cab19.student_exam_result_id = regi2.student_exam_result_id  and cab19.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb19,
+(select  cab20.value  from student_answers cab20 where cab20.question_number = 20 and cab20.student_exam_result_id = regi2.student_exam_result_id  and cab20.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id limit 1 ) as cbb20,
+(select  count(cab21.*) from student_answers cab21 where cab21.student_exam_result_id = regi2.student_exam_result_id  and cab21.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id and cab21.is_success = true)  as ders_success_count,
+
+(select  count(cab22.*) from student_answers cab22 where cab22.student_exam_result_id = regi2.student_exam_result_id  and cab22.exam_lesson_booklet_id = regi2.exam_lesson_booklet_id and cab22.is_success = false)  as ders_fail_count
+
+
+
+
+
+
+*/
+
+from regi22
+) as ssddsss
+)
+
+
+select *,(select count(ssdaaa.sirano1) from regi22 ssdaaa where ssdaaa.student_id = regi33.student_id) as kayit_sayisi1   from regi33]]>
+	</queryString>
+	<field name="sirano" class="java.lang.Long"/>
+	<field name="sirano1" class="java.lang.Long"/>
+	<field name="first_name" class="java.lang.String"/>
+	<field name="surname" class="java.lang.String"/>
+	<field name="student_number" class="java.lang.String"/>
+	<field name="success_count" class="java.lang.Integer"/>
+	<field name="fail_count" class="java.lang.Integer"/>
+	<field name="empty_count" class="java.lang.Integer"/>
+	<field name="total_count" class="java.lang.Integer"/>
+	<field name="total_net" class="java.math.BigDecimal"/>
+	<field name="point" class="java.math.BigDecimal"/>
+	<field name="sinif" class="java.lang.String"/>
+	<field name="sube" class="java.lang.String"/>
+	<field name="class_level" class="java.lang.Integer"/>
+	<field name="sinav" class="java.lang.String"/>
+	<field name="kitapcik" class="java.lang.String"/>
+	<field name="student_id" class="java.lang.Integer"/>
+	<field name="class_id" class="java.lang.Integer"/>
+	<field name="exam_date" class="java.sql.Date"/>
+	<field name="color_type" class="java.lang.Boolean"/>
+	<field name="exam_id" class="java.lang.Integer"/>
+	<field name="student_exam_result_id" class="java.lang.Integer"/>
+	<field name="exam_type_id" class="java.lang.Integer"/>
+	<field name="sinifx" class="java.lang.String"/>
+	<field name="subex" class="java.lang.String"/>
+	<field name="classroom_net_avg" class="java.math.BigDecimal"/>
+	<field name="corparation_name" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="district" class="java.lang.String"/>
+	<field name="sinif_sirasi" class="java.lang.Long"/>
+	<field name="okul_sirasi" class="java.lang.Long"/>
+	<field name="kayit_sayisi" class="java.lang.Long"/>
+	<field name="ogr_sayisi" class="java.lang.Long"/>
+	<field name="clslvl_ogrsayisi" class="java.lang.Long"/>
+	<field name="sinif_ortalamasi_sum" class="java.math.BigDecimal"/>
+	<field name="okul_ortalamasi_sum" class="java.math.BigDecimal"/>
+	<field name="soru_adedi" class="java.lang.Long"/>
+	<field name="d1" class="java.lang.String"/>
+	<field name="d2" class="java.lang.String"/>
+	<field name="d3" class="java.lang.String"/>
+	<field name="d4" class="java.lang.String"/>
+	<field name="d5" class="java.lang.String"/>
+	<field name="d6" class="java.lang.String"/>
+	<field name="d1_cis_success" class="java.lang.Long"/>
+	<field name="d1_cis_gc" class="java.lang.Integer"/>
+	<field name="d1_cis_empty" class="java.lang.Long"/>
+	<field name="d1_cis_net" class="java.math.BigDecimal"/>
+	<field name="d2_cis_success" class="java.lang.Long"/>
+	<field name="d2_cis_gc" class="java.lang.Integer"/>
+	<field name="d2_cis_empty" class="java.lang.Long"/>
+	<field name="d2_cis_net" class="java.math.BigDecimal"/>
+	<field name="d3_cis_success" class="java.lang.Long"/>
+	<field name="d3_cis_gc" class="java.lang.Integer"/>
+	<field name="d3_cis_empty" class="java.lang.Long"/>
+	<field name="d3_cis_net" class="java.math.BigDecimal"/>
+	<field name="d4_cis_success" class="java.lang.Long"/>
+	<field name="d4_cis_gc" class="java.lang.Integer"/>
+	<field name="d4_cis_empty" class="java.lang.Long"/>
+	<field name="d4_cis_net" class="java.math.BigDecimal"/>
+	<field name="d5_cis_success" class="java.lang.Long"/>
+	<field name="d5_cis_gc" class="java.lang.Integer"/>
+	<field name="d5_cis_empty" class="java.lang.Long"/>
+	<field name="d5_cis_net" class="java.math.BigDecimal"/>
+	<field name="d6_cis_success" class="java.lang.Long"/>
+	<field name="d6_cis_gc" class="java.lang.Integer"/>
+	<field name="d6_cis_empty" class="java.lang.Long"/>
+	<field name="d6_cis_net" class="java.math.BigDecimal"/>
+	<field name="sinif_ortalamasi" class="java.math.BigDecimal"/>
+	<field name="okul_ortalamasi" class="java.math.BigDecimal"/>
+	<field name="kayit_sayisi1" class="java.lang.Long"/>
+	<variable name="vDogruSayisid1" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d1_cis_success}]]></variableExpression>
+	</variable>
+	<variable name="vSoruSayisi" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d1_cis_gc}+$F{d2_cis_gc}+$F{d3_cis_gc}+$F{d4_cis_gc}+$F{d5_cis_gc}+$F{d6_cis_gc}]]></variableExpression>
+	</variable>
+	<variable name="vBasariSayisi" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[($F{d1_cis_net}+$F{d2_cis_net}+$F{d3_cis_net}+$F{d4_cis_net}+$F{d5_cis_net}+$F{d6_cis_net})
+*100 /$F{soru_adedi}]]></variableExpression>
+	</variable>
+	<variable name="vNetSayisid1" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d1_cis_net}]]></variableExpression>
+	</variable>
+	<variable name="vYanlisSayisid1" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d1_cis_gc}-$F{d1_cis_success}-$F{d1_cis_empty}]]></variableExpression>
+	</variable>
+	<variable name="vDogruSayisid2" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d2_cis_success}]]></variableExpression>
+	</variable>
+	<variable name="vNetSayisid2" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d2_cis_net}]]></variableExpression>
+	</variable>
+	<variable name="vYanlisSayisid2" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d2_cis_gc}-$F{d2_cis_success}-$F{d2_cis_empty}]]></variableExpression>
+	</variable>
+	<variable name="vYanlisSayisid3" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d3_cis_gc}-$F{d3_cis_success}-$F{d3_cis_empty}]]></variableExpression>
+	</variable>
+	<variable name="vNetSayisid3" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d3_cis_net}]]></variableExpression>
+	</variable>
+	<variable name="vDogruSayisid3" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d3_cis_success}]]></variableExpression>
+	</variable>
+	<variable name="vYanlisSayisid4" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d4_cis_gc}-$F{d4_cis_success}-$F{d4_cis_empty}]]></variableExpression>
+	</variable>
+	<variable name="vNetSayisid4" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d4_cis_net}]]></variableExpression>
+	</variable>
+	<variable name="vDogruSayisid4" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d4_cis_success}]]></variableExpression>
+	</variable>
+	<variable name="vYanlisSayisid5" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d5_cis_gc}-$F{d5_cis_success}-$F{d5_cis_empty}]]></variableExpression>
+	</variable>
+	<variable name="vNetSayisid5" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d5_cis_net}]]></variableExpression>
+	</variable>
+	<variable name="vDogruSayisid5" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d5_cis_success}]]></variableExpression>
+	</variable>
+	<variable name="vDogruSayisid6" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d6_cis_success}]]></variableExpression>
+	</variable>
+	<variable name="vNetSayisid6" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d6_cis_net}]]></variableExpression>
+	</variable>
+	<variable name="vYanlisSayisid6" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{d6_cis_gc}-$F{d6_cis_success}-$F{d6_cis_empty}]]></variableExpression>
+	</variable>
+	<variable name="vPuan" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[$F{point}]]></variableExpression>
+	</variable>
+	<variable name="vBasari" class="java.lang.Number" calculation="Average">
+		<variableExpression><![CDATA[($F{d1_cis_net}+$F{d2_cis_net}+$F{d3_cis_net}+$F{d4_cis_net}+$F{d5_cis_net}+$F{d6_cis_net})
+*100 /$F{soru_adedi}]]></variableExpression>
+	</variable>
+	<group name="student_id" keepTogether="true">
+		<groupExpression><![CDATA[$F{student_id}]]></groupExpression>
+		<groupHeader>
+			<band height="111">
+				<staticText>
+					<reportElement x="56" y="17" width="9" height="18" uuid="72311fbd-bfff-4a03-902b-71ae91450a3c"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="17" width="56" height="18" uuid="5192f6b9-024e-485c-ac2a-34e1fea70426"/>
+					<text><![CDATA[No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="52" width="56" height="18" uuid="cd52b292-9aca-4f34-bec2-abc6196f2836"/>
+					<text><![CDATA[Şube]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="65" y="0" width="277" height="18" uuid="14cf5b84-5804-430e-91f3-87627269fe52"/>
+					<textElement>
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{first_name} + ' ' + $F{surname}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="56" y="35" width="9" height="18" uuid="00f521f7-c517-42d8-bdb6-5823c0e56f4c"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="56" height="18" uuid="439578d7-b27f-45fa-90f7-b0e8722ba8e2"/>
+					<text><![CDATA[Adı - Soyadı ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="65" y="52" width="277" height="18" uuid="af9aef0c-07f9-4436-a658-d21909114659"/>
+					<textElement>
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sube}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="56" y="52" width="9" height="18" uuid="9ef4e2ac-16c0-4755-ae70-891c60f5bae4"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="65" y="35" width="277" height="18" uuid="0b606fa8-8ca2-4d69-a605-501c308c1b3e"/>
+					<textElement>
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sinif}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="35" width="56" height="18" uuid="8beade09-caba-46f1-ba49-da5f8682b30d"/>
+					<text><![CDATA[Sınıf]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="56" y="0" width="9" height="18" uuid="37a282f9-18b3-41bd-9a1a-ed923030bcf9"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="65" y="17" width="277" height="18" uuid="794d3308-5819-42a1-b299-46b7f51196a2"/>
+					<textElement>
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{student_number}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement mode="Opaque" x="0" y="71" width="802" height="40" backcolor="#CCCCCC" uuid="c29bf6b1-a68c-4a85-80c2-0826b104f0da"/>
+				</frame>
+				<frame>
+					<reportElement mode="Opaque" x="0" y="71" width="802" height="40" backcolor="#3399FF" uuid="414230f0-a2af-432a-b5cb-c702b4b2dda4">
+						<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
+					</reportElement>
+				</frame>
+				<staticText>
+					<reportElement x="0" y="71" width="23" height="40" uuid="b19b3076-594c-4b5f-8264-ec85332b43fa">
+						<property name="Backcolor" value=""/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[ Sıra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="230" y="91" width="22" height="20" uuid="3e3d484c-cf42-41f9-8843-50fa8b5b6b9b"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[D]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="689" y="71" width="39" height="39" uuid="5dfa391f-4f08-418d-bbee-647e061916a2"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Başarı (%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="23" y="71" width="132" height="40" uuid="e464856e-69b1-4a01-9535-e97a8e19567f"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[  Sınav]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="252" y="91" width="22" height="20" uuid="193488e7-77d9-47bb-861b-6350f565be2b"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Y]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="274" y="91" width="22" height="20" uuid="fec4dac5-d0a8-4147-ab68-5e28750628d5"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="625" y="71" width="64" height="39" uuid="1d45df51-b4ee-4a92-84f2-c7046bb1faec"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Puan]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="728" y="71" width="37" height="39" uuid="d9fc9766-314d-4b36-bd0c-41cc20ab8e59"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Sınıf Sıra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="765" y="71" width="37" height="39" uuid="4330e42a-5048-4893-8e06-3ca954ed7fa0"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Okul Sıra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="155" y="71" width="45" height="40" uuid="0d7b2178-43d9-4685-a0ed-0db9efe2324b"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Tarih]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="318" y="91" width="22" height="20" uuid="6b62342e-0bd7-4d3b-abc6-636781b825f9"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Y]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="340" y="91" width="21" height="20" uuid="b1540c1f-fd01-4a3f-9e09-d7378aeaf17e"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="296" y="71" width="65" height="20" uuid="46ee15f0-91c5-47b9-b4c5-ce52090ed91d"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="296" y="91" width="22" height="20" uuid="5ad5f7e5-0f92-4d1e-8f25-f37e08267e08"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[D]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="200" y="71" width="30" height="40" uuid="482d0b17-eabb-498e-ae3f-1b8826f6e684"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Soru Sayısı]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="230" y="71" width="66" height="20" uuid="ae94a872-5732-4791-8fa2-eb7aafe79b0f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="405" y="91" width="23" height="20" uuid="e2edd265-029d-4e23-983b-a12b5999f706"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="361" y="91" width="22" height="20" uuid="9737a7ce-d9a9-41e1-924b-a0dc2a37e2ee"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[D]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="361" y="71" width="67" height="20" uuid="ca738d7b-43a0-46e4-8b29-411ce322dd05"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="383" y="91" width="22" height="20" uuid="f6982be9-958a-4ca9-a9f2-251cf13a7bfd"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Y]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="559" y="91" width="22" height="20" uuid="878f195a-359e-4316-ad29-56229f30e9a9"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[D]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="603" y="91" width="22" height="20" uuid="ad03c4cf-0a7c-4fd4-a7bb-67c69fe6ac73"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="538" y="91" width="21" height="20" uuid="16141b08-6cd4-4f10-b654-bd4735e6cf3a"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="494" y="91" width="22" height="20" uuid="103194b0-4ebf-4158-ae31-7b254c709f90"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[D]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="450" y="91" width="22" height="20" uuid="6e752afd-26f1-4fb7-b28b-350af0fa5d58"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Y]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="581" y="91" width="22" height="20" uuid="745c46ba-99cf-4c05-ab20-bfab0a905212"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Y]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="472" y="91" width="22" height="20" uuid="a3025606-8644-4524-941f-b04350b2a454"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="559" y="71" width="66" height="20" uuid="ec7cd129-25c1-4b57-a1ab-c5b6c97b3e63"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d6}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="428" y="71" width="66" height="20" uuid="7302bab8-a199-4aa8-8cd3-ca2da998ac6e"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d4}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="494" y="71" width="65" height="20" uuid="bd09daf1-644f-4b02-bd8c-b29680b7139f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{d5}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="516" y="91" width="22" height="20" uuid="d0eb8cb3-29b2-4a6a-aa86-c7a8f7eadc63"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[Y]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="428" y="91" width="22" height="20" uuid="d8172d61-6708-4465-bcbf-5bf10da7236c"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<text><![CDATA[D]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="76">
+				<rectangle>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="802" height="76" backcolor="#FFFF99" uuid="06a0dec0-fabd-4320-83f4-6871d63463a2"/>
+				</rectangle>
+				<subreport>
+					<reportElement x="0" y="16" width="745" height="13" uuid="5fd4bfb6-f24a-45ce-9c4f-76639e2106df"/>
+					<subreportParameter name="pexam_type_id">
+						<subreportParameterExpression><![CDATA[$F{exam_type_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pstudent_id">
+						<subreportParameterExpression><![CDATA[$F{student_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ds_5_8_ogrenci_deneme_sinavi_subreport2.jasper"]]></subreportExpression>
+				</subreport>
+				<textField>
+					<reportElement x="0" y="0" width="802" height="16" uuid="3e3c06bd-3768-4743-920a-b1e22795a83a"/>
+					<textElement textAlignment="Center">
+						<font size="9" pdfEncoding="Cp1254"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Deneme Sınavı Başarı Grafiği"]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement x="0" y="46" width="802" height="30" uuid="87335f32-a90e-4ba3-a743-3a7bef982cb0"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ds_5_8_ogrenci_deneme_sinavi_subreport3.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="37" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="17" width="802" height="20" uuid="81c9c4b6-ba53-4a9d-8551-1aaf7e156181"/>
+				<textElement textAlignment="Center">
+					<font pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ÖĞRENCİ SINAV GEÇMİŞİ"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy">
+				<reportElement x="702" y="0" width="100" height="17" uuid="7b9c20ce-8ae6-4cff-a91a-466412f9e2e7"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField pattern="dd.MM.yyyy">
+				<reportElement stretchType="RelativeToBandHeight" x="155" y="0" width="45" height="18" uuid="4dcc8c2b-8d66-4fda-9cc3-e6c0db751134"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exam_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="23" y="0" width="132" height="18" uuid="f9717934-c15f-4bea-b65f-c9700286181f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinav}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="23" height="18" uuid="2d06a6c9-7db7-4322-aca6-48e87965ee8d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{student_id_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="200" y="0" width="30" height="18" uuid="a91f0533-9e71-4192-91e3-35499d927e09"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{soru_adedi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="230" y="0" width="22" height="18" uuid="8a541a83-d7cd-4d6e-ab64-5e956cf98a89"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d1_cis_success}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="252" y="0" width="22" height="18" uuid="ab711ccf-b838-456a-ac7d-bc4b45b0d0e9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d1_cis_gc}-$F{d1_cis_success}-$F{d1_cis_empty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="274" y="0" width="22" height="18" uuid="edda454e-09dc-4ba5-8d53-07f53f65e9cc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d1_cis_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="296" y="0" width="22" height="18" uuid="0c5cbe16-0166-4c69-99c7-063828a2cc24"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d2_cis_success}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="318" y="0" width="22" height="18" uuid="31e116cc-f9d4-410c-9bb0-94a269864af9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d2_cis_gc}-$F{d2_cis_success}-$F{d2_cis_empty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="21" height="18" uuid="60bcf920-3702-4afe-84fb-09aad42c1896"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d2_cis_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="361" y="0" width="22" height="18" uuid="f9e60995-6610-40c4-821e-08c7a1977add"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d3_cis_success}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="383" y="0" width="22" height="18" uuid="51543cd9-3236-4b72-a535-09df348a6548"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d3_cis_gc}-$F{d3_cis_success}-$F{d3_cis_empty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="405" y="0" width="23" height="18" uuid="b3d3ac25-eadf-4612-a18b-329e7e387f47"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d3_cis_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="428" y="0" width="22" height="18" uuid="ecdc581d-2432-4a16-b475-c32e5394e29a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d4_cis_success}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="450" y="0" width="22" height="18" uuid="cc285020-8ffa-4cd9-bc0d-e6455341ef99"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d4_cis_gc}-$F{d4_cis_success}-$F{d4_cis_empty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="472" y="0" width="22" height="18" uuid="a11c5252-11e5-4d61-806f-3c48337a4743"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d4_cis_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="494" y="0" width="22" height="18" uuid="6495d548-b467-4f3a-99f3-ae60fe1dbb8f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d5_cis_success}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="516" y="0" width="22" height="18" uuid="9b3606da-9ab9-4ce8-9fd7-ddf4748548c8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d5_cis_gc}-$F{d5_cis_success}-$F{d5_cis_empty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="538" y="0" width="21" height="18" uuid="ed38049f-8768-4a8c-9fb3-00e64c2f1ec0"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d5_cis_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="559" y="0" width="22" height="18" uuid="0926af02-7f02-4eaa-be47-a81fa30c5f30"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d6_cis_success}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="581" y="0" width="22" height="18" uuid="8fd006d1-5932-448c-aa0d-3f76b2dd6aea"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d6_cis_gc}-$F{d6_cis_success}-$F{d6_cis_empty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="603" y="0" width="22" height="18" uuid="2d660242-85a6-4d66-b20d-e8c694f0a747"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d6_cis_net}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="625" y="0" width="64" height="18" uuid="1d2cb527-0e32-452e-a490-a9815e1240b7"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{point}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement stretchType="RelativeToBandHeight" x="689" y="0" width="28" height="18" uuid="1c435009-6f8b-4a8c-93a1-0aa17cd46fda"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{d1_cis_net}+$F{d2_cis_net}+$F{d3_cis_net}+$F{d4_cis_net}+$F{d5_cis_net}+$F{d6_cis_net})
+*100 /$F{soru_adedi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="728" y="0" width="37" height="18" uuid="d0b9c974-24b0-40f7-b823-2fe7b9b22b97"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sinif_sirasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="765" y="0" width="37" height="18" uuid="a4b4d0ca-a850-4f6d-8351-e83a68f10d31"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{okul_sirasi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="717" y="0" width="10" height="18" uuid="07b732ab-b9fe-4b8f-8922-00a0902f4139"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+		</band>
+		<band height="27">
+			<printWhenExpression><![CDATA[(($F{kayit_sayisi1}.intValue() -$V{student_id_COUNT}) == 0 )]]></printWhenExpression>
+			<frame>
+				<reportElement mode="Opaque" x="155" y="3" width="573" height="20" backcolor="#CCCCCC" uuid="9e56ee88-35a6-4ce1-bced-3d007b319a44"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="155" y="3" width="573" height="20" backcolor="#3399FF" uuid="1566be5e-fb38-420b-b41d-efe9ca9bcdaa">
+					<printWhenExpression><![CDATA[$F{color_type}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<textField pattern="###0.00">
+				<reportElement x="203" y="3" width="27" height="20" uuid="84ff4050-f2e6-439c-a263-dd5860119858"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vSoruSayisi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="155" y="3" width="48" height="20" uuid="9b4a5990-a4b8-422c-82df-5792c0b5bbad"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORTALAMA]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="230" y="3" width="22" height="20" uuid="dfb8a909-ba4d-4576-af90-542e5e98d685"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vDogruSayisid1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="252" y="3" width="22" height="20" uuid="0592a8ea-17e1-422d-8099-3896464955a9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vYanlisSayisid1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0">
+				<reportElement x="689" y="3" width="28" height="20" uuid="82871a9e-09fe-438e-8a57-479e638f6693"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vBasari}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="274" y="3" width="22" height="20" uuid="fc28fbee-9551-4564-8aa5-192736d8aa99"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vNetSayisid1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="318" y="3" width="22" height="20" uuid="9fd89cad-50c2-43e8-99ce-3a66e535c220"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vYanlisSayisid2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="296" y="3" width="22" height="20" uuid="6d4b8268-4dc9-40f9-bf10-5a763217b4a8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vDogruSayisid2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="340" y="3" width="22" height="20" uuid="97de87cc-51a4-49d5-976e-fc91b55aa1a0"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vNetSayisid2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="362" y="3" width="22" height="20" uuid="3b66f88d-4bb6-49ec-83b9-fddba19831ff"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vDogruSayisid3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="384" y="3" width="22" height="20" uuid="aa00e2e2-b624-4e65-b4a2-da8b02fbf217"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vYanlisSayisid3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="406" y="3" width="22" height="20" uuid="4f91022a-3884-4d62-97c5-368a1c374786"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vNetSayisid3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="472" y="3" width="22" height="20" uuid="cea97b06-5d35-4376-b8df-1bacb4c8ba08"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vNetSayisid4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="450" y="3" width="22" height="20" uuid="8ed432ff-cc94-4df5-bb85-030f8b58a47a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vYanlisSayisid4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="428" y="3" width="22" height="20" uuid="53545faa-9f22-400b-866b-d0c7474e2552"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vDogruSayisid4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="494" y="3" width="22" height="20" uuid="b4fe27b6-727d-4bf3-b2c1-7301b22138f6"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vDogruSayisid5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="516" y="3" width="22" height="20" uuid="56d23500-72c4-4c18-94eb-a27d3b682525"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vYanlisSayisid5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="538" y="3" width="21" height="20" uuid="120909da-d4e4-4a84-875f-d7e1c7471464"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vNetSayisid5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="582" y="3" width="22" height="20" uuid="0820a536-5047-4c9c-a04a-357aa9678d34"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vYanlisSayisid6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="625" y="3" width="64" height="20" uuid="070b4b70-e94e-4c5b-b76d-975db4186e73"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vPuan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="559" y="3" width="23" height="20" uuid="97b05c61-6c6a-4872-b68d-4ec9977e37c5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vDogruSayisid6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="604" y="3" width="21" height="20" uuid="af81c0cc-6bc0-4332-b3e6-13bf46666c9e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vNetSayisid6}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="718" y="3" width="10" height="20" uuid="883ccf9d-6a84-4a07-aee7-aa2d3359c905"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

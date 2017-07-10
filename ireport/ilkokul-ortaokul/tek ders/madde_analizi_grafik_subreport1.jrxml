@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="madde_analizi_grafik_subreport1" language="groovy" pageWidth="180" pageHeight="250" columnWidth="180" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="837715d1-c969-4586-8ac0-d57717665c41">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="90"/>
 	<parameter name="pquestion_number" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -29,6 +29,7 @@ CASE
 	rp.color_type
 ,sea.question_number,
 answer.value as cevap,
+answer.subject_no,
 (Select count( zsea.id) from student_exam_answers  zsea
 	where 	zsea.student_exam_result_id in
 			(select distinct  ffx.id from student_exam_results ffx
@@ -134,7 +135,7 @@ and
    ELSE    1=1
   END
 
-and  sea.question_number  =  $P{pquestion_number}
+and  sea.question_number  =    $P{pquestion_number}
 limit 1
   ) as a
   ),
@@ -143,9 +144,9 @@ regi2 AS (
 
 )
 
-select    row_number() over() as sirano,  rr.* , ss.description
+select    row_number() over() as sirano,  rr.* , su.name as description
 from  regi2 as rr
-left join sorular ss on ss.question_number = rr.question_number
+left join subjects su on su.id = rr.subject_no
 
  order by question_number]]>
 	</queryString>
@@ -163,6 +164,7 @@ left join sorular ss on ss.question_number = rr.question_number
 	<field name="color_type" class="java.lang.Boolean"/>
 	<field name="question_number" class="java.lang.Integer"/>
 	<field name="cevap" class="java.lang.String"/>
+	<field name="subject_no" class="java.lang.Integer"/>
 	<field name="a" class="java.lang.Long"/>
 	<field name="b" class="java.lang.Long"/>
 	<field name="c" class="java.lang.Long"/>
@@ -193,7 +195,7 @@ left join sorular ss on ss.question_number = rr.question_number
 				</box>
 				<barChart>
 					<chart isShowLegend="false" renderType="draw">
-						<reportElement x="-8" y="156" width="175" height="26" uuid="c774a1dd-d3b0-4313-b773-3b8663a553f4">
+						<reportElement x="0" y="156" width="167" height="26" uuid="c774a1dd-d3b0-4313-b773-3b8663a553f4">
 							<printWhenExpression><![CDATA[$F{basari}.intValue() <50]]></printWhenExpression>
 						</reportElement>
 						<box>
@@ -250,7 +252,7 @@ left join sorular ss on ss.question_number = rr.question_number
 				</barChart>
 				<barChart>
 					<chart isShowLegend="false" renderType="draw">
-						<reportElement x="-8" y="156" width="175" height="26" uuid="12c6003d-14dd-463d-b08a-e50f0b6dc600">
+						<reportElement x="0" y="156" width="167" height="26" uuid="12c6003d-14dd-463d-b08a-e50f0b6dc600">
 							<printWhenExpression><![CDATA[$F{basari}.intValue() >=50]]></printWhenExpression>
 						</reportElement>
 						<box>

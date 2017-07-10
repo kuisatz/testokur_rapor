@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA["C:\\projeler\\testokur_rapor\\ireport\\ilkokul-ortaokul\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[ /*
+		<![CDATA[/*
 SELECT id, exam_lesson_booklet_id, lesson_id, student_exam_result_id,
        question_number, value, is_success, lesson_classroom_score_avg,
        lesson_class_level_score_avg, lesson_classroom_net_avg, lesson_class_level_net_avg,
