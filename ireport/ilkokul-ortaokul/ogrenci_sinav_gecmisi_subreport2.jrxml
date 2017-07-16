@@ -3,8 +3,8 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="pstudent_number" class="java.lang.String">
-		<defaultValueExpression><![CDATA[0201]]></defaultValueExpression>
+	<parameter name="pstudent_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[64]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select row_number() over() as sirano,  a.* from  (
@@ -23,8 +23,13 @@ inner join classes cls on cls.id = ser.class_id
 inner join answerkeys answer on answer.exam_lesson_booklet_id = sea.exam_lesson_booklet_id and sea.question_number = answer.question_number and answer.deleted=false
 inner join students std on std.id = ser.student_id  and cls.id= std.class_id
  where
-   std.student_number = $P{pstudent_number}
-   and ee.exam_type_id = rp.exam_type_id
+   std.id =  $P{pstudent_id} and
+CASE
+	WHEN   COALESCE(NULLIF(rp.exam_type_id, null), 0)  != 0   THEN   ee.exam_type_id = rp.exam_type_id
+	ELSE    1=1
+	END
+
+
   order by ls.name ,ee.name
   ) as a]]>
 	</queryString>
