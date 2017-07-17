@@ -132,6 +132,14 @@ inner join city ci on ci.id = cc.city_id
 inner join districts di on di.id = cc.district_id
 order by  first_name, surname ,sinav
 ),
+clslvl_ogr AS (
+	select count(distinct std.id ) as clslvl_ogrsayisi FROM student_exam_answers sea
+	inner join student_exam_results ser on ser.id = sea.student_exam_result_id
+
+	inner join classes cls on cls.class_level=  (select class_level from regi limit 1 )
+	inner join students std on std.id = ser.student_id and cls.id= std.class_id
+) ,
+
 regi33 AS (
 
 
@@ -142,13 +150,7 @@ regi33 AS (
 
  select       * ,
 	(select count(distinct student_id) from regi  where class_id = regi22.class_id  ) as ogr_sayisi ,
-	(select count(distinct std.id ) FROM student_exam_answers sea
-	inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-
-	inner join classes cls on cls.class_level= regi22.class_level
-	inner join students std on std.id = ser.student_id and cls.id= std.class_id
-
-	) as clslvl_ogrsayisi ,
+	(  select clslvl_ogrsayisi from clslvl_ogr  ) as clslvl_ogrsayisi ,
 	(select sinif_ortalamasi_sum from sinif_ortalamasi  ) as sinif_ortalamasi_sum ,
 	(select okul_ortalamasi_sum from okul_ortalamasi  ) as okul_ortalamasi_sum,
         (select adet from answer_box ) as soru_adedi,
