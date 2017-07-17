@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ders_sinav_gecmisi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="87bd8adc-7e56-4613-a03d-0bf03ba84429">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="123"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[SELECT  row_number() over() as sirano,
@@ -45,8 +45,8 @@ CASE
   inner join report_types rtx on rtx.id =  etx.id
   inner join exam_lesson_booklets elbx on elbx.exam_lesson_id= elx.id
   where
-   rtx.id = rp.report_type_id and
-   exx.id = rp.exam_id and
+   -- rtx.id = rp.report_type_id and
+   -- exx.id = rp.exam_id and
  CASE
   WHEN  rp.branch_id >0  THEN   ccx.id = rp.branch_id
    ELSE    1=1
@@ -451,7 +451,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 				</textElement>
 				<text><![CDATA[ORTALAMA]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="301" y="0" width="31" height="20" uuid="028714f9-a97d-434c-9ba3-5c76b30aec8c"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -464,7 +464,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{vSoruSayisi}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="333" y="0" width="50" height="20" uuid="b97b65d1-687e-490b-8fcc-a42a8d26855a"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -477,7 +477,7 @@ order by  ccx.class_level, ccx.name ,exx.name]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{vMin}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="382" y="0" width="50" height="20" uuid="726012f5-78c4-4f42-a069-e473632eaaf2"/>
 				<box>
 					<topPen lineWidth="1.0"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_5_8_ogrenci_deneme_sinavi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c0cede-3b4d-4add-80b8-137ef7006254">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_5_8_ogrenci_deneme_sinavi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c0cede-3b4d-4add-80b8-137ef7006254">
 	<property name="ireport.zoom" value="1.1000000000000032"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -42,27 +42,27 @@ inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join classes cls on cls.class_level= 3
 inner join students std on std.id = ser.student_id and cls.id= std.class_id
 
   where
- ee.exam_type_id = 3 and
--- ser.exam_id = 105 and --  rp.exam_id and
-   /*
-CASE
+ ee.exam_type_id = 3
+
+
+and CASE
   WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
    ELSE    1=1
   END
 and
  CASE
-  WHEN   rp.class_level>0  THEN   cls.class_level =  rp.class_level
+  WHEN   rp.exam_id>0  THEN   el.exam_id =  rp.exam_id
    ELSE    1=1
   END
-  */
-   cls.class_level = 5
- --and sea.student_exam_result_id = 9498
- -- AND std.id =  74
-
+and
+ CASE
+  WHEN   rp.student_id>0  THEN  std.id  =  rp.student_id
+   ELSE    1=1
+  END
 
  ) as a
   ),
@@ -96,10 +96,22 @@ inner join student_exam_results ser on ser.id = sea.student_exam_result_id
 inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
-inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join classes cls on cls.class_level= 3
 inner join students std on std.id = ser.student_id  and  std.class_id= cls.id
-   where   -- ser.exam_id = 105
+   where
        ee.exam_type_id = 3
+and
+ls.id in  (
+	    SELECT distinct  id   FROM (
+					SELECT   ab.class_lvl_json, id,
+					    CAST( CAST (json_array_elements(ab.class_lvl_json) AS text) AS integer) AS ddd
+					FROM lessons ab
+					WHERE ab.is_high_school = false
+		     ) AS xtable
+		    where ddd  in (
+			    3
+		     )
+                  )
 ORDER BY sort
 ),
 answer_box AS (
@@ -130,10 +142,10 @@ regi33 AS (
 
  select       * ,
 	(select count(distinct student_id) from regi  where class_id = regi22.class_id  ) as ogr_sayisi ,
-	(select count(distinct ser.student_id) FROM student_exam_answers sea
+	( select count(distinct std.id ) FROM student_exam_answers sea
 	inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-	inner join exams ee on ee.id = ser.exam_id and ee.id = 105 --  rp.exam_id
-	inner join classes cls on cls.class_level= 5 -- rp.class_level
+
+	inner join classes cls on cls.class_level= regi22.class_level
 	inner join students std on std.id = ser.student_id and cls.id= std.class_id
 
 	) as clslvl_ogrsayisi ,
@@ -237,9 +249,6 @@ select  row_number() over() as sirano , *
  select    * , (select count(ssdaaa.siranox) from regi33 ssdaaa where ssdaaa.student_id = rrttt.student_id) as kayit_sayisi,
 	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.class_id = rrttt.class_id and ffx.exam_id =  rrttt.exam_id and  ffx.point > rrttt.point ) as sinif_sirasi,
         (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = rrttt.exam_id and  ffx.point > rrttt.point ) as okul_sirasi
-
-
-
 
 from regi33 rrttt
 where rrttt.order_id in (0,1)
@@ -787,32 +796,6 @@ as vvv )
 					<text><![CDATA[Y]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="559" y="91" width="22" height="20" uuid="878f195a-359e-4316-ad29-56229f30e9a9"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[D]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="603" y="91" width="22" height="20" uuid="ad03c4cf-0a7c-4fd4-a7bb-67c69fe6ac73"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[N]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="538" y="91" width="21" height="20" uuid="16141b08-6cd4-4f10-b654-bd4735e6cf3a"/>
 					<box>
 						<topPen lineWidth="0.75"/>
@@ -852,19 +835,6 @@ as vvv )
 					<text><![CDATA[Y]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="581" y="91" width="22" height="20" uuid="745c46ba-99cf-4c05-ab20-bfab0a905212"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[Y]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="472" y="91" width="22" height="20" uuid="a3025606-8644-4524-941f-b04350b2a454"/>
 					<box>
 						<topPen lineWidth="0.75"/>
@@ -877,19 +847,6 @@ as vvv )
 					</textElement>
 					<text><![CDATA[N]]></text>
 				</staticText>
-				<textField>
-					<reportElement x="559" y="71" width="66" height="20" uuid="ec7cd129-25c1-4b57-a1ab-c5b6c97b3e63"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" pdfEncoding="Cp1254"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{d6}]]></textFieldExpression>
-				</textField>
 				<textField>
 					<reportElement x="428" y="71" width="66" height="20" uuid="7302bab8-a199-4aa8-8cd3-ca2da998ac6e"/>
 					<box>
@@ -1245,45 +1202,6 @@ as vvv )
 				</textElement>
 				<textFieldExpression><![CDATA[$F{d5_cis_net}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="559" y="0" width="22" height="18" uuid="0926af02-7f02-4eaa-be47-a81fa30c5f30"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d6_cis_success}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="581" y="0" width="22" height="18" uuid="8fd006d1-5932-448c-aa0d-3f76b2dd6aea"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d6_cis_gc}-$F{d6_cis_success}-$F{d6_cis_empty}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="603" y="0" width="22" height="18" uuid="2d660242-85a6-4d66-b20d-e8c694f0a747"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d6_cis_net}]]></textFieldExpression>
-			</textField>
 			<textField pattern="###0.00">
 				<reportElement stretchType="RelativeToBandHeight" x="625" y="0" width="64" height="18" uuid="1d2cb527-0e32-452e-a490-a9815e1240b7"/>
 				<box>
@@ -1608,19 +1526,6 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vNetSayisid5}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="582" y="3" width="22" height="20" uuid="0820a536-5047-4c9c-a04a-357aa9678d34"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vYanlisSayisid6}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
 				<reportElement x="625" y="3" width="64" height="20" uuid="070b4b70-e94e-4c5b-b76d-975db4186e73"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -1632,32 +1537,6 @@ as vvv )
 					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{vPuan}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="559" y="3" width="23" height="20" uuid="97b05c61-6c6a-4872-b68d-4ec9977e37c5"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vDogruSayisid6}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="604" y="3" width="21" height="20" uuid="af81c0cc-6bc0-4332-b3e6-13bf46666c9e"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vNetSayisid6}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="718" y="3" width="10" height="20" uuid="883ccf9d-6a84-4a07-aee7-aa2d3359c905"/>

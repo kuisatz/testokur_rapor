@@ -42,27 +42,27 @@ inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join classes cls on cls.class_level= 5
 inner join students std on std.id = ser.student_id and cls.id= std.class_id
 
   where
- ee.exam_type_id = 3 and
--- ser.exam_id = 105 and --  rp.exam_id and
-   /*
-CASE
+ ee.exam_type_id = 3
+
+
+and CASE
   WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
    ELSE    1=1
   END
 and
  CASE
-  WHEN   rp.class_level>0  THEN   cls.class_level =  rp.class_level
+  WHEN   rp.exam_id>0  THEN   el.exam_id =  rp.exam_id
    ELSE    1=1
   END
-  */
-   cls.class_level = 5
- --and sea.student_exam_result_id = 9498
- -- AND std.id =  74
-
+and
+ CASE
+  WHEN   rp.student_id>0  THEN  std.id  =  rp.student_id
+   ELSE    1=1
+  END
 
  ) as a
   ),
@@ -96,10 +96,22 @@ inner join student_exam_results ser on ser.id = sea.student_exam_result_id
 inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
-inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join classes cls on cls.class_level= 5
 inner join students std on std.id = ser.student_id  and  std.class_id= cls.id
-   where   -- ser.exam_id = 105
+   where
        ee.exam_type_id = 3
+and
+ls.id in  (
+	    SELECT distinct  id   FROM (
+					SELECT   ab.class_lvl_json, id,
+					    CAST( CAST (json_array_elements(ab.class_lvl_json) AS text) AS integer) AS ddd
+					FROM lessons ab
+					WHERE ab.is_high_school = false
+		     ) AS xtable
+		    where ddd  in (
+			    5
+		     )
+                  )
 ORDER BY sort
 ),
 answer_box AS (
@@ -130,10 +142,10 @@ regi33 AS (
 
  select       * ,
 	(select count(distinct student_id) from regi  where class_id = regi22.class_id  ) as ogr_sayisi ,
-	(select count(distinct ser.student_id) FROM student_exam_answers sea
+	(select count(distinct std.id ) FROM student_exam_answers sea
 	inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-	inner join exams ee on ee.id = ser.exam_id and ee.id = 105 --  rp.exam_id
-	inner join classes cls on cls.class_level= 5 -- rp.class_level
+
+	inner join classes cls on cls.class_level= regi22.class_level
 	inner join students std on std.id = ser.student_id and cls.id= std.class_id
 
 	) as clslvl_ogrsayisi ,
@@ -237,9 +249,6 @@ select  row_number() over() as sirano , *
  select    * , (select count(ssdaaa.siranox) from regi33 ssdaaa where ssdaaa.student_id = rrttt.student_id) as kayit_sayisi,
 	(select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.class_id = rrttt.class_id and ffx.exam_id =  rrttt.exam_id and  ffx.point > rrttt.point ) as sinif_sirasi,
         (select count(distinct ffx.point)+1 from student_exam_results ffx where ffx.exam_id = rrttt.exam_id and  ffx.point > rrttt.point ) as okul_sirasi
-
-
-
 
 from regi33 rrttt
 where rrttt.order_id in (0,1)

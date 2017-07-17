@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_5_8_ogrenci_deneme_sinavi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c0cede-3b4d-4add-80b8-137ef7006254">
-	<property name="ireport.zoom" value="1.1000000000000032"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ds_5_8_ogrenci_deneme_sinavi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78c0cede-3b4d-4add-80b8-137ef7006254">
+	<property name="ireport.zoom" value="1.4641000000000062"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -42,24 +42,29 @@ inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
 inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join classes cls on cls.class_level= 2
 inner join students std on std.id = ser.student_id and cls.id= std.class_id
 
   where
- ee.exam_type_id = 3 and
--- ser.exam_id = 105 and --  rp.exam_id and
-   /*
-CASE
+ ee.exam_type_id = 3
+
+
+and CASE
   WHEN  rp.branch_id >0  THEN   cls.id = rp.branch_id
    ELSE    1=1
   END
 and
  CASE
-  WHEN   rp.class_level>0  THEN   cls.class_level =  rp.class_level
+  WHEN   rp.exam_id>0  THEN   el.exam_id =  rp.exam_id
    ELSE    1=1
   END
-  */
-   cls.class_level = 5
+and
+ CASE
+  WHEN   rp.student_id>0  THEN  std.id  =  rp.student_id
+   ELSE    1=1
+  END
+
+
  --and sea.student_exam_result_id = 9498
  -- AND std.id =  74
 
@@ -96,10 +101,22 @@ inner join student_exam_results ser on ser.id = sea.student_exam_result_id
 inner join exam_lesson_booklets elb on elb.id = sea.exam_lesson_booklet_id
 inner join exam_lessons el on el.id = elb.exam_lesson_id
 inner join exams ee on ee.id = el.exam_id
-inner join classes cls on cls.class_level= 5 -- rp.class_level
+inner join classes cls on cls.class_level= 2
 inner join students std on std.id = ser.student_id  and  std.class_id= cls.id
    where   -- ser.exam_id = 105
        ee.exam_type_id = 3
+and
+ls.id in  (
+	    SELECT distinct  id   FROM (
+					SELECT   ab.class_lvl_json, id,
+					    CAST( CAST (json_array_elements(ab.class_lvl_json) AS text) AS integer) AS ddd
+					FROM lessons ab
+					WHERE ab.is_high_school = false
+		     ) AS xtable
+		    where ddd  in (
+			    2
+		     )
+                  )
 ORDER BY sort
 ),
 answer_box AS (
@@ -130,10 +147,10 @@ regi33 AS (
 
  select       * ,
 	(select count(distinct student_id) from regi  where class_id = regi22.class_id  ) as ogr_sayisi ,
-	(select count(distinct ser.student_id) FROM student_exam_answers sea
+	( select count(distinct std.id ) FROM student_exam_answers sea
 	inner join student_exam_results ser on ser.id = sea.student_exam_result_id
-	inner join exams ee on ee.id = ser.exam_id and ee.id = 105 --  rp.exam_id
-	inner join classes cls on cls.class_level= 5 -- rp.class_level
+
+	inner join classes cls on cls.class_level= regi22.class_level
 	inner join students std on std.id = ser.student_id and cls.id= std.class_id
 
 	) as clslvl_ogrsayisi ,
@@ -540,7 +557,7 @@ as vvv )
 					<text><![CDATA[ Sıra]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="230" y="91" width="22" height="20" uuid="3e3d484c-cf42-41f9-8843-50fa8b5b6b9b"/>
+					<reportElement x="230" y="91" width="33" height="20" uuid="3e3d484c-cf42-41f9-8843-50fa8b5b6b9b"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -579,7 +596,7 @@ as vvv )
 					<text><![CDATA[  Sınav]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="252" y="91" width="22" height="20" uuid="193488e7-77d9-47bb-861b-6350f565be2b"/>
+					<reportElement x="263" y="91" width="33" height="20" uuid="193488e7-77d9-47bb-861b-6350f565be2b"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -592,7 +609,7 @@ as vvv )
 					<text><![CDATA[Y]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="274" y="91" width="22" height="20" uuid="fec4dac5-d0a8-4147-ab68-5e28750628d5"/>
+					<reportElement x="296" y="91" width="32" height="20" uuid="fec4dac5-d0a8-4147-ab68-5e28750628d5"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -657,7 +674,7 @@ as vvv )
 					<text><![CDATA[Tarih]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="318" y="91" width="22" height="20" uuid="6b62342e-0bd7-4d3b-abc6-636781b825f9"/>
+					<reportElement x="361" y="91" width="33" height="20" uuid="6b62342e-0bd7-4d3b-abc6-636781b825f9"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -670,7 +687,7 @@ as vvv )
 					<text><![CDATA[Y]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="340" y="91" width="21" height="20" uuid="b1540c1f-fd01-4a3f-9e09-d7378aeaf17e"/>
+					<reportElement x="394" y="91" width="33" height="20" uuid="b1540c1f-fd01-4a3f-9e09-d7378aeaf17e"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -683,7 +700,7 @@ as vvv )
 					<text><![CDATA[N]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="296" y="71" width="65" height="20" uuid="46ee15f0-91c5-47b9-b4c5-ce52090ed91d"/>
+					<reportElement x="328" y="71" width="99" height="20" uuid="46ee15f0-91c5-47b9-b4c5-ce52090ed91d"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -696,7 +713,7 @@ as vvv )
 					<textFieldExpression><![CDATA[$F{d2}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="296" y="91" width="22" height="20" uuid="5ad5f7e5-0f92-4d1e-8f25-f37e08267e08"/>
+					<reportElement x="328" y="91" width="33" height="20" uuid="5ad5f7e5-0f92-4d1e-8f25-f37e08267e08"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -722,7 +739,7 @@ as vvv )
 					<text><![CDATA[Soru Sayısı]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="230" y="71" width="66" height="20" uuid="ae94a872-5732-4791-8fa2-eb7aafe79b0f"/>
+					<reportElement x="230" y="71" width="98" height="20" uuid="ae94a872-5732-4791-8fa2-eb7aafe79b0f"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -735,7 +752,7 @@ as vvv )
 					<textFieldExpression><![CDATA[$F{d1}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="405" y="91" width="23" height="20" uuid="e2edd265-029d-4e23-983b-a12b5999f706"/>
+					<reportElement x="493" y="91" width="33" height="20" uuid="e2edd265-029d-4e23-983b-a12b5999f706"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -748,7 +765,7 @@ as vvv )
 					<text><![CDATA[N]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="361" y="91" width="22" height="20" uuid="9737a7ce-d9a9-41e1-924b-a0dc2a37e2ee"/>
+					<reportElement x="427" y="91" width="33" height="20" uuid="9737a7ce-d9a9-41e1-924b-a0dc2a37e2ee"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -761,7 +778,7 @@ as vvv )
 					<text><![CDATA[D]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="361" y="71" width="67" height="20" uuid="ca738d7b-43a0-46e4-8b29-411ce322dd05"/>
+					<reportElement x="427" y="71" width="99" height="20" uuid="ca738d7b-43a0-46e4-8b29-411ce322dd05"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -774,7 +791,7 @@ as vvv )
 					<textFieldExpression><![CDATA[$F{d3}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="383" y="91" width="22" height="20" uuid="f6982be9-958a-4ca9-a9f2-251cf13a7bfd"/>
+					<reportElement x="460" y="91" width="33" height="20" uuid="f6982be9-958a-4ca9-a9f2-251cf13a7bfd"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -787,59 +804,7 @@ as vvv )
 					<text><![CDATA[Y]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="559" y="91" width="22" height="20" uuid="878f195a-359e-4316-ad29-56229f30e9a9"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[D]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="603" y="91" width="22" height="20" uuid="ad03c4cf-0a7c-4fd4-a7bb-67c69fe6ac73"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[N]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="538" y="91" width="21" height="20" uuid="16141b08-6cd4-4f10-b654-bd4735e6cf3a"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[N]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="494" y="91" width="22" height="20" uuid="103194b0-4ebf-4158-ae31-7b254c709f90"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[D]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="450" y="91" width="22" height="20" uuid="6e752afd-26f1-4fb7-b28b-350af0fa5d58"/>
+					<reportElement x="559" y="91" width="33" height="20" uuid="6e752afd-26f1-4fb7-b28b-350af0fa5d58"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -852,20 +817,7 @@ as vvv )
 					<text><![CDATA[Y]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="581" y="91" width="22" height="20" uuid="745c46ba-99cf-4c05-ab20-bfab0a905212"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[Y]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="472" y="91" width="22" height="20" uuid="a3025606-8644-4524-941f-b04350b2a454"/>
+					<reportElement x="592" y="91" width="33" height="20" uuid="a3025606-8644-4524-941f-b04350b2a454"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -878,20 +830,7 @@ as vvv )
 					<text><![CDATA[N]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="559" y="71" width="66" height="20" uuid="ec7cd129-25c1-4b57-a1ab-c5b6c97b3e63"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" pdfEncoding="Cp1254"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{d6}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="428" y="71" width="66" height="20" uuid="7302bab8-a199-4aa8-8cd3-ca2da998ac6e"/>
+					<reportElement x="526" y="71" width="99" height="20" uuid="7302bab8-a199-4aa8-8cd3-ca2da998ac6e"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -903,34 +842,8 @@ as vvv )
 					</textElement>
 					<textFieldExpression><![CDATA[$F{d4}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="494" y="71" width="65" height="20" uuid="bd09daf1-644f-4b02-bd8c-b29680b7139f"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" pdfEncoding="Cp1254"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{d5}]]></textFieldExpression>
-				</textField>
 				<staticText>
-					<reportElement x="516" y="91" width="22" height="20" uuid="d0eb8cb3-29b2-4a6a-aa86-c7a8f7eadc63"/>
-					<box>
-						<topPen lineWidth="0.75"/>
-						<leftPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-						<rightPen lineWidth="0.75"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" pdfEncoding="Cp1254"/>
-					</textElement>
-					<text><![CDATA[Y]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="428" y="91" width="22" height="20" uuid="d8172d61-6708-4465-bcbf-5bf10da7236c"/>
+					<reportElement x="526" y="91" width="33" height="20" uuid="d8172d61-6708-4465-bcbf-5bf10da7236c"/>
 					<box>
 						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
@@ -1051,7 +964,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{soru_adedi}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="230" y="0" width="22" height="18" uuid="8a541a83-d7cd-4d6e-ab64-5e956cf98a89"/>
+				<reportElement stretchType="RelativeToBandHeight" x="230" y="0" width="33" height="18" uuid="8a541a83-d7cd-4d6e-ab64-5e956cf98a89"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1064,7 +977,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d1_cis_success}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="252" y="0" width="22" height="18" uuid="ab711ccf-b838-456a-ac7d-bc4b45b0d0e9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="263" y="0" width="33" height="18" uuid="ab711ccf-b838-456a-ac7d-bc4b45b0d0e9"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1077,7 +990,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d1_cis_gc}-$F{d1_cis_success}-$F{d1_cis_empty}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="274" y="0" width="22" height="18" uuid="edda454e-09dc-4ba5-8d53-07f53f65e9cc"/>
+				<reportElement stretchType="RelativeToBandHeight" x="296" y="0" width="32" height="18" uuid="edda454e-09dc-4ba5-8d53-07f53f65e9cc"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1090,7 +1003,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d1_cis_net}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="296" y="0" width="22" height="18" uuid="0c5cbe16-0166-4c69-99c7-063828a2cc24"/>
+				<reportElement stretchType="RelativeToBandHeight" x="328" y="0" width="33" height="18" uuid="0c5cbe16-0166-4c69-99c7-063828a2cc24"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1103,7 +1016,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d2_cis_success}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="318" y="0" width="22" height="18" uuid="31e116cc-f9d4-410c-9bb0-94a269864af9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="361" y="0" width="33" height="18" uuid="31e116cc-f9d4-410c-9bb0-94a269864af9"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1116,7 +1029,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d2_cis_gc}-$F{d2_cis_success}-$F{d2_cis_empty}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="21" height="18" uuid="60bcf920-3702-4afe-84fb-09aad42c1896"/>
+				<reportElement stretchType="RelativeToBandHeight" x="394" y="0" width="33" height="18" uuid="60bcf920-3702-4afe-84fb-09aad42c1896"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1129,7 +1042,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d2_cis_net}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="361" y="0" width="22" height="18" uuid="f9e60995-6610-40c4-821e-08c7a1977add"/>
+				<reportElement stretchType="RelativeToBandHeight" x="427" y="0" width="33" height="18" uuid="f9e60995-6610-40c4-821e-08c7a1977add"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1142,7 +1055,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d3_cis_success}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="383" y="0" width="22" height="18" uuid="51543cd9-3236-4b72-a535-09df348a6548"/>
+				<reportElement stretchType="RelativeToBandHeight" x="460" y="0" width="33" height="18" uuid="51543cd9-3236-4b72-a535-09df348a6548"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1155,7 +1068,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d3_cis_gc}-$F{d3_cis_success}-$F{d3_cis_empty}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="405" y="0" width="23" height="18" uuid="b3d3ac25-eadf-4612-a18b-329e7e387f47"/>
+				<reportElement stretchType="RelativeToBandHeight" x="493" y="0" width="33" height="18" uuid="b3d3ac25-eadf-4612-a18b-329e7e387f47"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1168,7 +1081,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d3_cis_net}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="428" y="0" width="22" height="18" uuid="ecdc581d-2432-4a16-b475-c32e5394e29a"/>
+				<reportElement stretchType="RelativeToBandHeight" x="526" y="0" width="33" height="18" uuid="ecdc581d-2432-4a16-b475-c32e5394e29a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1181,7 +1094,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d4_cis_success}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="450" y="0" width="22" height="18" uuid="cc285020-8ffa-4cd9-bc0d-e6455341ef99"/>
+				<reportElement stretchType="RelativeToBandHeight" x="559" y="0" width="33" height="18" uuid="cc285020-8ffa-4cd9-bc0d-e6455341ef99"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1194,7 +1107,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{d4_cis_gc}-$F{d4_cis_success}-$F{d4_cis_empty}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="472" y="0" width="22" height="18" uuid="a11c5252-11e5-4d61-806f-3c48337a4743"/>
+				<reportElement stretchType="RelativeToBandHeight" x="592" y="0" width="33" height="18" uuid="a11c5252-11e5-4d61-806f-3c48337a4743"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1205,84 +1118,6 @@ as vvv )
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{d4_cis_net}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="494" y="0" width="22" height="18" uuid="6495d548-b467-4f3a-99f3-ae60fe1dbb8f"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d5_cis_success}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="516" y="0" width="22" height="18" uuid="9b3606da-9ab9-4ce8-9fd7-ddf4748548c8"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d5_cis_gc}-$F{d5_cis_success}-$F{d5_cis_empty}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="538" y="0" width="21" height="18" uuid="ed38049f-8768-4a8c-9fb3-00e64c2f1ec0"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d5_cis_net}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="559" y="0" width="22" height="18" uuid="0926af02-7f02-4eaa-be47-a81fa30c5f30"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d6_cis_success}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="581" y="0" width="22" height="18" uuid="8fd006d1-5932-448c-aa0d-3f76b2dd6aea"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d6_cis_gc}-$F{d6_cis_success}-$F{d6_cis_empty}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0">
-				<reportElement stretchType="RelativeToBandHeight" x="603" y="0" width="22" height="18" uuid="2d660242-85a6-4d66-b20d-e8c694f0a747"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{d6_cis_net}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement stretchType="RelativeToBandHeight" x="625" y="0" width="64" height="18" uuid="1d2cb527-0e32-452e-a490-a9815e1240b7"/>
@@ -1400,7 +1235,7 @@ as vvv )
 				<text><![CDATA[ORTALAMA]]></text>
 			</staticText>
 			<textField pattern="###0.00">
-				<reportElement x="230" y="3" width="22" height="20" uuid="dfb8a909-ba4d-4576-af90-542e5e98d685"/>
+				<reportElement x="230" y="3" width="33" height="20" uuid="dfb8a909-ba4d-4576-af90-542e5e98d685"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1413,7 +1248,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vDogruSayisid1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="252" y="3" width="22" height="20" uuid="0592a8ea-17e1-422d-8099-3896464955a9"/>
+				<reportElement x="263" y="3" width="33" height="20" uuid="0592a8ea-17e1-422d-8099-3896464955a9"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1439,7 +1274,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vBasari}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="274" y="3" width="22" height="20" uuid="fc28fbee-9551-4564-8aa5-192736d8aa99"/>
+				<reportElement x="296" y="3" width="32" height="20" uuid="fc28fbee-9551-4564-8aa5-192736d8aa99"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1452,7 +1287,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vNetSayisid1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="318" y="3" width="22" height="20" uuid="9fd89cad-50c2-43e8-99ce-3a66e535c220"/>
+				<reportElement x="361" y="3" width="33" height="20" uuid="9fd89cad-50c2-43e8-99ce-3a66e535c220"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1465,7 +1300,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vYanlisSayisid2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="296" y="3" width="22" height="20" uuid="6d4b8268-4dc9-40f9-bf10-5a763217b4a8"/>
+				<reportElement x="328" y="3" width="33" height="20" uuid="6d4b8268-4dc9-40f9-bf10-5a763217b4a8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1478,7 +1313,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vDogruSayisid2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="340" y="3" width="22" height="20" uuid="97de87cc-51a4-49d5-976e-fc91b55aa1a0"/>
+				<reportElement x="394" y="3" width="33" height="20" uuid="97de87cc-51a4-49d5-976e-fc91b55aa1a0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1491,7 +1326,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vNetSayisid2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="362" y="3" width="22" height="20" uuid="3b66f88d-4bb6-49ec-83b9-fddba19831ff"/>
+				<reportElement x="427" y="3" width="33" height="20" uuid="3b66f88d-4bb6-49ec-83b9-fddba19831ff"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1504,7 +1339,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vDogruSayisid3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="384" y="3" width="22" height="20" uuid="aa00e2e2-b624-4e65-b4a2-da8b02fbf217"/>
+				<reportElement x="460" y="3" width="33" height="20" uuid="aa00e2e2-b624-4e65-b4a2-da8b02fbf217"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1517,7 +1352,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vYanlisSayisid3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="406" y="3" width="22" height="20" uuid="4f91022a-3884-4d62-97c5-368a1c374786"/>
+				<reportElement x="493" y="3" width="33" height="20" uuid="4f91022a-3884-4d62-97c5-368a1c374786"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1530,7 +1365,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vNetSayisid3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="472" y="3" width="22" height="20" uuid="cea97b06-5d35-4376-b8df-1bacb4c8ba08"/>
+				<reportElement x="592" y="3" width="33" height="20" uuid="cea97b06-5d35-4376-b8df-1bacb4c8ba08"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1543,7 +1378,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vNetSayisid4}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="450" y="3" width="22" height="20" uuid="8ed432ff-cc94-4df5-bb85-030f8b58a47a"/>
+				<reportElement x="559" y="3" width="33" height="20" uuid="8ed432ff-cc94-4df5-bb85-030f8b58a47a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1556,7 +1391,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$V{vYanlisSayisid4}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
-				<reportElement x="428" y="3" width="22" height="20" uuid="53545faa-9f22-400b-866b-d0c7474e2552"/>
+				<reportElement x="526" y="3" width="33" height="20" uuid="53545faa-9f22-400b-866b-d0c7474e2552"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -1567,58 +1402,6 @@ as vvv )
 					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{vDogruSayisid4}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="494" y="3" width="22" height="20" uuid="b4fe27b6-727d-4bf3-b2c1-7301b22138f6"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vDogruSayisid5}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="516" y="3" width="22" height="20" uuid="56d23500-72c4-4c18-94eb-a27d3b682525"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vYanlisSayisid5}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="538" y="3" width="21" height="20" uuid="120909da-d4e4-4a84-875f-d7e1c7471464"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vNetSayisid5}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="582" y="3" width="22" height="20" uuid="0820a536-5047-4c9c-a04a-357aa9678d34"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vYanlisSayisid6}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="625" y="3" width="64" height="20" uuid="070b4b70-e94e-4c5b-b76d-975db4186e73"/>
@@ -1632,32 +1415,6 @@ as vvv )
 					<font size="8" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{vPuan}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="559" y="3" width="23" height="20" uuid="97b05c61-6c6a-4872-b68d-4ec9977e37c5"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vDogruSayisid6}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00">
-				<reportElement x="604" y="3" width="21" height="20" uuid="af81c0cc-6bc0-4332-b3e6-13bf46666c9e"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1254"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{vNetSayisid6}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="718" y="3" width="10" height="20" uuid="883ccf9d-6a84-4a07-aee7-aa2d3359c905"/>

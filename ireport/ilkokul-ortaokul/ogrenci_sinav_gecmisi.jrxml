@@ -23,7 +23,7 @@
 		<defaultValueExpression><![CDATA["C:\\projeler\\testokur_rapor\\ireport\\ilkokul-ortaokul\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[ /*
+		<![CDATA[/*
 
 SELECT id, name
   FROM public.order_types;
@@ -118,7 +118,7 @@ from (
 
 from regi rrttt
 where rrttt.order_id = 2
-order by point ) as sss )
+order by point desc ) as sss )
 
 
 
@@ -152,8 +152,7 @@ from regi rrttt
  )
 as vvv )
 
- ) as ff  order by sirano
- ]]>
+ ) as ff  order by sirano]]>
 	</queryString>
 	<field name="sirano" class="java.lang.Long"/>
 	<field name="siranox" class="java.lang.Long"/>
@@ -529,18 +528,15 @@ as vvv )
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="82">
+			<band height="46">
 				<subreport>
-					<reportElement x="3" y="26" width="440" height="36" uuid="6e6f5795-182d-416e-a46e-4cd26802a7ce"/>
+					<reportElement x="0" y="0" width="440" height="36" uuid="6e6f5795-182d-416e-a46e-4cd26802a7ce"/>
 					<subreportParameter name="pstudent_id">
 						<subreportParameterExpression><![CDATA[$F{student_id}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ogrenci_sinav_gecmisi_subreport2.jasper"]]></subreportExpression>
 				</subreport>
-				<break>
-					<reportElement x="0" y="72" width="100" height="1" uuid="cdbcf978-27a9-4827-8c5e-11c062cdd64c"/>
-				</break>
 			</band>
 		</groupFooter>
 	</group>
@@ -761,7 +757,7 @@ as vvv )
 				<textFieldExpression><![CDATA[$F{exam_date}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="43">
+		<band height="50">
 			<printWhenExpression><![CDATA[(($F{kayit_sayisi}.intValue() - $V{cccccc_COUNT}) == 0 )]]></printWhenExpression>
 			<frame>
 				<reportElement mode="Opaque" x="238" y="13" width="269" height="20" backcolor="#CCCCCC" uuid="dcc796dd-d9ae-4df3-9cfe-ec3e7b18821c"/>
@@ -877,6 +873,6 @@ as vvv )
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="5" splitType="Stretch"/>
+		<band height="7" splitType="Stretch"/>
 	</columnFooter>
 </jasperReport>
